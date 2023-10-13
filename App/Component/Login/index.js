@@ -98,7 +98,9 @@ const Login = ({ navigation }) => {
                     await setUserData(response?.data);
                     await setAccessToken(response?.data?.app_access_token);
                     await context.onGetStoreData();
-                    navigation.goBack();
+                    // navigation.goBack();
+                    navigation.navigate('DashBoard')
+
                 }
                 setState(prev => ({
                     ...prev,

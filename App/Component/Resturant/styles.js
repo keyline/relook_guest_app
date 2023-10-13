@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingVertical: '2%',
-        width:'100%'
+        // width:'100%'
     },
     imgcontainer:{
         width:'30%'
@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
         resizeMode: 'stretch'
     },
     detailscontent: {
-        marginLeft: '4%',
+        marginLeft: 20,
         width:'60%'
     },
     nametext: {

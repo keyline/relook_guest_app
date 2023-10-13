@@ -7,6 +7,11 @@ import { ImagePath } from '../../Utils/ImagePath'
 import List from './List'
 import { Colors } from '../../Utils/Colors'
 import AuthContext from '../../Services/Context'
+import { useFocusEffect } from '@react-navigation/native'
+import Apis from '../../Services/Apis'
+import { KEY, SOURCE } from '../../Services/Constant'
+import { ToastError, ToastMessage } from '../../Services/CommonFunction'
+import LoaderNew from '../../Container/LoaderNew'
 
 const itemList = [
     { id: 1, name: 'Rice', img: ImagePath.food1, desc: 'Delicious rice dish with savory flavors.', price: '30', category: 1 },
@@ -21,13 +26,71 @@ const Resturant = ({ navigation }) => {
     const context = useContext(AuthContext);
     const { appData, accesstoken, isLogin } = context.allData
 
+    const [state, setState] = useState({
+        loading: false,
+        data: null
+    })
+
+    useFocusEffect(
+        useCallback(() => {
+            const unsubscribe = onGetData();
+            return () => unsubscribe
+        }, [navigation])
+    )
+
+    const onGetData = useCallback(async () => {
+        try {
+            setState(prev => ({
+                ...prev,
+                loading: true
+            }))
+            let datas = {
+                key: KEY,
+                source: SOURCE,
+                id: '1'
+            }
+            const response = await Apis.resturant_list(datas)
+            if (__DEV__) {
+                console.log('ResturantList', JSON.stringify(response))
+            }
+            if (response.status) {
+                setState(prev => ({
+                    ...prev,
+                    data: response?.data,
+                    loading: false
+                }))
+            } else {
+                setState(prev => ({
+                    ...prev,
+                    data: null,
+                    loading: false
+                }))
+                ToastMessage(response?.message);
+            }
+        } catch (error) {
+            setState(prev => ({
+                ...prev,
+                data: null,
+                loading: false
+            }))
+            if (__DEV__) {
+                console.log(error)
+            }
+            ToastError();
+        }
+    })
+
     const onLeftMenu = useCallback(async () => {
         navigation.goBack();
     })
 
     const ItemSeperator = () => (
-        <View style={{ borderWidth: 0.5, borderColor: Colors.them_color, marginVertical: '1%' }} />
+        <View style={{ borderWidth: 0.5, borderColor: appData?.color_theme, marginVertical: '1%' }} />
     )
+
+    const onOrder = useCallback(async (item) => {
+        console.log(item)
+    })
 
     return (
         <SafeAreaView style={CommonStyle.container}>
@@ -36,17 +99,23 @@ const Resturant = ({ navigation }) => {
                 leftonPress={onLeftMenu}
                 rightIcon={ImagePath.bell}
             />
-            <Text style={[CommonStyle.headingText, { marginVertical: '4%', textAlign: 'center',color:appData?.color_theme }]}>Relish Restaurant</Text>
-            <View style={styles.bodyContent}>
-                <FlatList
-                    data={itemList}
-                    keyExtractor={(item, index) => item.id}
-                    renderItem={({ item }) =>
-                        <List item={item} />
-                    }
-                    ItemSeparatorComponent={ItemSeperator}
-                />
-            </View>
+            {(state.loading) ? <LoaderNew loading={state.loading} /> :
+                <>
+                    <Text style={[CommonStyle.headingText, { marginVertical: '4%', textAlign: 'center', color: appData?.color_theme }]}>Relish Restaurant</Text>
+                    {(state.data) && (
+                        <View style={styles.bodyContent}>
+                            <FlatList
+                                data={state.data}
+                                keyExtractor={(item, index) => item.id}
+                                renderItem={({ item }) =>
+                                    <List item={item} onPress={onOrder} />
+                                }
+                                ItemSeparatorComponent={ItemSeperator}
+                            />
+                        </View>
+                    )}
+                </>
+            }
         </SafeAreaView>
     )
 }

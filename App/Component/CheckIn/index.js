@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, FlatList } from 'react-native'
+import { View, Text, SafeAreaView, FlatList,TouchableOpacity } from 'react-native'
 import React, { useCallback, useState, useContext } from 'react'
 import { styles } from './styles'
 import { CommonStyle } from '../../Utils/CommonStyle'
@@ -19,7 +19,7 @@ const CheckIn = ({ navigation }) => {
     const { appData, accesstoken, isLogin } = context.allData
 
     const onLeftMenu = useCallback(async () => {
-        navigation.goBack();
+        navigation.openDrawer();
     })
 
     const ItemSeperator = () => (
@@ -40,11 +40,17 @@ const CheckIn = ({ navigation }) => {
     return (
         <SafeAreaView style={CommonStyle.container}>
             <Header
-                leftIcon={ImagePath.back_new}
+                leftIcon={ImagePath.menu}
                 leftonPress={onLeftMenu}
                 rightIcon={ImagePath.bell}
             />
             <View style={styles.bodyContent}>
+                <TouchableOpacity activeOpacity={0.5} style={[styles.checkinContainer, { backgroundColor: appData?.color_panel_bg }]}>
+                    <Text style={[styles.checkinText, { color: appData?.color_panel_text }]}>Welcome to Relook Hotel</Text>
+                    <Text style={[styles.checkinText, { color: appData?.color_panel_text }]}>Kharagpur</Text>
+                    <Text style={[styles.checkinText, { color: appData?.color_panel_text }]}>Please check in</Text>
+                </TouchableOpacity>
+                <View style={{flex:1}}>
                 <FlatList
                     data={menuList}
                     keyExtractor={(item, index) => item.id}
@@ -53,6 +59,7 @@ const CheckIn = ({ navigation }) => {
                     }
                     ItemSeparatorComponent={ItemSeperator}
                 />
+                </View>
             </View>
         </SafeAreaView>
     )

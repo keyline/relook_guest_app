@@ -34,6 +34,8 @@ export const styles = StyleSheet.create({
     signuptext: {
         fontFamily: Font_Family.NunitoSans_Bold,
         textAlign: 'center',
-        marginTop: '6%'
+        marginTop: '6%',
+        color:Colors.grey
+        
     }
 })

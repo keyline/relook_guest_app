@@ -6,7 +6,8 @@ import { Colors } from '../../Utils/Colors'
 export const styles = StyleSheet.create({
     bodyContent: {
         paddingHorizontal: '4%',
-        marginVertical: '4%'
+        marginVertical: '4%',
+        flex:1
     },
     listContainer: {
         backgroundColor: Colors.them_color,
@@ -32,5 +33,18 @@ export const styles = StyleSheet.create({
         width: 20,
         height: 20,
         tintColor: Colors.highlight
-    }
+    },
+    checkinContainer: {
+        backgroundColor: Colors.them_color,
+        marginBottom: '4%',
+        paddingHorizontal: '4%',
+        paddingVertical: '3%',
+        borderRadius: 10
+    },
+    checkinText: {
+        fontFamily: Font_Family.NunitoSans_Bold,
+        color: Colors.highlight,
+        textAlign: 'center',
+        fontSize: 16
+    },
 })

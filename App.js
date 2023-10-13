@@ -168,20 +168,14 @@ const App = () => {
   }
 
   const onClearStoreData = async () => {
-    let value = await clearUserData();
-    if (value) {
-      setState(prevState => ({
-        ...prevState,
-        isLogin: false,
-        userdata: null,
-        accesstoken: null,
-        userProfile: null
-      }))
-    } else {
-      if (__DEV__) {
-        console.log('AsyncStorage Error')
-      }
-    }
+    setState(prevState => ({
+      ...prevState,
+      isLogin: false,
+      userdata: null,
+      accesstoken: null,
+      userProfile: null
+    }))
+    await clearUserData();
   }
 
   const onGetProfileData = useCallback(async () => {

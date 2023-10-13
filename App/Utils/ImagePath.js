@@ -36,6 +36,9 @@ export const ImagePath = {
     edit_img: require('../Assets/Images/edit_img.png'),
     camera: require('../Assets/Images/camera.png'),
     close: require('../Assets/Images/close.png'),
-    gallery: require('../Assets/Images/gallery.png')
+    gallery: require('../Assets/Images/gallery.png'),
+    room1:require('../Assets/Images/room1.jpg'),
+    room2:require('../Assets/Images/room2.jpg'),
+
 
 }

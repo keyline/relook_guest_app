@@ -12,19 +12,19 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingVertical: '2%',
-        width:'90%'
+        // width:'100%'
     },
     imgcontainer: {
         width: '30%'
     },
     img: {
-        width: 120,
+        width: '100%',
         height: 100,
         resizeMode: 'stretch'
     },
     detailscontent: {
-        marginLeft: '8%',
-        width: '70%'
+        marginLeft: '4%',
+        width: '60%'
     },
     nametext: {
         fontFamily: Font_Family.NunitoSans_ExtraBold,
@@ -45,7 +45,7 @@ export const styles = StyleSheet.create({
         backgroundColor: Colors.them_color,
         paddingHorizontal: '4%',
         paddingVertical: '2%',
-        marginTop:'2%',
+        marginTop: '2%',
         borderRadius: 5,
         alignItems: 'center',
         alignSelf: 'flex-end'
@@ -53,5 +53,23 @@ export const styles = StyleSheet.create({
     btntext: {
         fontFamily: Font_Family.NunitoSans_ExtraBold,
         color: Colors.highlight
+    },
+    btncontent: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginTop: '4%',
+
+    },
+    itembtn: {
+        paddingHorizontal: '4%',
+        paddingVertical: '3%',
+        borderRadius: 5,
+
+    },
+    flex:{
+        flexDirection:'row',
+        alignItems:'center',
+        
     }
 })

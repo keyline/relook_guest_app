@@ -10,8 +10,10 @@ export const styles = StyleSheet.create({
         // resizeMode:'contain'
     },
     bodyContent: {
+        flex: 1,
         paddingHorizontal: '4%',
-        marginVertical: '4%'
+        marginVertical: '4%',
+        paddingBottom: 10
     },
     listContainer: {
         // borderRadius: 10,
@@ -23,7 +25,6 @@ export const styles = StyleSheet.create({
         paddingHorizontal: '4%',
         paddingVertical: '3%',
         borderRadius: 10
-
     },
     checkinText: {
         fontFamily: Font_Family.NunitoSans_Bold,

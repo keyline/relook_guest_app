@@ -50,4 +50,16 @@ export default class Apis {
         return Network('post', 'upload-profile-image', data)
     }
 
+    static get_hotelroom = (data) => {
+        return Network('post', 'get-hotel-rooms', data)
+    }
+
+    static housekeeping_list = (data) => {
+        return Network('post', 'get-hotel-housekeeping', data)
+    }
+
+    static resturant_list = (data) => {
+        return Network('post', 'get-hotel-restaurant-items', data)
+    }
+    
 }

@@ -15,6 +15,7 @@ import OtpVerify from '../Component/OtpVerify';
 import MyProfile from '../Component/MyProfile';
 import EditProfile from '../Component/EditProfile';
 import ChangePassword from '../Component/ChangePassword';
+import RoomList from '../Component/RoomList';
 
 const MainStack = () => {
 
@@ -41,6 +42,7 @@ const MainStack = () => {
             <Stack.Screen name='MyProfile' component={MyProfile} />
             <Stack.Screen name='EditProfile' component={EditProfile} />
             <Stack.Screen name='ChangePassword' component={ChangePassword} />
+            <Stack.Screen name='RoomList' component={RoomList} />
         </Stack.Navigator>
     )
 }

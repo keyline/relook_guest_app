@@ -11,6 +11,7 @@ import Apis from '../../Services/Apis'
 import AuthContext from '../../Services/Context'
 import Loader from '../../Container/Loader'
 import { ToastError, ToastMessage } from '../../Services/CommonFunction'
+import { getAccessToken } from '../../Services/AsyncStorage'
 
 const DashBoard = ({ navigation }) => {
 
@@ -18,7 +19,7 @@ const DashBoard = ({ navigation }) => {
     const { appData, accesstoken, isLogin } = context.allData
 
     const [state, setState] = useState({
-        loading: false,
+        loading: true,
         data: [],
     })
 
@@ -30,43 +31,52 @@ const DashBoard = ({ navigation }) => {
     )
 
     const onGetData = useCallback(async () => {
-        try {
+        let accesstoken = await getAccessToken();
+        if (accesstoken) {
+            navigation.navigate('CheckIn')
             setState(prevState => ({
                 ...prevState,
-                loading: true
+                loading: false
             }))
-            let datas = {
-                key: KEY,
-                source: SOURCE
-            }
-            const response = await Apis.home_screen(datas)
-            if (__DEV__) {
-                console.log('homeResponse', JSON.stringify(response))
-            }
-            if (response.status) {
+        } else {
+            try {
                 setState(prevState => ({
                     ...prevState,
-                    data: response?.data,
-                    loading: false
+                    loading: true
                 }))
-            } else {
+                let datas = {
+                    key: KEY,
+                    source: SOURCE
+                }
+                const response = await Apis.home_screen(datas)
+                if (__DEV__) {
+                    console.log('homeResponse', JSON.stringify(response))
+                }
+                if (response.status) {
+                    setState(prevState => ({
+                        ...prevState,
+                        data: response?.data,
+                        loading: false
+                    }))
+                } else {
+                    setState(prevState => ({
+                        ...prevState,
+                        data: [],
+                        loading: false
+                    }))
+                    ToastMessage(response?.message);
+                }
+            } catch (error) {
                 setState(prevState => ({
                     ...prevState,
                     data: [],
                     loading: false
                 }))
-                ToastMessage(response?.message);
+                if (__DEV__) {
+                    console.log(error)
+                }
+                ToastError();
             }
-        } catch (error) {
-            setState(prevState => ({
-                ...prevState,
-                data: [],
-                loading: false
-            }))
-            if (__DEV__) {
-                console.log(error)
-            }
-            ToastError();
         }
     })
 
@@ -84,7 +94,7 @@ const DashBoard = ({ navigation }) => {
 
     const onBookNow = useCallback(async (item) => {
         console.log('item', item);
-        navigation.navigate('Booking', { item: item })
+        navigation.navigate('RoomList', { item: item })
     })
 
     return (
@@ -95,20 +105,25 @@ const DashBoard = ({ navigation }) => {
             />
             {(state.loading) ? <Loader loading={state.loading} /> :
                 <View style={styles.bodyContent}>
-                    <TouchableOpacity onPress={onCheckin} activeOpacity={0.5} style={[styles.checkinContainer, { backgroundColor: appData?.color_panel_bg }]}>
+
+                    {/* <TouchableOpacity onPress={onCheckin} activeOpacity={0.5} style={[styles.checkinContainer, { backgroundColor: appData?.color_panel_bg }]}>
                         <Text style={[styles.checkinText, { color: appData?.color_panel_text }]}>Welcome to Relook Hotel</Text>
                         <Text style={[styles.checkinText, { color: appData?.color_panel_text }]}>Kharagpur</Text>
                         <Text style={[styles.checkinText, { color: appData?.color_panel_text }]}>Please check in</Text>
-                    </TouchableOpacity>
-                    {(state?.data.length > 0) && (
-                        <FlatList
-                            data={state.data}
-                            keyExtractor={(item, index) => item.id}
-                            renderItem={({ item }) =>
-                                <List item={item} onPress={onBookNow} appdata={appData} />
-                            }
-                            ItemSeparatorComponent={ItemSeperator}
-                        />
+                    </TouchableOpacity> */}
+                    {(state.data) && (
+                        <View style={{ flex: 1 }}>
+                            {(state?.data.length > 0) && (
+                                <FlatList
+                                    data={state.data}
+                                    keyExtractor={(item, index) => item.id}
+                                    renderItem={({ item }) =>
+                                        <List item={item} onPress={onBookNow} appdata={appData} />
+                                    }
+                                    ItemSeparatorComponent={ItemSeperator}
+                                />
+                            )}
+                        </View>
                     )}
                 </View>
             }
