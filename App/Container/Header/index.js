@@ -20,7 +20,7 @@ const Header = ({ leftIcon, leftonPress, rightIcon, rightonPress }) => {
         if (isLogin) {
             console.log('Notification');
         } else {
-            navigation.navigate('Login');
+            navigation.navigate('LoginWithOTP');
         }
     })
 

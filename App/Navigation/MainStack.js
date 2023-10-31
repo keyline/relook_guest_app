@@ -16,6 +16,10 @@ import MyProfile from '../Component/MyProfile';
 import EditProfile from '../Component/EditProfile';
 import ChangePassword from '../Component/ChangePassword';
 import RoomList from '../Component/RoomList';
+import LoginWithOTP from '../Component/LoginWithOTP';
+import BookingConfirm from '../Component/BookingConfirm';
+import CartList from '../Component/CartList';
+import OrderList from '../Component/OrderList';
 
 const MainStack = () => {
 
@@ -29,6 +33,7 @@ const MainStack = () => {
             initialRouteName='DashBoard'
         >
             <Stack.Screen name='Login' component={Login} />
+            <Stack.Screen name='LoginWithOTP' component={LoginWithOTP} />
             <Stack.Screen name='SignUp' component={SignUp} />
             <Stack.Screen name='ForgotPassword' component={ForgotPassword} />
             <Stack.Screen name='OtpVerify' component={OtpVerify} />
@@ -43,6 +48,10 @@ const MainStack = () => {
             <Stack.Screen name='EditProfile' component={EditProfile} />
             <Stack.Screen name='ChangePassword' component={ChangePassword} />
             <Stack.Screen name='RoomList' component={RoomList} />
+            <Stack.Screen name='BookingConfirm' component={BookingConfirm} />
+            <Stack.Screen name='CartList' component={CartList} />
+            <Stack.Screen name='OrderList' component={OrderList} />
+
         </Stack.Navigator>
     )
 }

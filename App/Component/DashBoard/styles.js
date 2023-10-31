@@ -34,7 +34,7 @@ export const styles = StyleSheet.create({
     },
     listimg: {
         width: '100%',
-        height: 120,
+        height: 150,
         resizeMode: 'stretch',
         borderRadius: 10
     },

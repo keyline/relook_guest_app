@@ -94,7 +94,7 @@ const ForgotPassword = ({ navigation }) => {
                         <Image source={{ uri: appData?.site_logo }} style={styles.logo} />
                     </View>
                     <View style={styles.mainContent}>
-                    <Text style={[CommonStyle.headingText, { marginBottom: '3%', textAlign: 'center', color: appData?.color_title }]}>Forgot Password</Text>
+                        <Text style={[CommonStyle.headingText, { marginBottom: '3%', textAlign: 'center', color: appData?.color_title }]}>Forgot Password</Text>
                         <InputField
                             name={'Email'}
                             value={state.email}

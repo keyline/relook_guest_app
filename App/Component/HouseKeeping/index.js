@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, FlatList } from 'react-native'
+import { View, Text, SafeAreaView, FlatList, TextInput, Image, TouchableOpacity } from 'react-native'
 import React, { useCallback, useState, useContext } from 'react'
 import { Colors } from '../../Utils/Colors';
 import Header from '../../Container/Header';
@@ -28,7 +28,11 @@ const HouseKeeping = ({ navigation }) => {
 
     const [state, setState] = useState({
         loading: false,
-        data: null
+        data: null,
+        totalItem: 0,
+        totalAmount: 0,
+        totalTime: "",
+        search: ''
     })
 
     useFocusEffect(
@@ -38,7 +42,7 @@ const HouseKeeping = ({ navigation }) => {
         }, [navigation])
     )
 
-    const onGetData = useCallback(async () => {
+    const onGetData = useCallback(async (search = state.search) => {
         try {
             setState(prev => ({
                 ...prev,
@@ -47,16 +51,21 @@ const HouseKeeping = ({ navigation }) => {
             let datas = {
                 key: KEY,
                 source: SOURCE,
-                id: '1'
+                id: '2',
+                search: search
             }
             const response = await Apis.housekeeping_list(datas)
             if (__DEV__) {
                 console.log('HouseKeeping', JSON.stringify(response))
             }
             if (response.status) {
+                let datas = response?.data
                 setState(prev => ({
                     ...prev,
-                    data: response?.data,
+                    data: datas?.items,
+                    totalItem: datas?.total_item,
+                    totalAmount: datas?.total_amount,
+                    totalTime: datas?.total_time,
                     loading: false
                 }))
             } else {
@@ -85,12 +94,77 @@ const HouseKeeping = ({ navigation }) => {
     })
 
     const ItemSeperator = () => (
-        <View style={{ borderWidth: 0.5, borderColor: appData?.color_theme, marginVertical: '1%' }} />
+        <View style={{ borderWidth: 0.5, borderColor: Colors.grey, marginVertical: '1%' }} />
     )
 
-    const onRequest = useCallback(async (item,qty) => {
+    const onRequest = useCallback(async (item, qty) => {
         console.log(item)
         console.log(qty)
+    })
+
+    const onSearch = useCallback(async (value) => {
+        setState(prev => ({
+            ...prev,
+            search: value
+        }))
+        onGetData(value)
+    })
+
+    const onCartList = useCallback(async () => {
+        navigation.navigate('CartList', { page: 'Housekeeping' })
+    })
+
+    const onUpdateValue = useCallback(async (item, type) => {
+        let index = state.data.findIndex(obj => obj?.id == item?.id)
+        if (index !== -1) {
+            let qty = state.data[index].order_qty
+            state.data[index].order_qty = type == 'add' ? qty + 1 : qty - 1
+        }
+    })
+
+    const onUpdateCart = useCallback(async (item, type) => {
+        try {
+            setState(prev => ({
+                ...prev,
+                loading: true
+            }))
+            let datas = {
+                key: KEY,
+                source: SOURCE,
+                cart_type: '2',
+                item_id: item?.id,
+                count: type == 'add' ? item?.order_qty + 1 : item?.order_qty - 1,
+                action: type
+            }
+            const res = await Apis.update_cart(datas)
+            if (__DEV__) {
+                console.log('UpdateCart', JSON.stringify(res))
+            }
+            if (res.status) {
+                onUpdateValue(item, type)
+                setState(prev => ({
+                    ...prev,
+                    totalItem: type == 'add' ? state.totalItem + 1 : state.totalItem - 1,
+                    totalTime: res?.data?.item?.total_tat,
+                    loading: false
+                }))
+            } else {
+                setState(prev => ({
+                    ...prev,
+                    loading: false
+                }))
+            }
+            ToastMessage(res?.message);
+        } catch (error) {
+            setState(prev => ({
+                ...prev,
+                loading: false
+            }))
+            if (__DEV__) {
+                console.log(error)
+            }
+            ToastError();
+        }
     })
 
     return (
@@ -100,23 +174,42 @@ const HouseKeeping = ({ navigation }) => {
                 leftonPress={onLeftMenu}
                 rightIcon={ImagePath.bell}
             />
-            {(state.loading) ? <LoaderNew loading={state.loading} /> :
-                <>
-                    <Text style={[CommonStyle.headingText, { marginVertical: '4%', textAlign: 'center', color: appData?.color_theme }]}>House Keeping</Text>
-                    {(state.data) && (
-                        <View style={styles.bodyContent}>
-                            <FlatList
-                                data={state.data}
-                                keyExtractor={(item, index) => item.id}
-                                renderItem={({ item }) =>
-                                    <List item={item} onPress={onRequest} />
-                                }
-                                ItemSeparatorComponent={ItemSeperator}
-                            />
-                        </View>
-                    )}
-                </>
-            }
+            <>
+                <Text style={[CommonStyle.headingText, { marginVertical: '4%', textAlign: 'center', color: appData?.color_theme }]}>House Keeping</Text>
+                <View style={styles.searchContainer}>
+                    <TextInput
+                        style={{ paddingHorizontal: '4%', color: Colors.black, width: '80%' }}
+                        placeholder='Search items'
+                        value={state.search}
+                        placeholderTextColor={Colors.grey}
+                        onChangeText={e => onSearch(e)}
+                    />
+                    <Image source={ImagePath.search} style={styles.searchIcon} />
+                </View>
+                <View style={styles.bodyContent}>
+                    <FlatList
+                        data={state.data}
+                        keyExtractor={(item, index) => item.id}
+                        renderItem={({ item }) =>
+                            <List item={item} onPress={onRequest} onUpdateCart={onUpdateCart} />
+                        }
+                        ItemSeparatorComponent={ItemSeperator}
+                        showsVerticalScrollIndicator={false}
+                    />
+                </View>
+                <View style={[styles.btmContainer, { backgroundColor: appData?.color_theme }]}>
+                    <View>
+                        <Text style={[CommonStyle.boldtext, { color: Colors.white, fontSize: 16 }]}>{state.totalItem} {state.totalItem > 1 ? 'Items' : 'Item'}</Text>
+                        <Text style={[CommonStyle.boldtext, { color: Colors.white, fontSize: 16 }]}>Estimated Time {state.totalTime}</Text>
+                    </View>
+                    <TouchableOpacity onPress={onCartList} activeOpacity={0.5} style={styles.cartbtn}>
+                        <Text style={[CommonStyle.boldtext, { color: appData?.color_theme, fontSize: 16 }]}>View List</Text>
+                    </TouchableOpacity>
+                </View>
+            </>
+            {(state.loading) && (
+                <LoaderNew loading={state.loading} />
+            )}
         </SafeAreaView>
     )
 }

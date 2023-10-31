@@ -120,6 +120,10 @@ const Login = ({ navigation }) => {
         }
     })
 
+    const onOtpLogin = useCallback(async () => {
+        navigation.navigate('LoginWithOTP')
+    })
+
     return (
         <SafeAreaView style={CommonStyle.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
@@ -154,6 +158,7 @@ const Login = ({ navigation }) => {
                                 onPress={onSubmit}
                             />
                         </View>
+                        <Text onPress={onOtpLogin} style={[styles.otptxt, { color: appData?.color_theme }]}>Login Using OTP</Text>
                         <Text style={styles.signuptext}>Don't have account? <Text onPress={onSignup} style={[CommonStyle.boldtext, { color: appData.color_theme }]}>Sign up</Text></Text>
                     </View>
                 </View>

@@ -37,8 +37,11 @@ export const ImagePath = {
     camera: require('../Assets/Images/camera.png'),
     close: require('../Assets/Images/close.png'),
     gallery: require('../Assets/Images/gallery.png'),
-    room1:require('../Assets/Images/room1.jpg'),
-    room2:require('../Assets/Images/room2.jpg'),
-
-
+    room1: require('../Assets/Images/room1.jpg'),
+    room2: require('../Assets/Images/room2.jpg'),
+    success: require('../Assets/Images/success.png'),
+    arrow_up: require('../Assets/Images/arrow_up.png'),
+    arrow_down: require('../Assets/Images/arrow_down.png'),
+    search: require('../Assets/Images/search.png'),
+    cart: require('../Assets/Images/cart.png')
 }

@@ -29,13 +29,19 @@ export const styles = StyleSheet.create({
         textAlign: 'right'
     },
     btnContainer: {
-        marginTop: '4%'
+        marginTop: '2%'
     },
     signuptext: {
         fontFamily: Font_Family.NunitoSans_Bold,
         textAlign: 'center',
         marginTop: '6%',
-        color:Colors.grey
-        
+        color: Colors.grey
+
+    },
+    otptxt: {
+        fontFamily: Font_Family.NunitoSans_Bold,
+        textAlign: 'center',
+        textDecorationLine: 'underline',
+        marginVertical: '3%'
     }
 })

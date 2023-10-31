@@ -9,9 +9,11 @@ import AuthContext from '../../Services/Context'
 import { isValidEmail } from '../../Services/Valid'
 import { KEY, SOURCE } from '../../Services/Constant'
 import Apis from '../../Services/Apis'
-import { ToastError, ToastMessage } from '../../Services/CommonFunction'
+import { ToastError, ToastMessage, dateConvertNew } from '../../Services/CommonFunction'
+import DateTimePickers from '../../Container/DateTimePickers'
+import { setAccessToken, setUserData } from '../../Services/AsyncStorage'
 
-const SignUp = ({ navigation }) => {
+const SignUp = ({ navigation, route }) => {
 
   const context = useContext(AuthContext)
   const appData = context.allData.appData
@@ -24,6 +26,10 @@ const SignUp = ({ navigation }) => {
     lnameErr: '',
     email: '',
     emailErr: '',
+    date: '',
+    datePicker: false,
+    dateErr: '',
+
     phone: '',
     phoneErr: '',
     password: '',
@@ -100,6 +106,30 @@ const SignUp = ({ navigation }) => {
     }))
   }, [state.cnfPasswordVisible])
 
+  const onOpenDatePicker = useCallback(async () => {
+    setState(prev => ({
+      ...prev,
+      datePicker: true
+    }))
+  }, [state.datePicker])
+
+  const onDateChng = useCallback(async (value) => {
+    let time = value?.nativeEvent?.timestamp;
+    if (value.type == 'set') {
+      setState(prev => ({
+        ...prev,
+        date: time,
+        dateErr: '',
+        datePicker: false
+      }))
+    } else {
+      setState(prev => ({
+        ...prev,
+        datePicker: false
+      }))
+    }
+  })
+
   const onSubmit = useCallback(async () => {
     if (state.fname.trim() == '') {
       setState(prev => ({
@@ -113,40 +143,48 @@ const SignUp = ({ navigation }) => {
         lnameErr: 'Enter Last Name'
       }))
       return;
-    } else if (state.email.trim() == '') {
-      setState(prev => ({
-        ...prev,
-        emailErr: 'Enter Email'
-      }))
-      return;
-    } else if (!isValidEmail(state.email)) {
+    } else if (state.email && !isValidEmail(state.email)) {
       setState(prev => ({
         ...prev,
         emailErr: 'Enter Valid Email'
       }))
       return;
-    } else if (state.phone.trim() == '') {
-      setState(prev => ({
-        ...prev,
-        phoneErr: 'Enter Phone No'
-      }))
-      return;
-    } else if (state.password.trim() == '') {
-      setState(prev => ({
-        ...prev,
-        passwordErr: 'Enter Password'
-      }))
-      return;
-    } else if (state.cnfPassword.trim() == '') {
-      setState(prev => ({
-        ...prev,
-        cnfPasswordErr: 'Enter Confirm Password'
-      }))
-      return;
-    } else if (state.password != state.cnfPassword) {
-      ToastMessage('Password Mismatch');
-      return;
-    } else {
+    }
+    //  else if (state.email.trim() == '') {
+    //   setState(prev => ({
+    //     ...prev,
+    //     emailErr: 'Enter Email'
+    //   }))
+    //   return;
+    // } else if (!isValidEmail(state.email)) {
+    //   setState(prev => ({
+    //     ...prev,
+    //     emailErr: 'Enter Valid Email'
+    //   }))
+    //   return;
+    // } else if (state.phone.trim() == '') {
+    //   setState(prev => ({
+    //     ...prev,
+    //     phoneErr: 'Enter Phone No'
+    //   }))
+    //   return;
+    // } else if (state.password.trim() == '') {
+    //   setState(prev => ({
+    //     ...prev,
+    //     passwordErr: 'Enter Password'
+    //   }))
+    //   return;
+    // } else if (state.cnfPassword.trim() == '') {
+    //   setState(prev => ({
+    //     ...prev,
+    //     cnfPasswordErr: 'Enter Confirm Password'
+    //   }))
+    //   return;
+    // } else if (state.password != state.cnfPassword) {
+    //   ToastMessage('Password Mismatch');
+    //   return;
+    // } 
+    else {
       try {
         setState(prev => ({
           ...prev,
@@ -158,22 +196,29 @@ const SignUp = ({ navigation }) => {
           first_name: state.fname,
           last_name: state.lname,
           email: state.email,
-          phone: state.phone,
-          password: state.password,
-          confirm_password: state.cnfPassword
+          dob: dateConvertNew(state.date),
+          id: route?.params?.id
+          // phone: state.phone,
+          // password: state.password,
+          // confirm_password: state.cnfPassword
         }
-        const response = await Apis.sign_up(datas);
+        const response = await Apis.save_userdetails(datas);
         if (__DEV__) {
           console.log('SignUpResponse', JSON.stringify(response))
+        }
+        if (response.status) {
+          await setUserData(response?.data);
+          await setAccessToken(response?.data?.app_access_token);
+          await context.onGetStoreData();
+          // navigation.goBack();
+          navigation.navigate('DashBoard')
+          // navigation.goBack();
         }
         setState(prev => ({
           ...prev,
           loading: false
         }))
         ToastMessage(response.message);
-        if (response.status) {
-          navigation.goBack();
-        }
       } catch (error) {
         setState(prev => ({
           ...prev,
@@ -222,6 +267,17 @@ const SignUp = ({ navigation }) => {
               error={state.emailErr}
             />
             <InputField
+              name={'Date of Birth'}
+              value={dateConvertNew(state.date)}
+              onChangeText={onChangeEmail}
+              leftIcon={ImagePath.calendar}
+              rightIcon={ImagePath.calendar}
+              editable={false}
+              rightonPress={onOpenDatePicker}
+              keyboardType={'email-address'}
+              error={state.dateErr}
+            />
+            {/* <InputField
               name={'Phone No'}
               value={state.phone}
               onChangeText={onChangePhone}
@@ -248,7 +304,7 @@ const SignUp = ({ navigation }) => {
               rightIcon={state.cnfPasswordVisible ? ImagePath.eye_off : ImagePath.eye_on}
               rightonPress={onChangeCnfPassvisible}
               error={state.cnfPasswordErr}
-            />
+            /> */}
             <View style={styles.btnContainer}>
               <SingleBottom
                 name={'Sign Up'}
@@ -256,10 +312,17 @@ const SignUp = ({ navigation }) => {
                 onPress={onSubmit}
               />
             </View>
-            <Text style={styles.signuptext}>Already have account? <Text onPress={onBack} style={[CommonStyle.boldtext, { color: appData.color_title }]}>Login</Text></Text>
+            {/* <Text style={styles.signuptext}>Already have account? <Text onPress={onBack} style={[CommonStyle.boldtext, { color: appData.color_title }]}>Login</Text></Text> */}
           </View>
         </View>
       </ScrollView>
+      {(state.datePicker) && (
+        <DateTimePickers
+          value={state?.date ? new Date(state?.date) : new Date()}
+          mode={'date'}
+          onConfirm={onDateChng}
+        />
+      )}
     </SafeAreaView>
   )
 }

@@ -1,4 +1,4 @@
-import { View, Text, Image,  Alert } from 'react-native'
+import { View, Text, Image, Alert } from 'react-native'
 import React, { useContext, useCallback, useState } from 'react'
 import AuthContext from '../Services/Context';
 import { useFocusEffect } from '@react-navigation/native';
@@ -82,8 +82,10 @@ const CustomDrawerContent = (props) => {
     const menuList = [
         { id: 1, name: 'Home', screen: 'DashBoard', icon: ImagePath.home, logiReq: false },
         { id: 2, name: 'My Profile', screen: 'MyProfile', icon: ImagePath.user, logiReq: true },
+        { id: 3, name: 'Cart', screen: 'CartList', icon: ImagePath.cart, logiReq: true },
+        { id: 4, name: 'My Order', screen: 'OrderList', icon: ImagePath.cart, logiReq: true },
+       
         // { id: 1, name: 'Home', screen: 'DashBoard', icon: ImagePath.home, logiReq: false },
-
     ]
 
     const onMenuPress = useCallback(async (item) => {
@@ -91,6 +93,10 @@ const CustomDrawerContent = (props) => {
             navigationRef.navigate('DashBoard');
         } else if (item.screen == 'MyProfile') {
             navigationRef.navigate('MyProfile')
+        } else if (item.screen == 'CartList') {
+            navigationRef.navigate('CartList')
+        }else if (item.screen == 'OrderList') {
+            navigationRef.navigate('OrderList')
         }
 
     })
@@ -151,7 +157,7 @@ const CustomDrawerContent = (props) => {
     })
 
     const onLogin = useCallback(async () => {
-        navigationRef.navigate('Login');
+        navigationRef.navigate('LoginWithOTP');
     })
 
     const Icon = ({ props, source }) => (

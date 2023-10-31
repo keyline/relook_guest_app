@@ -10,6 +10,7 @@ export const Network = (method, endpoint, data = {}) => {
     return fetch = new Promise(async (resolve, reject) => {
         try {
             let accesstoken = await getAccessToken();
+            // let accesstoken='eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwicGhvbmUiOiI5NjE0MzExMDU4IiwiZXhwIjoxNzAwMjEzNjQ0fQ.VdUmy7el_IzXWYNYL9qwSEh5SxEXo_y4fzlvn-SyKcI'
             let config = {
                 method: method,
                 url: `${BASE_URL}${endpoint}`,

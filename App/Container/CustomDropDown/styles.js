@@ -33,7 +33,7 @@ export const styles = StyleSheet.create({
         borderWidth: 1,
         borderTopWidth: 0,
         // zIndex: 9999,
-        backgroundColor:'red',
+        backgroundColor:Colors.light_gery,
         borderColor: Colors.them_color,
     },
     error: {

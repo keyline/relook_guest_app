@@ -26,8 +26,8 @@ export const dateConvertYear = (value) => {
     }
 }
 
-export const ToastMessage = (message) => {
-    Toast.show(message, Toast.LONG);
+export const ToastMessage = (message, type) => {
+    Toast.show(message, type == 'short' ? Toast.SHORT : Toast.LONG);
 }
 
 export const ToastError = () => {

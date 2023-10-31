@@ -11,6 +11,9 @@ import { useFocusEffect } from '@react-navigation/native'
 import { ToastError, ToastMessage } from '../../Services/CommonFunction'
 import { KEY, SOURCE } from '../../Services/Constant'
 import Apis from '../../Services/Apis'
+import Details from './Details'
+import LoaderNew from '../../Container/LoaderNew'
+import Loader from '../../Container/Loader'
 
 const room = [
     { id: 1, type: 'Single Rooms', img: ImagePath.room1, price: '1000' },
@@ -25,9 +28,10 @@ const RoomList = ({ navigation, route }) => {
     const { appData, accesstoken, isLogin } = context.allData
     const params = route?.params?.item
     const [state, setState] = useState({
-        loading: false,
+        loading: true,
         data: null,
-
+        modalVisible: false,
+        modalData: null
     })
 
     useFocusEffect(
@@ -86,37 +90,54 @@ const RoomList = ({ navigation, route }) => {
         navigation.navigate('Booking', { item: state.data })
     })
 
+    const onShowModal = useCallback(async (item) => {
+        setState(prev => ({
+            ...prev,
+            modalData: item,
+            modalVisible: true
+        }))
+    })
+
+    const onHideModal = useCallback(async () => {
+        setState(prev => ({
+            ...prev,
+            modalVisible: false,
+            modalData: null
+        }))
+    })
+
     return (
         <SafeAreaView style={CommonStyle.container}>
             <Header
                 leftIcon={ImagePath.back_new}
                 leftonPress={onLeftMenu}
             />
-            <ScrollView showsVerticalScrollIndicator={false}>
-                <View style={{ flex: 1 }}>
-                    <Image source={ImagePath.banner1} style={styles.img} />
-                    <View style={styles.bodyContent}>
-                        <Text style={[CommonStyle.headingText, { color: appData?.color_theme }]}>{state.data?.name}</Text>
-                        <TouchableOpacity activeOpacity={0.5} style={styles.flex}>
-                            <View style={styles.flexNew}>
-                                <StarView rating={state.data?.rating} />
-                                <Text style={[CommonStyle.boldtext, { marginLeft: '4%', color: appData?.color_theme }]}>Very Good</Text>
+            {(state.loading) ? <Loader loading={state.loading} /> :
+                <ScrollView showsVerticalScrollIndicator={false}>
+                    <View style={{ flex: 1 }}>
+                        <Image source={{ uri: state.data?.cover_image }} style={styles.imgBanner} />
+                        <View style={styles.bodyContent}>
+                            <Text style={[CommonStyle.headingText, { color: appData?.color_theme }]}>{state.data?.name}</Text>
+                            <TouchableOpacity activeOpacity={0.5} style={styles.flex}>
+                                <View style={styles.flexNew}>
+                                    <StarView rating={state.data?.rating} />
+                                    <Text style={[CommonStyle.boldtext, { marginLeft: '4%', color: appData?.color_theme }]}>Very Good</Text>
+                                </View>
+                                <Image source={ImagePath.right_arrow} style={[styles.location, { tintColor: appData?.color_theme }]} />
+                            </TouchableOpacity>
+                            <View style={styles.locationContainer}>
+                                <Image source={ImagePath.location} style={[styles.location, { tintColor: appData?.color_theme }]} />
+                                <Text style={CommonStyle.boldtextgrey}> {state.data?.location}</Text>
                             </View>
-                            <Image source={ImagePath.right_arrow} style={[styles.location, { tintColor: appData?.color_theme }]} />
-                        </TouchableOpacity>
-                        <View style={styles.locationContainer}>
-                            <Image source={ImagePath.location} style={[styles.location, { tintColor: appData?.color_theme }]} />
-                            <Text style={CommonStyle.boldtextgrey}> {state.data?.location}</Text>
-                        </View>
-                        <View style={[styles.border, { borderColor: appData?.color_theme }]} />
-                        <View style={{ flex: 1, }}>
-                            <Text style={[CommonStyle.headingText, { textAlign: 'center', color: appData?.color_theme }]}>Room Type</Text>
-                            {(state.data?.room_type_list && state.data?.room_type_list.length > 0) && (
-                                <View style={{ flex: 1, marginTop: '2%' }}>
-                                    {(state.data?.room_type_list).map((item, key) => (
-                                        <List key={key} item={item} onPress={onNext} />
-                                    ))}
-                                    {/* <FlatList
+                            <View style={[styles.border, { borderColor: appData?.color_theme }]} />
+                            <View style={{ flex: 1, }}>
+                                <Text style={[CommonStyle.headingText, { textAlign: 'center', color: appData?.color_theme }]}>Room Type</Text>
+                                {(state.data?.room_type_list && state.data?.room_type_list.length > 0) && (
+                                    <View style={{ flex: 1, marginTop: '2%' }}>
+                                        {(state.data?.room_type_list).map((item, key) => (
+                                            <List key={key} item={item} onPress={onNext} onDetails={onShowModal} />
+                                        ))}
+                                        {/* <FlatList
                                     data={state.data?.room_type_list}
                                     keyExtractor={(item, index) => item.room_id}
                                     renderItem={({ item }) =>
@@ -124,12 +145,18 @@ const RoomList = ({ navigation, route }) => {
                                     }
                                     showsVerticalScrollIndicator={false}
                                 /> */}
-                                </View>
-                            )}
+                                    </View>
+                                )}
+                            </View>
                         </View>
                     </View>
-                </View>
-            </ScrollView>
+                </ScrollView>
+            }
+            <Details
+                data={state.modalData}
+                isVisible={state.modalVisible}
+                onModalHide={onHideModal}
+            />
         </SafeAreaView>
     )
 }

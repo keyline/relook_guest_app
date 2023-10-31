@@ -47,7 +47,7 @@ const CheckIn = ({ navigation }) => {
             <View style={styles.bodyContent}>
                 <TouchableOpacity activeOpacity={0.5} style={[styles.checkinContainer, { backgroundColor: appData?.color_panel_bg }]}>
                     <Text style={[styles.checkinText, { color: appData?.color_panel_text }]}>Welcome to Relook Hotel</Text>
-                    <Text style={[styles.checkinText, { color: appData?.color_panel_text }]}>Kharagpur</Text>
+                    <Text style={[styles.checkinText, { color: appData?.color_panel_text }]}>Digha</Text>
                     <Text style={[styles.checkinText, { color: appData?.color_panel_text }]}>Please check in</Text>
                 </TouchableOpacity>
                 <View style={{flex:1}}>

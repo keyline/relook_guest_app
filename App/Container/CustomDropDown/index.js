@@ -1,14 +1,19 @@
 import { View, Text } from 'react-native'
-import React from 'react'
+import React, { useContext } from 'react'
 import DropDownPicker from 'react-native-dropdown-picker'
 import { styles } from './styles'
 import { Colors } from '../../Utils/Colors'
+import AuthContext from '../../Services/Context'
 
 const CustomDropDown = ({ name, open, headingColor, listMode, value, onChangeValue, searchable, items, setOpen, setValue, setItems, error }) => {
+
+    const context = useContext(AuthContext);
+    const { appData, accesstoken, isLogin } = context.allData
+
     return (
         <View style={styles.container}>
             {(name) && (
-                <Text style={[styles.text, { color: headingColor ? headingColor : Colors.them_color }]}>{name} :</Text>
+                <Text style={[styles.text, { color: headingColor ? headingColor : appData?.color_theme }]}>{name} :</Text>
             )}
             <DropDownPicker
                 open={open}
@@ -23,7 +28,7 @@ const CustomDropDown = ({ name, open, headingColor, listMode, value, onChangeVal
                 searchable={searchable ? searchable : false}
                 listMode={listMode ? listMode : 'SCROLLVIEW'}
                 searchPlaceholder={`Search ${name}`}
-                style={styles.dropdown}
+                style={[styles.dropdown,{borderColor:appData?.color_theme}]}
                 autoScroll={true}
                 dropDownDirection={'AUTO'}
                 dropDownContainerStyle={styles.dropDownContainerStyle}

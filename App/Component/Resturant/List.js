@@ -10,9 +10,9 @@ const List = ({ item, onPress }) => {
 
     return (
         <View style={styles.listContainer}>
-            <View style={styles.imgcontainer}>
+            {/* <View style={styles.imgcontainer}>
                 <Image source={{ uri: item.image }} style={styles.img} />
-            </View>
+            </View> */}
             <View style={styles.detailscontent}>
                 <Text style={[styles.nametext, { color: appData?.color_theme }]}>{item.name}</Text>
                 <Text style={styles.desctext}>{item.details}</Text>
@@ -20,11 +20,11 @@ const List = ({ item, onPress }) => {
                 <Text style={[styles.desctext, { color: 'red', fontWeight: 'bold' }]}>{item.category_name}</Text>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <Text style={[styles.pricetext, { color: appData?.color_theme }]}>₹ {item.price}</Text>
-                    <TouchableOpacity onPress={() => onPress(item)} activeOpacity={0.5} style={[styles.btnContainer, { backgroundColor: appData?.color_complete_button }]}>
-                        <Text style={styles.btntext}>Order</Text>
-                    </TouchableOpacity>
                 </View>
             </View>
+            <TouchableOpacity onPress={() => onPress(item)} activeOpacity={0.5} style={[styles.btnContainer, { backgroundColor: appData?.color_complete_button }]}>
+                <Text style={styles.btntext}>Order</Text>
+            </TouchableOpacity>
         </View>
     )
 }

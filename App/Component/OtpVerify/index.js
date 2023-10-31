@@ -12,6 +12,9 @@ import Apis from '../../Services/Apis'
 import AuthContext from '../../Services/Context'
 import LoaderNew from '../../Container/LoaderNew'
 import { navigationRef } from '../../Services/NavigationRef'
+import DeviceInfo from 'react-native-device-info'
+import { getFcmPermission, getFcmToken } from '../../Services/DeviceToken'
+import { setAccessToken, setUserData } from '../../Services/AsyncStorage'
 
 const OtpVerify = ({ navigation, route }) => {
 
@@ -53,6 +56,46 @@ const OtpVerify = ({ navigation, route }) => {
     }, [state.otp])
 
     const onResendOtp = useCallback(async () => {
+        if (route.params?.type == 'Mobile') {
+            onResendOtpMobile();
+        } else {
+            onResendOtpEmail();
+        }
+    })
+
+    const onResendOtpMobile = useCallback(async () => {
+        try {
+            setState(prev => ({
+                ...prev,
+                loading: true
+            }))
+            let datas = {
+                key: KEY,
+                source: SOURCE,
+                phone: params?.mobile
+            }
+            const response = await Apis.sign_up(datas)
+            if (__DEV__) {
+                console.log('ResendOTPResponse', JSON.stringify(response))
+            }
+            setState(prev => ({
+                ...prev,
+                loading: false
+            }))
+            ToastMessage(response?.message);
+        } catch (error) {
+            setState(prev => ({
+                ...prev,
+                loading: false
+            }))
+            if (__DEV__) {
+                console.log(error)
+            }
+            ToastError();
+        }
+    })
+
+    const onResendOtpEmail = useCallback(async () => {
         try {
             setState(prev => ({
                 ...prev,
@@ -88,44 +131,103 @@ const OtpVerify = ({ navigation, route }) => {
         if (state.otp == '') {
             ToastMessage('Enter OTP')
             return;
-        } else if (state.otp.length < 6) {
+        } else if (state.otp.length < 4) {
             ToastMessage('Enter Valid OTP');
             return;
         } else {
-            try {
-                setState(prev => ({
-                    ...prev,
-                    btnLoading: true
-                }))
-                let datas = {
-                    key: KEY,
-                    source: SOURCE,
-                    id: params?.id,
-                    otp: state.otp
-                }
-                const res = await Apis.otp_validate(datas);
-                if (__DEV__) {
-                    console.log('OTPValidateRes', JSON.stringify(res))
-                }
-                setState(prev => ({
-                    ...prev,
-                    btnLoading: false
-                }))
-                ToastMessage(res?.message);
-                if (res.status) {
-                    navigation.replace('ResetPassword', { data: res?.data })
-                }
-
-            } catch (error) {
-                setState(prev => ({
-                    ...prev,
-                    btnLoading: false
-                }))
-                if (__DEV__) {
-                    console.log(error)
-                }
-                ToastError();
+            if (route.params?.type == 'Mobile') {
+                onSubmitMobile();
+            } else {
+                onSubmitEmail();
             }
+        }
+    })
+
+    const onSubmitMobile = useCallback(async () => {
+        // navigation.navigate('SignUp')
+        // return
+        try {
+            setState(prev => ({
+                ...prev,
+                btnLoading: true
+            }))
+            let deviceId = DeviceInfo.getDeviceId();
+            let permission = await getFcmPermission();
+            let fcmToken = await getFcmToken();
+            let datas = {
+                key: KEY,
+                source: SOURCE,
+                number: params?.mobile,
+                otp: state.otp,
+                device_token: deviceId,
+                fcm_token: fcmToken
+            }
+            const res = await Apis.otp_validate_new(datas);
+            if (__DEV__) {
+                console.log('OTPValidateRes', JSON.stringify(res))
+            }
+            if (res.status) {
+                if (res?.data?.existing_user) {
+                    await setUserData(res?.data?.user);
+                    await setAccessToken(res?.data?.user?.app_access_token);
+                    await context.onGetStoreData();
+                    // navigation.goBack();
+                    navigation.navigate('DashBoard')
+                } else {
+                    navigation.navigate('SignUp', { id: res?.data?.id })
+                }
+            }
+            setState(prev => ({
+                ...prev,
+                btnLoading: false
+            }))
+            ToastMessage(res?.message);
+        } catch (error) {
+            setState(prev => ({
+                ...prev,
+                btnLoading: false
+            }))
+            if (__DEV__) {
+                console.log(error)
+            }
+            ToastError();
+        }
+    })
+
+    const onSubmitEmail = useCallback(async () => {
+        try {
+            setState(prev => ({
+                ...prev,
+                btnLoading: true
+            }))
+            let datas = {
+                key: KEY,
+                source: SOURCE,
+                id: params?.id,
+                otp: state.otp
+            }
+            const res = await Apis.otp_validate(datas);
+            if (__DEV__) {
+                console.log('OTPValidateRes', JSON.stringify(res))
+            }
+            setState(prev => ({
+                ...prev,
+                btnLoading: false
+            }))
+            ToastMessage(res?.message);
+            if (res.status) {
+                navigation.replace('ResetPassword', { data: res?.data })
+            }
+
+        } catch (error) {
+            setState(prev => ({
+                ...prev,
+                btnLoading: false
+            }))
+            if (__DEV__) {
+                console.log(error)
+            }
+            ToastError();
         }
     })
 
@@ -145,9 +247,9 @@ const OtpVerify = ({ navigation, route }) => {
                         <View style={{ flex: 1 }}>
                             <Text style={[CommonStyle.boldtext, { marginBottom: '4%', color: appData?.color_title }]}>Enter OTP :</Text>
                             <OTPInputView
-                                pinCount={6}
+                                pinCount={4}
                                 code={state.otp}
-                                autoFocusOnLoad
+                                autoFocusOnLoad={false}
                                 onCodeChanged={code => onChangeOtp(code)}
                                 style={styles.otp}
                                 codeInputFieldStyle={[styles.underlineStyleBase, { borderColor: appData?.color_theme }]}

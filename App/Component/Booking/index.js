@@ -1,5 +1,5 @@
 import { View, Text, SafeAreaView, Image, TouchableOpacity, ScrollView } from 'react-native'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useContext } from 'react'
 import { CommonStyle } from '../../Utils/CommonStyle'
 import Header from '../../Container/Header'
 import { ImagePath } from '../../Utils/ImagePath'
@@ -10,8 +10,12 @@ import DateTimePickers from '../../Container/DateTimePickers'
 import { dateConvertNew, dateConvertYear } from '../../Services/CommonFunction'
 import CustomDropDown from '../../Container/CustomDropDown'
 import { Colors } from '../../Utils/Colors'
+import AuthContext from '../../Services/Context'
 
 const Booking = ({ navigation, route }) => {
+
+    const context = useContext(AuthContext);
+    const { appData, accesstoken, isLogin } = context.allData
 
     const [state, setState] = useState({
         loading: false,
@@ -152,6 +156,10 @@ const Booking = ({ navigation, route }) => {
         }))
     })
 
+    const onBook = useCallback(async()=>{
+        navigation.replace('BookingConfirm')
+    })
+    
     return (
         <SafeAreaView style={CommonStyle.container}>
             <Header
@@ -166,18 +174,25 @@ const Booking = ({ navigation, route }) => {
                     <TouchableOpacity activeOpacity={0.5} style={styles.flex}>
                         <View style={styles.flexNew}>
                             <StarView rating={state.data?.rating} />
-                            <Text style={[CommonStyle.boldtext, { marginLeft: '4%' }]}>Very Good</Text>
+                            <Text style={[CommonStyle.boldtext, { marginLeft: '4%', color: appData?.color_theme }]}>Very Good</Text>
                         </View>
-                        <Image source={ImagePath.right_arrow} style={styles.location} />
+                        <Image source={ImagePath.right_arrow} style={[styles.location, { tintColor: appData?.color_theme }]} />
                     </TouchableOpacity>
                     <View style={styles.locationContainer}>
-                        <Image source={ImagePath.location} style={styles.location} />
+                        <Image source={ImagePath.location} style={[styles.location, { tintColor: appData?.color_theme }]} />
                         <Text style={CommonStyle.boldtextgrey}> {state.data?.location}</Text>
                     </View>
-                    <View style={styles.border} />
+                    <View style={[styles.border, { borderColor: appData?.color_theme }]} />
                     <View>
-                        <Text style={CommonStyle.headingText}>Travel Dates & Guests</Text>
+                        <Text style={[CommonStyle.headingText, { color: appData?.color_theme }]}>Travel Dates & Guests</Text>
                         <View style={styles.inputContent}>
+                            <InputField
+                                name={'Room Type'}
+                                headingColor={Colors.textColor}
+                                value={'Delux'}
+                                // placeholder={'Select Check In Date'}
+                                editable={false}
+                            />
                             <InputField
                                 name={'Check In'}
                                 headingColor={Colors.textColor}
@@ -198,7 +213,7 @@ const Booking = ({ navigation, route }) => {
                                 rightonPress={onOpenCheckoutDate}
                                 error={state.checkoutDateErr}
                             />
-                            <CustomDropDown
+                            {/* <CustomDropDown
                                 name={'Room'}
                                 headingColor={Colors.textColor}
                                 value={state.room}
@@ -208,7 +223,7 @@ const Booking = ({ navigation, route }) => {
                                 setOpen={setroomPicker}
                                 onChangeValue={onChangeRoom}
                                 error={state.roomErr}
-                            />
+                            /> */}
                             <CustomDropDown
                                 name={'Adults'}
                                 headingColor={Colors.textColor}
@@ -246,9 +261,9 @@ const Booking = ({ navigation, route }) => {
                     </View>
                 </View>
             </ScrollView>
-            <View style={styles.btnContainer}>
-                <Text style={CommonStyle.headingText}>Total: ₹ 1500</Text>
-                <TouchableOpacity activeOpacity={0.5} style={styles.btn}>
+            <View style={[styles.btnContainer, { borderColor: appData?.color_theme }]}>
+                <Text style={[CommonStyle.headingText, { color: appData?.color_theme }]}>Total: ₹ 1500</Text>
+                <TouchableOpacity onPress={onBook} activeOpacity={0.5} style={[styles.btn, { backgroundColor: appData?.color_theme }]}>
                     <Text style={[CommonStyle.boldtext, { color: Colors.highlight }]}>BOOK</Text>
                 </TouchableOpacity>
             </View>

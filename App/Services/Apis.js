@@ -22,6 +22,14 @@ export default class Apis {
         return Network('post', 'validate-otp', data)
     }
 
+    static otp_validate_new = (data) => {
+        return Network('post', 'validate-signup-otp', data)
+    }
+
+    static save_userdetails = (data) => {
+        return Network('post', 'save-user-details', data)
+    }
+
     static reset_password = (data) => {
         return Network('post', 'reset-password', data)
     }
@@ -61,5 +69,12 @@ export default class Apis {
     static resturant_list = (data) => {
         return Network('post', 'get-hotel-restaurant-items', data)
     }
-    
+
+    static update_cart = (data) => {
+        return Network('post', 'save-cart-items', data)
+    }
+
+    static get_cart = (data) => {
+        return Network('post', 'get-cart-items', data)
+    }
 }

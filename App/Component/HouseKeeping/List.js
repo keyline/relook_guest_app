@@ -4,13 +4,12 @@ import { styles } from './styles'
 import AuthContext from '../../Services/Context';
 import SelectDropdown from 'react-native-select-dropdown'
 import { CommonStyle } from '../../Utils/CommonStyle';
+import { Colors } from '../../Utils/Colors';
 
-const List = ({ item, onPress }) => {
+const List = ({ item, onPress, onUpdateCart }) => {
 
     const context = useContext(AuthContext);
     const { appData, accesstoken, isLogin } = context.allData
-    const QtyList = ["1", "2", "3", "4", "5"]
-    const [qty, setqty] = useState("1")
 
     return (
         <View style={styles.listContainer}>
@@ -18,35 +17,26 @@ const List = ({ item, onPress }) => {
                 <Image source={{ uri: item.image }} style={styles.img} />
             </View>
             <View style={styles.detailscontent}>
-                <Text style={[styles.nametext, { color: appData?.color_theme }]}>{item.name}</Text>
+                <Text style={[styles.nametext, { color: Colors.black }]}>{item.name}</Text>
                 <Text style={styles.desctext}>{item.details}</Text>
-                {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <Text style={styles.pricetext}>₹ {item.price}</Text>
-                </View> */}
-                <View style={styles.btncontent}>
-                    <View style={styles.flex}>
-                        <Text style={[CommonStyle.boldtext, { color: appData?.color_theme }]}>Qty : </Text>
-                        <SelectDropdown
-                            data={QtyList}
-                            onSelect={(selectedItem, index) => {
-                                setqty(selectedItem)
-                            }}
-                            defaultValue={qty}
-                            buttonStyle={{
-                                // backgroundColor:'blue',
-                                width: 50,
-                                height: 30,
-                                borderRadius: 5
-                            }}
-                        />
+                {(item?.order_qty > 0) ?
+                    <View style={styles.modifyBtn}>
+                        <Text onPress={() => onUpdateCart(item, 'remove')} style={[styles.plusBtn, { color: appData?.color_theme }]}>-  </Text>
+                        <Text style={[styles.plusBtn, { color: appData?.color_theme, fontSize: 18 }]}>{item?.order_qty}</Text>
+                        {(item?.order_limit > item?.order_qty) ?
+                            <Text onPress={() => onUpdateCart(item, 'add')} style={[styles.plusBtn, { color: appData?.color_theme }]}>  +</Text>
+                            :
+                            <Text style={[styles.plusBtn, { color: appData?.color_theme, width: '35%' }]}>  </Text>
+                        }
                     </View>
-                    <TouchableOpacity onPress={() => onPress(item, qty)} activeOpacity={0.5} style={[styles.itembtn, { backgroundColor: appData?.color_complete_button }]}>
-                        <Text style={styles.btntext}>Request</Text>
+                    :
+                    <TouchableOpacity onPress={() => onUpdateCart(item, 'add')} disabled={!onUpdateCart} activeOpacity={0.5} style={styles.addBtn}>
+                        <Text style={[CommonStyle.boldtext, { color: appData?.color_theme, fontSize: 16 }]}>ADD</Text>
+                        <View style={{ position: 'absolute', top: -2, right: 5 }}>
+                            <Text style={{ color: appData?.color_theme }}>+</Text>
+                        </View>
                     </TouchableOpacity>
-                </View>
-                {/* <TouchableOpacity onPress={() => onPress(item)} activeOpacity={0.5} style={[styles.btnContainer, { backgroundColor: appData?.color_complete_button }]}>
-                    <Text style={styles.btntext}>Request</Text>
-                </TouchableOpacity> */}
+                }
             </View>
         </View>
     )
