@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, FlatList,TouchableOpacity } from 'react-native'
+import { View, Text, SafeAreaView, FlatList, TouchableOpacity } from 'react-native'
 import React, { useCallback, useState, useContext } from 'react'
 import { styles } from './styles'
 import { CommonStyle } from '../../Utils/CommonStyle'
@@ -16,7 +16,7 @@ const menuList = [
 const CheckIn = ({ navigation }) => {
 
     const context = useContext(AuthContext);
-    const { appData, accesstoken, isLogin } = context.allData
+    const { appData, accesstoken, isLogin, bookingDetail } = context.allData
 
     const onLeftMenu = useCallback(async () => {
         navigation.openDrawer();
@@ -45,20 +45,20 @@ const CheckIn = ({ navigation }) => {
                 rightIcon={ImagePath.bell}
             />
             <View style={styles.bodyContent}>
-                <TouchableOpacity activeOpacity={0.5} style={[styles.checkinContainer, { backgroundColor: appData?.color_panel_bg }]}>
-                    <Text style={[styles.checkinText, { color: appData?.color_panel_text }]}>Welcome to Relook Hotel</Text>
-                    <Text style={[styles.checkinText, { color: appData?.color_panel_text }]}>Digha</Text>
-                    <Text style={[styles.checkinText, { color: appData?.color_panel_text }]}>Please check in</Text>
+                <TouchableOpacity activeOpacity={0.5} style={[styles.checkinContainer]}>
+                    <Text style={[styles.checkinText, { color: appData?.color_theme, fontSize: 18 }]}>Welcome {bookingDetail?.user_name}</Text>
+                    <Text style={[styles.checkinText, { color: appData?.color_theme, fontSize: 18 }]}>to Relook Hotel</Text>
+                    <Text style={[styles.checkinText, { color: appData?.color_theme, fontSize: 18 }]}>{bookingDetail?.hotel_name}</Text>
                 </TouchableOpacity>
-                <View style={{flex:1}}>
-                <FlatList
-                    data={menuList}
-                    keyExtractor={(item, index) => item.id}
-                    renderItem={({ item }) =>
-                        <List item={item} onPress={onItemPress} />
-                    }
-                    ItemSeparatorComponent={ItemSeperator}
-                />
+                <View style={{ flex: 1 }}>
+                    <FlatList
+                        data={menuList}
+                        keyExtractor={(item, index) => item.id}
+                        renderItem={({ item }) =>
+                            <List item={item} onPress={onItemPress} />
+                        }
+                        ItemSeparatorComponent={ItemSeperator}
+                    />
                 </View>
             </View>
         </SafeAreaView>

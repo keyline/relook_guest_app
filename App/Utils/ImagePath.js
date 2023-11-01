@@ -43,5 +43,6 @@ export const ImagePath = {
     arrow_up: require('../Assets/Images/arrow_up.png'),
     arrow_down: require('../Assets/Images/arrow_down.png'),
     search: require('../Assets/Images/search.png'),
-    cart: require('../Assets/Images/cart.png')
+    cart: require('../Assets/Images/cart.png'),
+    timer:require('../Assets/Images/timer.png')
 }

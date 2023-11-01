@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, Image, TouchableOpacity, FlatList } from 'react-native'
+import { View, Text, SafeAreaView, Image, TouchableOpacity, FlatList, Alert } from 'react-native'
 import React, { useCallback, useContext, useState } from 'react'
 import { CommonStyle } from '../../Utils/CommonStyle'
 import Header from '../../Container/Header'
@@ -35,7 +35,7 @@ const CartList = ({ navigation, route }) => {
         data: null,
         roomlist: null
     })
-    const [roomid, setRoomid] = useState();
+    const [roomid, setRoomid] = useState("");
     const roomList = [
         { id: 1, label: 'Room No. 301', value: '301', labelStyle: { color: appData?.color_theme, fontFamily: Font_Family.NunitoSans_ExtraBold } },
         { id: 2, label: 'Room No. 302', value: '302', labelStyle: { color: appData?.color_theme, fontFamily: Font_Family.NunitoSans_ExtraBold } },
@@ -54,6 +54,7 @@ const CartList = ({ navigation, route }) => {
         try {
             setState(prev => ({
                 ...prev,
+                data: null,
                 loading: true
             }))
             let datas = {
@@ -95,7 +96,7 @@ const CartList = ({ navigation, route }) => {
         if (room && room.length > 0) {
             let updateList = room.map((obj, index) => {
                 let { room_id, room_no } = obj;
-                return { id: index + 1, label: `Room No. ${room_no}`, value: room_id, labelStyle: { color: appData?.color_theme, fontFamily: Font_Family.NunitoSans_ExtraBold } }
+                return { id: room_id, label: `Room No. ${room_no}`, value: room_id, labelStyle: { color: appData?.color_theme, fontFamily: Font_Family.NunitoSans_ExtraBold } }
             })
             // console.log('roomList', JSON.stringify(updateList))
             return updateList
@@ -192,6 +193,74 @@ const CartList = ({ navigation, route }) => {
         }
     })
 
+    const getCartIds = useCallback(async () => {
+        let updatelists = state.data.map((obj) => {
+            let { cart_id } = obj;
+            return cart_id
+        })
+        return updatelists
+    })
+
+    const onOrderAlert = useCallback(async () => {
+        if (roomid == "") {
+            ToastMessage('Select Room')
+            return
+        } else {
+            Alert.alert(
+                'Place Order',
+                'Are you sure you want to place your order?',
+                [
+                    {
+                        text: 'No',
+                        onPress: () => null
+                    },
+                    {
+                        text: 'Yes',
+                        onPress: () => onPlaceOrder()
+                    },
+                ],
+                { cancelable: true }
+            )
+        }
+    })
+
+    const onPlaceOrder = useCallback(async () => {
+        try {
+            setState(prev => ({
+                ...prev,
+                loading: true
+            }))
+            let cartid = await getCartIds();
+            let datas = {
+                key: KEY,
+                source: SOURCE,
+                cart_id: cartid,
+                room_id: roomid
+            }
+            // console.log('placeorder', JSON.stringify(datas))
+            const res = await Apis.place_order(datas)
+            if (__DEV__) {
+                console.log('PlaceOrder', JSON.stringify(res))
+            }
+            if (res.status) {
+                navigation.replace('OrderList')
+            }
+            setState(prev => ({
+                ...prev,
+                loading: false
+            }))
+            ToastMessage(res?.message);
+        } catch (error) {
+            setState(prev => ({
+                ...prev,
+                loading: false
+            }))
+            if (__DEV__) {
+                console.log(error)
+            }
+            ToastError();
+        }
+    })
 
     const renderFooter = () => (
         <View style={styles.footerContainer}>
@@ -206,7 +275,7 @@ const CartList = ({ navigation, route }) => {
                     />
                 </View>
             )}
-            <TouchableOpacity activeOpacity={0.5} style={[styles.placeBtn, { backgroundColor: appData?.color_theme }]}>
+            <TouchableOpacity onPress={onOrderAlert} activeOpacity={0.5} style={[styles.placeBtn, { backgroundColor: appData?.color_theme }]}>
                 <Text style={[CommonStyle.boldtext, { color: Colors.white }]}>CONFIRM</Text>
             </TouchableOpacity>
             <Text style={[CommonStyle.boldtext, { color: Colors.black, textAlign: 'center', marginVertical: '2%' }]}>Amount will be added with your Final Bill </Text>

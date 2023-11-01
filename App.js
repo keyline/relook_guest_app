@@ -23,7 +23,8 @@ const App = () => {
     userdata: null,
     accesstoken: null,
     appData: null,
-    userProfile: null
+    userProfile: null,
+    bookingDetail: null
   })
 
   useEffect(() => {
@@ -173,7 +174,8 @@ const App = () => {
       isLogin: false,
       userdata: null,
       accesstoken: null,
-      userProfile: null
+      userProfile: null,
+      bookingDetail: null
     }))
     await clearUserData();
   }
@@ -205,7 +207,7 @@ const App = () => {
   })
 
   return (
-    <AuthContext.Provider value={{ allData: state, setState, onGetStoreData, onClearStoreData, onGetProfileData }}>
+    <AuthContext.Provider value={{ allData: state, setData: setState, onGetStoreData, onClearStoreData, onGetProfileData }}>
       <NavigationContainer ref={navigationRef}>
         <StatusBar backgroundColor={state.appData?.color_theme} barStyle={'light-content'} />
         {(!state.loading) && (

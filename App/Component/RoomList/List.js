@@ -32,21 +32,21 @@ const List = ({ item, onPress, onDetails }) => {
         );
     };
 
-    const autoScroll = () => {
-        const newIndex = (activeIndex + 1) % item?.room_images.length;
-        setActiveIndex(newIndex);
-        carouselRef.current.snapToItem(newIndex);
-    };
+    // const autoScroll = () => {
+    //     const newIndex = (activeIndex + 1) % item?.room_images.length;
+    //     setActiveIndex(newIndex);
+    //     carouselRef.current.snapToItem(newIndex);
+    // };
 
-    useEffect(() => {
-        // Start auto-scrolling when the component mounts
-        const scrollInterval = setInterval(autoScroll, 3000); // Change the interval as needed
+    // useEffect(() => {
+    //     // Start auto-scrolling when the component mounts
+    //     const scrollInterval = setInterval(autoScroll, 4000); // Change the interval as needed
 
-        return () => {
-            // Clear the interval when the component unmounts
-            clearInterval(scrollInterval);
-        };
-    }, [activeIndex]);
+    //     return () => {
+    //         // Clear the interval when the component unmounts
+    //         clearInterval(scrollInterval);
+    //     };
+    // }, [activeIndex]);
 
     return (
         <View style={styles.listContainer}>
@@ -61,11 +61,13 @@ const List = ({ item, onPress, onDetails }) => {
             {(item?.room_images && item?.room_images.length > 0) && (
                 <View style={{ overflow: 'hidden' }}>
                     <Carousel
-                        ref={carouselRef}
+                        // ref={carouselRef}
                         data={item?.room_images}
                         renderItem={renderItem}
                         sliderWidth={screenWidth} // Adjust this according to your needs
                         itemWidth={screenWidth}
+                        autoplay={true}            // Enable autoplay
+                        autoplayInterval={3000}
                     />
                 </View>
             )}

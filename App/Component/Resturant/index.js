@@ -49,7 +49,7 @@ const list = [
 const Resturant = ({ navigation }) => {
 
     const context = useContext(AuthContext);
-    const { appData, accesstoken, isLogin } = context.allData
+    const { appData, accesstoken, isLogin, bookingDetail } = context.allData
 
     const [state, setState] = useState({
         loading: false,
@@ -77,7 +77,7 @@ const Resturant = ({ navigation }) => {
             let datas = {
                 key: KEY,
                 source: SOURCE,
-                id: '2',
+                id: bookingDetail?.hotel_id,
                 search: search
             }
             const response = await Apis.resturant_list(datas)
@@ -192,8 +192,8 @@ const Resturant = ({ navigation }) => {
                     ...prev,
                     loading: false
                 }))
+                ToastMessage(res?.message, 'short');
             }
-            ToastMessage(res?.message);
         } catch (error) {
             setState(prev => ({
                 ...prev,

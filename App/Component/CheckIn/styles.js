@@ -35,11 +35,12 @@ export const styles = StyleSheet.create({
         tintColor: Colors.highlight
     },
     checkinContainer: {
-        backgroundColor: Colors.them_color,
-        marginBottom: '4%',
+        borderColor: Colors.them_color,
+        marginBottom: '10%',
         paddingHorizontal: '4%',
-        paddingVertical: '3%',
-        borderRadius: 10
+        // paddingVertical: '3%',
+        borderRadius: 10,
+        // borderWidth:1
     },
     checkinText: {
         fontFamily: Font_Family.NunitoSans_Bold,

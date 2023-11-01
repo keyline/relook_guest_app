@@ -24,7 +24,7 @@ const itemList = [
 const HouseKeeping = ({ navigation }) => {
 
     const context = useContext(AuthContext);
-    const { appData, accesstoken, isLogin } = context.allData
+    const { appData, accesstoken, isLogin,bookingDetail } = context.allData
 
     const [state, setState] = useState({
         loading: false,
@@ -51,7 +51,7 @@ const HouseKeeping = ({ navigation }) => {
             let datas = {
                 key: KEY,
                 source: SOURCE,
-                id: '2',
+                id: bookingDetail?.hotel_id,
                 search: search
             }
             const response = await Apis.housekeeping_list(datas)
@@ -153,8 +153,8 @@ const HouseKeeping = ({ navigation }) => {
                     ...prev,
                     loading: false
                 }))
+                ToastMessage(res?.message,'short');
             }
-            ToastMessage(res?.message);
         } catch (error) {
             setState(prev => ({
                 ...prev,

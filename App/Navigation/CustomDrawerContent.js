@@ -82,7 +82,7 @@ const CustomDrawerContent = (props) => {
     const menuList = [
         { id: 1, name: 'Home', screen: 'DashBoard', icon: ImagePath.home, logiReq: false },
         { id: 2, name: 'My Profile', screen: 'MyProfile', icon: ImagePath.user, logiReq: true },
-        { id: 3, name: 'Cart', screen: 'CartList', icon: ImagePath.cart, logiReq: true },
+        // { id: 3, name: 'Cart', screen: 'CartList', icon: ImagePath.cart, logiReq: true },
         { id: 4, name: 'My Order', screen: 'OrderList', icon: ImagePath.cart, logiReq: true },
        
         // { id: 1, name: 'Home', screen: 'DashBoard', icon: ImagePath.home, logiReq: false },

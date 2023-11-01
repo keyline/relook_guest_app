@@ -77,4 +77,16 @@ export default class Apis {
     static get_cart = (data) => {
         return Network('post', 'get-cart-items', data)
     }
+
+    static place_order = (data) => {
+        return Network('post', 'order-room-service', data)
+    }
+
+    static order_list = (data) => {
+        return Network('post', 'order-list', data)
+    }
+
+    static booking_check = (data) => {
+        return Network('post', 'user-booking-check', data)
+    }
 }

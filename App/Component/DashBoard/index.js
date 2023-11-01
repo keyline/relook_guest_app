@@ -25,58 +25,122 @@ const DashBoard = ({ navigation }) => {
 
     useFocusEffect(
         useCallback(() => {
-            const unsubscribe = onGetData();
+            const unsubscribe = onLoad();
             return () => unsubscribe
         }, [navigation])
     )
 
-    const onGetData = useCallback(async () => {
-        let accesstoken = await getAccessToken();
-        if (accesstoken) {
-            navigation.navigate('CheckIn')
+    const onLoad = useCallback(async () => {
+        try {
+            setState(prevState => ({
+                ...prevState,
+                loading: true
+            }))
+            let accesstoken = await getAccessToken();
+            if (accesstoken) {
+                onBookingCheck();
+            } else {
+                onGetData();
+            }
+        } catch (error) {
             setState(prevState => ({
                 ...prevState,
                 loading: false
             }))
-        } else {
-            try {
+            if (__DEV__) {
+                console.log(error)
+            }
+            ToastError();
+        }
+    })
+
+    const onBookingCheck = useCallback(async () => {
+        try {
+            setState(prevState => ({
+                ...prevState,
+                loading: true
+            }))
+            let datas = {
+                key: KEY,
+                source: SOURCE
+            }
+            const response = await Apis.booking_check(datas)
+            if (__DEV__) {
+                console.log('bookingCheck', JSON.stringify(response))
+            }
+            if (response.status) {
+                if (response?.data?.booking_exist) {
+                    await context.setData(prev => ({
+                        ...prev,
+                        bookingDetail: response?.data
+                    }))
+                    navigation.replace('CheckIn')
+                    setState(prevState => ({
+                        ...prevState,
+                        loading: false
+                    }))
+
+                } else {
+                    onGetData();
+                }
+            } else {
                 setState(prevState => ({
                     ...prevState,
-                    loading: true
+                    loading: false
                 }))
-                let datas = {
-                    key: KEY,
-                    source: SOURCE
-                }
-                const response = await Apis.home_screen(datas)
-                if (__DEV__) {
-                    console.log('homeResponse', JSON.stringify(response))
-                }
-                if (response.status) {
-                    setState(prevState => ({
-                        ...prevState,
-                        data: response?.data,
-                        loading: false
-                    }))
-                } else {
-                    setState(prevState => ({
-                        ...prevState,
-                        data: [],
-                        loading: false
-                    }))
-                    ToastMessage(response?.message);
-                }
-            } catch (error) {
+                ToastMessage(response?.message);
+            }
+        } catch (error) {
+            setState(prevState => ({
+                ...prevState,
+                data: [],
+                loading: false
+            }))
+            if (__DEV__) {
+                console.log(error)
+            }
+            ToastError();
+        }
+    })
+
+    const onGetData = useCallback(async () => {
+        try {
+            setState(prevState => ({
+                ...prevState,
+                loading: true
+            }))
+            let datas = {
+                key: KEY,
+                source: SOURCE
+            }
+            const response = await Apis.home_screen(datas)
+            if (__DEV__) {
+                console.log('homeResponse', JSON.stringify(response))
+            }
+            if (response.status) {
+                setState(prevState => ({
+                    ...prevState,
+                    data: response?.data,
+                    loading: false
+                }))
+            } else {
                 setState(prevState => ({
                     ...prevState,
                     data: [],
                     loading: false
                 }))
-                if (__DEV__) {
-                    console.log(error)
-                }
-                ToastError();
+                ToastMessage(response?.message);
             }
+        } catch (error) {
+            setState(prevState => ({
+                ...prevState,
+                data: [],
+                loading: false
+            }))
+            if (__DEV__) {
+                console.log(error)
+            }
+            ToastError();
         }
     })
 
@@ -93,7 +157,7 @@ const DashBoard = ({ navigation }) => {
     )
 
     const onBookNow = useCallback(async (item) => {
-        console.log('item', item);
+        // console.log('item', item);
         navigation.navigate('RoomList', { item: item })
     })
 
