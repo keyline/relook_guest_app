@@ -11,7 +11,7 @@ const List = ({ item, onUpdateCart }) => {
 
     return (
         <View style={styles.listContainer}>
-            <Text numberOfLines={1} style={[CommonStyle.boldtext, { color: appData?.color_theme, fontSize: 16, width: '55%' }]}>{item?.cart_item_name}</Text>
+            <Text numberOfLines={1} style={[CommonStyle.boldtext, { color: appData?.color_theme, fontSize: 14, width: '55%' }]}>{item?.cart_item_name}</Text>
             <View style={styles.innerContent}>
                 <View style={styles.modifyBtn}>
                     <Text onPress={() => onUpdateCart(item, 'remove')} style={[styles.plusBtn, { color: appData?.color_theme }]}>-  </Text>

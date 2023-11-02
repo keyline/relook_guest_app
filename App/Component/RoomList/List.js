@@ -68,6 +68,7 @@ const List = ({ item, onPress, onDetails }) => {
                         itemWidth={screenWidth}
                         autoplay={true}            // Enable autoplay
                         autoplayInterval={3000}
+                        loop={true}
                     />
                 </View>
             )}

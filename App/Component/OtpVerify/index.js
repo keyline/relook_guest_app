@@ -15,6 +15,7 @@ import { navigationRef } from '../../Services/NavigationRef'
 import DeviceInfo from 'react-native-device-info'
 import { getFcmPermission, getFcmToken } from '../../Services/DeviceToken'
 import { setAccessToken, setUserData } from '../../Services/AsyncStorage'
+import { getHash, startOtpListener, removeListener } from 'react-native-otp-verify'
 
 const OtpVerify = ({ navigation, route }) => {
 
@@ -30,6 +31,25 @@ const OtpVerify = ({ navigation, route }) => {
     const [timer, setTimer] = useState(60)
 
     const params = route?.params?.data
+
+    useEffect(() => {
+        // getHash().then(hash => {
+        //     // use this hash in the message.
+        //     console.log('hash', hash)
+        // }).catch(console.log);
+
+        startOtpListener(message => {
+            // extract the otp using regex e.g. the below regex extracts 4 digit otp from message
+            const otp = /(\d{4})/g.exec(message)[1];
+            setState(prev => ({
+                ...prev,
+                otp: otp
+            }))
+            onSubmit(otp);
+        });
+
+        return () => removeListener();
+    }, []);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -127,23 +147,23 @@ const OtpVerify = ({ navigation, route }) => {
         }
     })
 
-    const onSubmit = useCallback(async () => {
-        if (state.otp == '') {
+    const onSubmit = useCallback(async (otp = state.otp) => {
+        if (otp == '') {
             ToastMessage('Enter OTP')
             return;
-        } else if (state.otp.length < 4) {
+        } else if (otp.length < 4) {
             ToastMessage('Enter Valid OTP');
             return;
         } else {
             if (route.params?.type == 'Mobile') {
-                onSubmitMobile();
+                onSubmitMobile(otp);
             } else {
                 onSubmitEmail();
             }
         }
     })
 
-    const onSubmitMobile = useCallback(async () => {
+    const onSubmitMobile = useCallback(async (otp) => {
         // navigation.navigate('SignUp')
         // return
         try {
@@ -158,7 +178,7 @@ const OtpVerify = ({ navigation, route }) => {
                 key: KEY,
                 source: SOURCE,
                 number: params?.mobile,
-                otp: state.otp,
+                otp: otp,
                 device_token: deviceId,
                 fcm_token: fcmToken
             }

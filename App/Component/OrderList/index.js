@@ -12,6 +12,7 @@ import { KEY, SOURCE } from '../../Services/Constant'
 import Apis from '../../Services/Apis'
 import { ToastError, ToastMessage } from '../../Services/CommonFunction'
 import LoaderNew from '../../Container/LoaderNew'
+import EmptyContent from '../../Container/EmptyContent'
 
 const listitem = [
     {
@@ -128,15 +129,18 @@ const OrderList = ({ navigation, route }) => {
             />
             <View style={styles.bodyContent}>
                 <Text style={[CommonStyle.headingText, { marginBottom: '6%', textAlign: 'center', color: appData?.color_theme }]}>My Orders</Text>
-                <FlatList
-                    data={state.data}
-                    keyExtractor={(item, index) => item.id}
-                    renderItem={({ item, index }) =>
-                        <List items={item} index={index} />
-                    }
-                    showsVerticalScrollIndicator={false}
-                    ItemSeparatorComponent={ItemSeperatorNew}
-                />
+                <View style={{ flex: 1 }}>
+                    <FlatList
+                        data={state.data}
+                        keyExtractor={(item, index) => item.id}
+                        renderItem={({ item, index }) =>
+                            <List items={item} index={index} />
+                        }
+                        showsVerticalScrollIndicator={false}
+                        ItemSeparatorComponent={ItemSeperatorNew}
+                        ListEmptyComponent={<EmptyContent word={'No Order Found'} />}
+                    />
+                </View>
             </View>
             {(state.loading) && (
                 <LoaderNew loading={state.loading} />

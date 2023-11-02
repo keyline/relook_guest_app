@@ -14,6 +14,7 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         marginBottom: '6%',
+        paddingHorizontal: '2%',
         overflow: 'hidden'
     },
     modifyBtn: {
@@ -53,5 +54,22 @@ export const styles = StyleSheet.create({
         paddingVertical: '4%',
         paddingHorizontal: '4%',
         borderRadius: 5
+    },
+    headingContainer: {
+        backgroundColor: Colors.light_gery,
+        paddingVertical: '2%',
+        paddingHorizontal: '2%',
+        borderRadius: 5,
+        marginBottom: '3%'
+    },
+    flex: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    },
+    border:{
+        borderWidth:0.5,
+        borderColor:Colors.grey,
+        marginVertical:'2%'
     }
 })
