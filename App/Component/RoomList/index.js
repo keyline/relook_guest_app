@@ -87,7 +87,7 @@ const RoomList = ({ navigation, route }) => {
     })
 
     const onNext = useCallback(async (item) => {
-        navigation.navigate('Booking', { item: state.data })
+        navigation.navigate('Booking', { item: item, data:state.data})
     })
 
     const onShowModal = useCallback(async (item) => {
@@ -118,13 +118,13 @@ const RoomList = ({ navigation, route }) => {
                         <Image source={{ uri: state.data?.cover_image }} style={styles.imgBanner} />
                         <View style={styles.bodyContent}>
                             <Text style={[CommonStyle.headingText, { color: appData?.color_theme }]}>{state.data?.name}</Text>
-                            <TouchableOpacity activeOpacity={0.5} style={styles.flex}>
+                            {/* <TouchableOpacity activeOpacity={0.5} style={styles.flex}>
                                 <View style={styles.flexNew}>
                                     <StarView rating={state.data?.rating} />
                                     <Text style={[CommonStyle.boldtext, { marginLeft: '4%', color: appData?.color_theme }]}>Very Good</Text>
                                 </View>
                                 <Image source={ImagePath.right_arrow} style={[styles.location, { tintColor: appData?.color_theme }]} />
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
                             <View style={styles.locationContainer}>
                                 <Image source={ImagePath.location} style={[styles.location, { tintColor: appData?.color_theme }]} />
                                 <Text style={CommonStyle.boldtextgrey}> {state.data?.location}</Text>

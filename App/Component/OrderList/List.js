@@ -57,7 +57,7 @@ const List = ({ items, index }) => {
     return (
         <View style={items.status == 'Delivered' ? styles.delistContainer : items.status == 'Ordered' ? styles.orlistContainer : styles.prlistContainer}>
             <TouchableOpacity onPress={onShowChange} activeOpacity={0.5} style={items.status == 'Delivered' ? styles.deliverHeader : items.status == 'Ordered' ? styles.orderHeader : styles.processHeader}>
-                <Text style={[CommonStyle.boldtext, { color: items?.status == 'Ordered' ? Colors.black : Colors.white, fontWeight: 'bold' }]}>Order ID: {items?.order_token}</Text>
+                <Text style={[CommonStyle.boldtext, { color: items?.status == 'Ordered' ? Colors.black : Colors.white, fontWeight: 'bold' }]}>Order ID: {index + 1}</Text>
                 <View style={styles.flex}>
                     <Text style={[CommonStyle.boldtext, { color: items?.status == 'Ordered' ? Colors.black : Colors.white, fontWeight: 'bold', marginRight: 10 }]}>{items?.status}</Text>
                     <Image source={show ? ImagePath.arrow_up : ImagePath.arrow_down} style={styles.arrow} />

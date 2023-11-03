@@ -7,10 +7,11 @@ import { styles } from './styles'
 import StarView from '../../Container/StarView'
 import InputField from '../../Container/InputField'
 import DateTimePickers from '../../Container/DateTimePickers'
-import { dateConvertNew, dateConvertYear } from '../../Services/CommonFunction'
+import { ToastMessage, dateConvertNew, dateConvertYear } from '../../Services/CommonFunction'
 import CustomDropDown from '../../Container/CustomDropDown'
 import { Colors } from '../../Utils/Colors'
 import AuthContext from '../../Services/Context'
+import { useFocusEffect } from '@react-navigation/native'
 
 const Booking = ({ navigation, route }) => {
 
@@ -19,55 +20,62 @@ const Booking = ({ navigation, route }) => {
 
     const [state, setState] = useState({
         loading: false,
-        data: route?.params?.item,
+        data: route?.params?.data,
+        item: route?.params?.item,
         checkinDate: '',
         checkinDateErr: '',
         checkinDatePicker: false,
         checkoutDate: '',
         checkoutDateErr: '',
         checkoutDatePicker: false,
-        room: '',
+        roomCategory: route?.params?.item?.room_type_name,
+        room: 1,
         roomErr: '',
         adults: '',
         adultsErr: '',
         child: '',
         childErr: '',
         roomtype: '',
-        roomtypeErr: ''
+        roomtypeErr: '',
+        totalAmount: 0
     })
     const [roomPicker, setroomPicker] = useState(false)
     const [roomList, setroomList] = useState([
-        { label: '1', value: '1' },
-        { label: '2', value: '2' },
-        { label: '3', value: '3' },
-        { label: '4', value: '4' },
-        { label: '5', value: '5' },
-        { label: '6', value: '6' },
-        { label: '7', value: '7' },
-        { label: '8', value: '8' },
-        { label: '9', value: '9' },
-        { label: '10', value: '10' }
+        { label: '1', value: 1 },
+        { label: '2', value: 2 },
+        { label: '3', value: 3 },
+        { label: '4', value: 4 },
+        { label: '5', value: 5 }
     ])
     const [adultsPicker, setadultsPicker] = useState(false)
     const [childPicker, setchildPicker] = useState(false)
     const [childList, setchildList] = useState([
-        { label: '0', value: '0' },
-        { label: '1', value: '1' },
-        { label: '2', value: '2' },
-        { label: '3', value: '3' },
-        { label: '4', value: '4' },
-        { label: '5', value: '5' },
-        { label: '6', value: '6' },
-        { label: '7', value: '7' },
-        { label: '8', value: '8' },
-        { label: '9', value: '9' },
-        { label: '10', value: '10' }
+        { label: '1', value: 1 },
+        { label: '2', value: 2 },
+        { label: '3', value: 3 },
+        { label: '4', value: 4 },
+        { label: '5', value: 5 }
     ])
     const [roomtypePicker, setroomtypePicker] = useState(false)
     const [roomtypeList, setroomtypeList] = useState([
         { label: 'Room Only', value: 'room_only' },
         { label: 'Room With Breakfast', value: 'room_breakfast' },
     ])
+
+    useFocusEffect(
+        useCallback(() => {
+            const unsubscribe = onLoad();
+            return () => unsubscribe
+        }, [navigation])
+    )
+
+    const onLoad = useCallback(async (room = state.room) => {
+        let unitprice = route?.params?.item?.room_rent;
+        setState(prev => ({
+            ...prev,
+            totalAmount: unitprice * room
+        }))
+    })
 
     const onLeftMenu = useCallback(async () => {
         navigation.goBack();
@@ -130,6 +138,7 @@ const Booking = ({ navigation, route }) => {
             room: value?.value,
             roomErr: ''
         }))
+        await onLoad(value?.value);
     })
 
     const onChangeAdults = useCallback(async (value) => {
@@ -156,10 +165,11 @@ const Booking = ({ navigation, route }) => {
         }))
     })
 
-    const onBook = useCallback(async()=>{
-        navigation.replace('BookingConfirm')
+    const onBook = useCallback(async () => {
+        ToastMessage('Comming Soon');
+        // navigation.replace('BookingConfirm')
     })
-    
+
     return (
         <SafeAreaView style={CommonStyle.container}>
             <Header
@@ -170,14 +180,14 @@ const Booking = ({ navigation, route }) => {
             <ScrollView showsVerticalScrollIndicator={false}>
                 <Image source={ImagePath.banner1} style={styles.img} />
                 <View style={styles.bodyContent}>
-                    <Text style={CommonStyle.headingText}>{state.data?.place}</Text>
-                    <TouchableOpacity activeOpacity={0.5} style={styles.flex}>
+                    <Text style={[CommonStyle.headingText, { color: appData?.color_theme }]}>{state.data?.name}</Text>
+                    {/* <TouchableOpacity activeOpacity={0.5} style={styles.flex}>
                         <View style={styles.flexNew}>
                             <StarView rating={state.data?.rating} />
                             <Text style={[CommonStyle.boldtext, { marginLeft: '4%', color: appData?.color_theme }]}>Very Good</Text>
                         </View>
                         <Image source={ImagePath.right_arrow} style={[styles.location, { tintColor: appData?.color_theme }]} />
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                     <View style={styles.locationContainer}>
                         <Image source={ImagePath.location} style={[styles.location, { tintColor: appData?.color_theme }]} />
                         <Text style={CommonStyle.boldtextgrey}> {state.data?.location}</Text>
@@ -187,11 +197,22 @@ const Booking = ({ navigation, route }) => {
                         <Text style={[CommonStyle.headingText, { color: appData?.color_theme }]}>Travel Dates & Guests</Text>
                         <View style={styles.inputContent}>
                             <InputField
-                                name={'Room Type'}
+                                name={'Room Category'}
                                 headingColor={Colors.textColor}
-                                value={'Delux'}
+                                value={state.roomCategory}
                                 // placeholder={'Select Check In Date'}
                                 editable={false}
+                            />
+                            <CustomDropDown
+                                name={'No of Room'}
+                                headingColor={Colors.textColor}
+                                value={state.room}
+                                items={roomList}
+                                setItems={setroomList}
+                                open={roomPicker}
+                                setOpen={setroomPicker}
+                                onChangeValue={onChangeRoom}
+                                error={state.roomErr}
                             />
                             <InputField
                                 name={'Check In'}
@@ -246,7 +267,7 @@ const Booking = ({ navigation, route }) => {
                                 onChangeValue={onChangeChild}
                                 error={state.childErr}
                             />
-                            <CustomDropDown
+                            {/* <CustomDropDown
                                 name={'Room Type'}
                                 headingColor={Colors.textColor}
                                 value={state.roomtype}
@@ -256,13 +277,13 @@ const Booking = ({ navigation, route }) => {
                                 setOpen={setroomtypePicker}
                                 onChangeValue={onChangeRoomtype}
                                 error={state.roomtypeErr}
-                            />
+                            /> */}
                         </View>
                     </View>
                 </View>
             </ScrollView>
             <View style={[styles.btnContainer, { borderColor: appData?.color_theme }]}>
-                <Text style={[CommonStyle.headingText, { color: appData?.color_theme }]}>Total: ₹ 1500</Text>
+                <Text style={[CommonStyle.headingText, { color: appData?.color_theme }]}>Total: ₹ {state.totalAmount}</Text>
                 <TouchableOpacity onPress={onBook} activeOpacity={0.5} style={[styles.btn, { backgroundColor: appData?.color_theme }]}>
                     <Text style={[CommonStyle.boldtext, { color: Colors.highlight }]}>BOOK</Text>
                 </TouchableOpacity>
