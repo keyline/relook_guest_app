@@ -18,6 +18,14 @@ export const dateConvertNew = (value) => {
     }
 }
 
+export const dateConvertMnth = (value) => {
+    if (value) {
+        return moment(new Date(value)).format("MM-DD-YYYY")
+    } else {
+        return null
+    }
+}
+
 export const dateConvertYear = (value) => {
     if (value) {
         return moment(new Date(value)).format("YYYY-MM-DD")

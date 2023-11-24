@@ -86,7 +86,7 @@ const MyProfile = ({ navigation }) => {
 
     const menuList = [
         { id: 1, name: 'Edit Profile', screen: 'EditProfile', logo: ImagePath.edit_profile },
-        { id: 2, name: 'My Booking', screen: 'MyBooking', logo: ImagePath.booking },
+        // { id: 2, name: 'My Booking', screen: 'MyBooking', logo: ImagePath.booking },
         { id: 3, name: 'Change Password', screen: 'ChangePassword', logo: ImagePath.lock },
         { id: 4, name: 'Sign Out', screen: 'SignOut', logo: ImagePath.logout },
     ]
@@ -108,9 +108,9 @@ const MyProfile = ({ navigation }) => {
     const onMenuPress = useCallback(async (item) => {
         if (item.screen && item.screen == 'SignOut') {
             SignOutAlert();
-        } else if(item.screen && item.screen == 'MyBooking'){
+        } else if (item.screen && item.screen == 'MyBooking') {
             ToastMessage('Coming Soon')
-        }else if (item.screen) {
+        } else if (item.screen) {
             navigation.navigate(item.screen)
         }
     })

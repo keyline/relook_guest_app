@@ -12,10 +12,23 @@ export const styles = StyleSheet.create({
     bodyContent: {
         flex: 1,
         paddingHorizontal: '4%',
-        marginVertical: '4%',
-        paddingBottom: 10
+        marginTop: '2%',
+        paddingVertical: '6%',
+        paddingBottom: 10,
+        backgroundColor: Colors.white,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20
     },
     listContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderColor: Colors.black,
+        // borderWidth: 1,
+        borderRadius: 10,
+        width: '100%',
+        height: 180,
+        alignSelf: 'center',
+        overflow: 'hidden'
         // borderRadius: 10,
         // marginBottom: '5%'
     },
@@ -32,11 +45,37 @@ export const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 16
     },
+    listLeftContent: {
+        width: '50%',
+        height: '100%'
+    },
     listimg: {
         width: '100%',
-        height: 150,
-        resizeMode: 'stretch',
-        borderRadius: 10
+        height: '100%',
+        resizeMode: 'cover',
+        // borderRadius: 10
+    },
+    listRightContent: {
+        width: '50%',
+        height: '100%',
+        padding: '8%',
+        overflow: 'hidden'
+    },
+    listbtn: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderWidth: 1,
+        borderColor: Colors.white,
+        paddingVertical: '4%',
+        paddingHorizontal:'10%',
+        justifyContent:'space-between',
+        marginTop: '20%',
+        borderRadius:30
+    },
+    btnArrow: {
+        width: 20,
+        height: 20,
+        tintColor: Colors.white,
     },
     flexSpacebtwn: {
         flexDirection: 'row',

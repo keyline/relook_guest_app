@@ -7,19 +7,20 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingHorizontal: '2%',
+        paddingHorizontal: '4%',
         paddingVertical: '2%',
-        borderBottomWidth: 1.5,
-        borderColor: Colors.them_color
+        // borderBottomWidth: 1.5,
+        // borderColor: Colors.them_color,
+
     },
     lefticon: {
-        width: 35,
-        height: 35,
+        width: 30,
+        height: 30,
         tintColor: Colors.them_color
     },
     righticon: {
-        width: 30,
-        height: 30,
+        width: 20,
+        height: 20,
         tintColor: Colors.them_color
     },
     flex: {
@@ -27,7 +28,7 @@ export const styles = StyleSheet.create({
         alignItems: 'center'
     },
     logo: {
-        width: 120,
+        width: 80,
         height: 40,
         resizeMode: 'contain'
     }

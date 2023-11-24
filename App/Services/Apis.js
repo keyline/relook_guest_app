@@ -89,4 +89,16 @@ export default class Apis {
     static booking_check = (data) => {
         return Network('post', 'user-booking-check', data)
     }
+
+    static room_booking_request = (data) => {
+        return Network('post', 'room-book', data)
+    }
+
+    static room_booking_sendotp = (data) => {
+        return Network('post', 'room-enquiry-otp', data)
+    }
+
+    static room_booking_verifyotp = (data) => {
+        return Network('post', 'validate-enquiry-otp', data)
+    }
 }

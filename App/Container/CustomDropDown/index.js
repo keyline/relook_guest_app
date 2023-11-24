@@ -5,7 +5,7 @@ import { styles } from './styles'
 import { Colors } from '../../Utils/Colors'
 import AuthContext from '../../Services/Context'
 
-const CustomDropDown = ({ name, open, headingColor, listMode, value, onChangeValue, searchable, items, setOpen, setValue, setItems, error }) => {
+const CustomDropDown = ({ name, open, headingColor, listMode, value, onChangeValue, dropDownDirection, searchable, items, setOpen, setValue, setItems, error }) => {
 
     const context = useContext(AuthContext);
     const { appData, accesstoken, isLogin } = context.allData
@@ -28,9 +28,10 @@ const CustomDropDown = ({ name, open, headingColor, listMode, value, onChangeVal
                 searchable={searchable ? searchable : false}
                 listMode={listMode ? listMode : 'SCROLLVIEW'}
                 searchPlaceholder={`Search ${name}`}
-                style={[styles.dropdown,{borderColor:appData?.color_theme}]}
+                style={[styles.dropdown, { borderColor: appData?.color_theme }]}
                 autoScroll={true}
-                dropDownDirection={'AUTO'}
+                bottomOffset={200}
+                dropDownDirection={dropDownDirection ? dropDownDirection : 'AUTO'}
                 dropDownContainerStyle={styles.dropDownContainerStyle}
                 scrollViewProps={{
                     nestedScrollEnabled: true

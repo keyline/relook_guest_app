@@ -3,22 +3,40 @@ import React from 'react'
 import { styles } from './styles'
 import { CommonStyle } from '../../Utils/CommonStyle'
 import { ImagePath } from '../../Utils/ImagePath'
+import { Colors } from '../../Utils/Colors'
 
-const List = ({ item, onPress, appdata }) => {
+const List = ({ item, onPress, appdata, index }) => {
     return (
         <View style={styles.listContainer}>
-            <Image source={{ uri: item?.cover_image }} style={styles.listimg} />
-            <View style={[styles.flexSpacebtwn, { marginTop: '1%', paddingHorizontal: '1%' }]}>
-                <View style={styles.locationText}>
-                    <Text style={[CommonStyle.boldtext, { fontSize: 16, color: appdata?.color_title }]}>{item?.name}</Text>
-                    <Text style={styles.locationtxt}>{item?.location}</Text>
-                </View>
-                <TouchableOpacity onPress={() => onPress(item)} disabled={!onPress} style={styles.flex}>
-                    <Text style={[CommonStyle.boldtext, { color: appdata?.color_title }]}>Book Now </Text>
-                    <Image source={ImagePath.right_arrow} style={[styles.arrow,{tintColor:appdata.color_title}]} />
-                </TouchableOpacity>
-            </View>
-
+            {(index == 0 || index % 2 == 0) ?
+                <>
+                    <View style={styles.listLeftContent}>
+                        <Image source={{ uri: item?.cover_image }} style={styles.listimg} />
+                    </View>
+                    <View style={[styles.listRightContent, { backgroundColor: appdata?.color_theme }]}>
+                        <Text style={[CommonStyle.boldtext, { color: Colors.white, fontSize: 16, width: '80%' }]}>{item?.name}</Text>
+                        <Text style={[CommonStyle.boldtext, { color: Colors.white, fontSize: 10, marginTop: 2 }]}>{item?.location}</Text>
+                        <TouchableOpacity onPress={() => onPress(item)} disabled={!onPress} activeOpacity={0.5} style={styles.listbtn}>
+                            <Text style={[CommonStyle.boldtext, { color: Colors.white, fontSize: 12 }]}>BOOK NOW</Text>
+                            <Image source={ImagePath.arrow_right} style={styles.btnArrow} />
+                        </TouchableOpacity>
+                    </View>
+                </>
+                :
+                <>
+                    <View style={[styles.listRightContent, { backgroundColor: appdata?.color_theme }]}>
+                        <Text style={[CommonStyle.boldtext, { color: Colors.white, fontSize: 16, width: '80%' }]}>{item?.name}</Text>
+                        <Text style={[CommonStyle.boldtext, { color: Colors.white, fontSize: 10, marginTop: 2 }]}>{item?.location}</Text>
+                        <TouchableOpacity onPress={() => onPress(item)} disabled={!onPress} activeOpacity={0.5} style={styles.listbtn}>
+                            <Text style={[CommonStyle.boldtext, { color: Colors.white, fontSize: 12 }]}>BOOK NOW</Text>
+                            <Image source={ImagePath.arrow_right} style={styles.btnArrow} />
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.listLeftContent}>
+                        <Image source={{ uri: item?.cover_image }} style={styles.listimg} />
+                    </View>
+                </>
+            }
         </View>
     )
 }

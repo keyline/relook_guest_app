@@ -6,15 +6,19 @@ import { Colors } from '../../Utils/Colors'
 export const styles = StyleSheet.create({
     container: {
         alignSelf: 'center',
-        marginTop: '4%'
+        marginTop: '4%',
     },
     inputContent: {
         flexDirection: 'row',
         alignItems: 'center',
         // justifyContent: 'space-between',
-        borderBottomWidth: 1,
-        paddingHorizontal: '1%',
-        borderBottomColor: Colors.them_color
+        // borderBottomWidth: 1,
+        borderWidth: 1,
+        paddingHorizontal: '4%',
+        borderColor: Colors.them_color,
+        borderRadius: 30,
+        marginTop: '2%',
+        backgroundColor: Colors.white
     },
     leftlogo: {
         width: 20,

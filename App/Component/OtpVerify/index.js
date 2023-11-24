@@ -252,30 +252,38 @@ const OtpVerify = ({ navigation, route }) => {
     })
 
     return (
-        <SafeAreaView style={CommonStyle.container}>
+        <SafeAreaView style={[CommonStyle.container, { backgroundColor: appData?.color_theme }]}>
             <TouchableOpacity style={styles.backContainer} onPress={onBack} activeOpacity={0.5}>
-                <Image source={ImagePath.back} style={[styles.backicon, { tintColor: appData?.color_theme }]} />
+                <Image source={ImagePath.back_new} style={[styles.backicon, { tintColor: Colors.white }]} />
             </TouchableOpacity>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.content}>
                     <View style={styles.logoContainer}>
                         <Image source={{ uri: appData?.site_logo }} style={styles.logo} />
                     </View>
+                    <Text style={[CommonStyle.headingText, { marginBottom: '1%', textAlign: 'center', color: Colors.white }]}>OTP</Text>
+                    <Text style={styles.subtext}>Check Your Mobile/Email for OTP</Text>
                     <View style={styles.mainContent}>
-                        <Text style={[CommonStyle.headingText, { marginBottom: '1%', textAlign: 'center', color: appData?.color_title }]}>OTP</Text>
-                        <Text style={styles.subtext}>Check Your Mobile/Email for OTP</Text>
                         <View style={{ flex: 1 }}>
-                            <Text style={[CommonStyle.boldtext, { marginBottom: '4%', color: appData?.color_title }]}>Enter OTP :</Text>
+                            <Text style={[CommonStyle.boldtext, { marginBottom: '8%', color: Colors.black, textAlign: 'center' }]}>Enter OTP</Text>
                             <OTPInputView
                                 pinCount={4}
                                 code={state.otp}
                                 autoFocusOnLoad={false}
                                 onCodeChanged={code => onChangeOtp(code)}
                                 style={styles.otp}
-                                codeInputFieldStyle={[styles.underlineStyleBase, { borderColor: appData?.color_theme }]}
-                                // codeInputHighlightStyle={styles.underlineStyleHighLighted}
-                                placeholderTextColor={Colors.black}
+                                codeInputFieldStyle={[styles.underlineStyleBase, { borderColor: Colors.light_gery, color: appData?.color_theme }]}
+                                codeInputHighlightStyle={[styles.underlineStyleHighLighted, { borderColor: appData?.color_theme }]}
+                                placeholderTextColor={Colors.grey}
                             // onCodeFilled={(code) => onSubmitOtp(code)}
+                            />
+                        </View>
+                        <View style={styles.btnContainer}>
+                            <SingleBottom
+                                name={'Submit'}
+                                loading={state.btnLoading}
+                                onPress={onSubmit}
+                                width={'100%'}
                             />
                         </View>
                         <View style={styles.resendContainer}>
@@ -284,13 +292,6 @@ const OtpVerify = ({ navigation, route }) => {
                                 :
                                 <Text onPress={onResendOtp} style={[styles.resendText, { color: appData?.color_title }]}>Resend OTP</Text>
                             }
-                        </View>
-                        <View style={styles.btnContainer}>
-                            <SingleBottom
-                                name={'Submit'}
-                                loading={state.btnLoading}
-                                onPress={onSubmit}
-                            />
                         </View>
                     </View>
                 </View>

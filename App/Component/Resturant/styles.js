@@ -4,10 +4,60 @@ import { Colors } from '../../Utils/Colors'
 
 
 export const styles = StyleSheet.create({
+    mainContent: {
+        flex: 1,
+        backgroundColor: Colors.white,
+        paddingHorizontal: '3%',
+        marginTop: '2%',
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        paddingBottom: '2%',
+        paddingTop: '6%',
+        // width: '100%'
+    },
     bodyContent: {
         flex: 1,
-        paddingHorizontal: '4%',
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        overflow: 'hidden',
+        // paddingBottom:100
+        // paddingVertical:'2%'
+        // paddingHorizontal: '2%',
         // marginVertical: '1%'
+    },
+    bannerImage: {
+        width: '100%',
+        height: 120,
+        resizeMode: 'cover',
+        // alignSelf: 'center',
+        //    borderRadius:5 
+    },
+    icon: {
+        width: '40%',
+        height: 50,
+        alignSelf: 'center',
+        resizeMode: 'contain',
+        marginVertical:'3%'
+    },
+    searchContainer: {
+        backgroundColor: Colors.light_gery,
+        width: '70%',
+        alignSelf: 'center',
+        borderRadius: 30,
+        height: 40,
+        paddingHorizontal: '4%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: '4%',
+        borderWidth:1.5,
+        borderColor:Colors.white
+        // marginTop: '2%'
+    },
+    searchIcon: {
+        width: 20,
+        height: 20,
+        tintColor: Colors.white
     },
     listContainer: {
         // flexDirection: 'row',
@@ -74,51 +124,38 @@ export const styles = StyleSheet.create({
     itemsContainer: {
         // borderBottomWidth: 1,
         // borderColor: Colors.light_gery
-        // flexDirection: 'row',
-        // alignItems: 'center',
-        // justifyContent: 'space-between',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        // backgroundColor:Colors.white,
         paddingHorizontal: '2%',
-        paddingVertical: '2%'
+        paddingVertical: '2%',
+        // borderBottomLeftRadius:10,
+        // borderBottomRightRadius:10
     },
     addBtn: {
-        borderWidth: 1,
+        borderWidth: 1.2,
         // paddingHorizontal: '6%',
         width: 90,
         paddingVertical: '2%',
         alignItems: 'center',
         justifyContent: 'center',
         // height:40,
-        borderRadius: 5,
+        borderRadius: 20,
         borderColor: Colors.grey,
-        backgroundColor: Colors.light_gery,
+        backgroundColor: Colors.white,
         flexDirection: 'row'
     },
-    searchContainer: {
-        backgroundColor: Colors.light_gery,
-        width: '70%',
-        alignSelf: 'center',
-        borderRadius: 30,
-        height: 40,
-        paddingHorizontal: '4%',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: '4%'
-    },
-    searchIcon: {
-        width: 20,
-        height: 20,
-        tintColor: 'black'
-    },
+    
     modifyBtn: {
-        borderWidth: 1,
-        paddingHorizontal: '2%',
+        borderWidth: 1.2,
+        paddingHorizontal: '6%',
         width: 90,
-        paddingVertical: '0.8%',
+        paddingVertical: '0.4%',
         // height:40,
-        borderRadius: 5,
+        borderRadius: 20,
         borderColor: Colors.grey,
-        backgroundColor: Colors.light_gery,
+        backgroundColor: Colors.white,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'
@@ -141,9 +178,9 @@ export const styles = StyleSheet.create({
     },
     cartbtn: {
         backgroundColor: Colors.white,
-        paddingHorizontal: '3%',
-        paddingVertical: '2%',
-        borderRadius: 5,
+        paddingHorizontal: '5%',
+        paddingVertical: '3%',
+        borderRadius: 20,
         borderWidth: 1,
         borderColor: Colors.light_gery,
         elevation: 2

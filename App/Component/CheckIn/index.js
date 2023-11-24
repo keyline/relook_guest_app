@@ -10,7 +10,7 @@ import AuthContext from '../../Services/Context'
 const menuList = [
     { id: 1, label: 'House Keeping', desc: 'Need a Extra Pillow?' },
     { id: 2, label: 'Relish Restaurant', desc: 'Order tasty food from your Room' },
-    { id: 3, label: 'Front Office', desc: 'Ask for bill, have a question?, need a car?' }
+    // { id: 3, label: 'Front Office', desc: 'Ask for bill, have a question?, need a car?' }
 ]
 
 const CheckIn = ({ navigation }) => {

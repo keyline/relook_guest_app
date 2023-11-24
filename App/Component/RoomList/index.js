@@ -14,6 +14,7 @@ import Apis from '../../Services/Apis'
 import Details from './Details'
 import LoaderNew from '../../Container/LoaderNew'
 import Loader from '../../Container/Loader'
+import { Colors } from '../../Utils/Colors'
 
 const room = [
     { id: 1, type: 'Single Rooms', img: ImagePath.room1, price: '1000' },
@@ -87,7 +88,7 @@ const RoomList = ({ navigation, route }) => {
     })
 
     const onNext = useCallback(async (item) => {
-        navigation.navigate('Booking', { item: item, data:state.data})
+        navigation.navigate('Booking', { item: item, data: state.data })
     })
 
     const onShowModal = useCallback(async (item) => {
@@ -107,50 +108,48 @@ const RoomList = ({ navigation, route }) => {
     })
 
     return (
-        <SafeAreaView style={CommonStyle.container}>
+        <SafeAreaView style={[CommonStyle.container, { backgroundColor: appData?.color_theme }]}>
             <Header
                 leftIcon={ImagePath.back_new}
                 leftonPress={onLeftMenu}
             />
             {(state.loading) ? <Loader loading={state.loading} /> :
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    <View style={{ flex: 1 }}>
+                <View style={styles.mainContent}>
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                    <View style={[styles.bodyContent, { backgroundColor: appData?.color_theme }]}>
                         <Image source={{ uri: state.data?.cover_image }} style={styles.imgBanner} />
-                        <View style={styles.bodyContent}>
-                            <Text style={[CommonStyle.headingText, { color: appData?.color_theme }]}>{state.data?.name}</Text>
-                            {/* <TouchableOpacity activeOpacity={0.5} style={styles.flex}>
-                                <View style={styles.flexNew}>
-                                    <StarView rating={state.data?.rating} />
-                                    <Text style={[CommonStyle.boldtext, { marginLeft: '4%', color: appData?.color_theme }]}>Very Good</Text>
-                                </View>
-                                <Image source={ImagePath.right_arrow} style={[styles.location, { tintColor: appData?.color_theme }]} />
-                            </TouchableOpacity> */}
+                        <View style={{ paddingHorizontal: '3%' }}>
                             <View style={styles.locationContainer}>
-                                <Image source={ImagePath.location} style={[styles.location, { tintColor: appData?.color_theme }]} />
-                                <Text style={CommonStyle.boldtextgrey}> {state.data?.location}</Text>
+                                <Image source={ImagePath.location} style={[styles.location, { tintColor: Colors.white }]} />
+                                <View style={styles.locationContent}>
+                                    <Text style={[CommonStyle.headingText, { color: Colors.white, fontSize: 18 }]}>{state.data?.name}</Text>
+                                    <Text style={[CommonStyle.lightText, { color: Colors.white }]}> {state.data?.location}</Text>
+                                </View>
                             </View>
-                            <View style={[styles.border, { borderColor: appData?.color_theme }]} />
+                            <View style={[styles.border, { borderColor: Colors.white }]} />
                             <View style={{ flex: 1, }}>
-                                <Text style={[CommonStyle.headingText, { textAlign: 'center', color: appData?.color_theme }]}>Room Type</Text>
+                                <Text style={[CommonStyle.headingText, { textAlign: 'center', color: Colors.white, fontSize: 18 }]}>Room Type</Text>
                                 {(state.data?.room_type_list && state.data?.room_type_list.length > 0) && (
-                                    <View style={{ flex: 1, marginTop: '2%' }}>
+                                    <View style={{ flex: 1, marginTop: '4%' }}>
                                         {(state.data?.room_type_list).map((item, key) => (
                                             <List key={key} item={item} onPress={onNext} onDetails={onShowModal} />
                                         ))}
                                         {/* <FlatList
-                                    data={state.data?.room_type_list}
-                                    keyExtractor={(item, index) => item.room_id}
-                                    renderItem={({ item }) =>
-                                        <List item={item} onPress={onNext} />
-                                    }
-                                    showsVerticalScrollIndicator={false}
-                                /> */}
+                                                data={state.data?.room_type_list}
+                                                keyExtractor={(item, index) => item.room_id}
+                                                renderItem={({ item }) =>
+                                                    // <List item={item} onPress={onNext} />
+                                                    <List item={item} onPress={onNext} onDetails={onShowModal} />
+                                                }
+                                                showsVerticalScrollIndicator={false}
+                                            /> */}
                                     </View>
                                 )}
                             </View>
                         </View>
                     </View>
-                </ScrollView>
+                    </ScrollView>
+                </View>
             }
             <Details
                 data={state.modalData}

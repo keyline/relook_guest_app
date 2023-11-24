@@ -45,7 +45,7 @@ const LoginWithOTP = ({ navigation }) => {
                 phnnoErr: 'Enter Phone No'
             }))
             return
-        } 
+        }
         // else if (!isValidMobile(state.phnno)) {
         //     setState(prev => ({
         //         ...prev,
@@ -69,10 +69,10 @@ const LoginWithOTP = ({ navigation }) => {
                     console.log('SignUp', JSON.stringify(response))
                 }
                 if (response.status) {
-                    let params={
-                        mobile:state.phnno
+                    let params = {
+                        mobile: state.phnno
                     }
-                    navigation.navigate('OtpVerify', { data: params, type: 'Mobile',mobile:state.phnno })
+                    navigation.navigate('OtpVerify', { data: params, type: 'Mobile', mobile: state.phnno })
                 }
                 setState(prev => ({
                     ...prev,
@@ -93,38 +93,35 @@ const LoginWithOTP = ({ navigation }) => {
     })
 
     return (
-        <SafeAreaView style={CommonStyle.container}>
+        <SafeAreaView style={[CommonStyle.container, { backgroundColor: appData?.color_theme }]}>
             <TouchableOpacity style={styles.backContainer} onPress={onBack} activeOpacity={0.5}>
-                <Image source={ImagePath.back} style={[styles.backicon, { tintColor: appData.color_theme }]} />
+                <Image source={ImagePath.back_new} style={[styles.backicon, { tintColor: Colors.white }]} />
             </TouchableOpacity>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.content}>
                     <View style={styles.logoContainer}>
                         <Image source={{ uri: appData.site_logo }} style={styles.logo} />
                     </View>
+                    <Text style={styles.headingText}>Login Using OTP</Text>
                     <View style={styles.mainContent}>
-                        <Text style={[CommonStyle.headingText, { marginBottom: '4%', textAlign: 'center', color: appData.color_theme }]}>Login Using OTP</Text>
-                        {(!state.otpVisible) ?
-                            <InputField
-                                name={'Phone No'}
-                                value={state.phnno}
-                                onChangeText={onChangePhnno}
-                                leftIcon={ImagePath.call}
-                                error={state.phnnoErr}
-                                keyboardType={'phone-pad'}
-                            />
-                            :
-                            <View>
-
-                            </View>
-                        }
-                    </View>
-                    <View style={styles.btnContainer}>
-                        <SingleBottom
-                            name={'Submit'}
-                            loading={state.loading}
-                            onPress={onSubmit}
+                        {/* <Text style={[CommonStyle.headingText, { marginBottom: '4%', textAlign: 'center', color: appData.color_theme }]}>Login Using OTP</Text> */}
+                        <InputField
+                            // name={'Phone No'}
+                            value={state.phnno}
+                            placeholder={'Enter your mobile no.'}
+                            onChangeText={onChangePhnno}
+                            leftIcon={ImagePath.phone}
+                            error={state.phnnoErr}
+                            keyboardType={'phone-pad'}
                         />
+                        <View style={styles.btnContainer}>
+                            <SingleBottom
+                                name={'SUBMIT'}
+                                loading={state.loading}
+                                onPress={onSubmit}
+                                width={'100%'}
+                            />
+                        </View>
                     </View>
                 </View>
             </ScrollView>

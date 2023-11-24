@@ -6,7 +6,7 @@ import { CommonStyle } from '../../Utils/CommonStyle'
 import { Colors } from '../../Utils/Colors'
 import AuthContext from '../../Services/Context'
 
-const InputField = ({ name, headingColor, width, value, keyboardType, secureTextEntry, multiline, onChangeText, editable, leftIcon, rightIcon, rightonPress, placeholder, error }) => {
+const InputField = ({ name, headingColor, width, value, borderColor, keyboardType, secureTextEntry, multiline, onChangeText, editable, leftIcon, rightIcon, rightonPress, placeholder, error }) => {
 
     const context = useContext(AuthContext);
     const appData = context.allData.appData
@@ -16,7 +16,7 @@ const InputField = ({ name, headingColor, width, value, keyboardType, secureText
             {(name) && (
                 <Text style={[CommonStyle.boldtext, { color: headingColor ? headingColor : appData.color_title }]}>{name} :</Text>
             )}
-            <View style={[styles.inputContent, { borderBottomColor: appData.color_theme }]}>
+            <View style={[styles.inputContent, { borderColor: borderColor ? borderColor : appData.color_theme }]}>
                 {(leftIcon) && (
                     <Image source={leftIcon} style={[styles.leftlogo, { marginRight: '2%', tintColor: appData.color_theme }]} />
                 )}

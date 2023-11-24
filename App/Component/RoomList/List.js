@@ -32,58 +32,44 @@ const List = ({ item, onPress, onDetails }) => {
         );
     };
 
-    // const autoScroll = () => {
-    //     const newIndex = (activeIndex + 1) % item?.room_images.length;
-    //     setActiveIndex(newIndex);
-    //     carouselRef.current.snapToItem(newIndex);
-    // };
-
-    // useEffect(() => {
-    //     // Start auto-scrolling when the component mounts
-    //     const scrollInterval = setInterval(autoScroll, 4000); // Change the interval as needed
-
-    //     return () => {
-    //         // Clear the interval when the component unmounts
-    //         clearInterval(scrollInterval);
-    //     };
-    // }, [activeIndex]);
-
     return (
         <View style={styles.listContainer}>
-            <View style={styles.listHeading}>
-                <Text style={[CommonStyle.boldtext, { color: appData?.color_theme, fontSize: 18 }]}>{item.room_type_name}</Text>
-                <Text onPress={() => onDetails(item)} style={[CommonStyle.boldtext, { color: appData?.color_complete_button, textDecorationLine: 'underline' }]}>More Info</Text>
-            </View>
-            {/* <Image
-                source={{ uri: item?.room_image }}
-                style={styles.img}
-            /> */}
-            {(item?.room_images && item?.room_images.length > 0) && (
-                <View style={{ overflow: 'hidden' }}>
-                    <Carousel
-                        // ref={carouselRef}
-                        data={item?.room_images}
-                        renderItem={renderItem}
-                        sliderWidth={screenWidth} // Adjust this according to your needs
-                        itemWidth={screenWidth}
-                        autoplay={true}            // Enable autoplay
-                        autoplayInterval={3000}
-                        loop={true}
-                    />
+            <View style={styles.listLeftContent}>
+                <View style={styles.imageContainer}>
+                    {(item?.room_images && item?.room_images.length > 0) ?
+                        <View style={{ overflow: 'hidden' }}>
+                            <Carousel
+                                // ref={carouselRef}
+                                data={item?.room_images}
+                                renderItem={renderItem}
+                                sliderWidth={150} // Adjust this according to your needs
+                                itemWidth={150}
+                                autoplay={true}            // Enable autoplay
+                                autoplayInterval={3000}
+                                loop={true}
+                            />
+                        </View>
+                        :
+                        <Image source={ImagePath.no_image} style={styles.noimage} />
+                    }
                 </View>
-            )}
-            <View style={styles.featureContent}>
-                {(item?.highlights).map((item, key) => (
-                    <Text key={key} style={CommonStyle.boldtextgrey}>{item} </Text>
-                ))}
-                {/* <Text style={CommonStyle.boldtextgrey}>Up to 3* Guests</Text>
-                <Text style={CommonStyle.boldtextgrey}>King Bed</Text> */}
             </View>
-            <View style={styles.bordernew} />
-            <View style={styles.btnContent}>
-                <Text style={[CommonStyle.boldtext, { color: appData?.color_theme, fontSize: 16, marginTop: '1%' }]}>Price : Rs.{item.room_rent}/-</Text>
-                <TouchableOpacity onPress={() => onPress(item)} activeOpacity={0.5} style={[styles.bookbtn, { backgroundColor: appData?.color_theme }]}>
-                    <Text style={[CommonStyle.boldtext, { color: Colors.highlight }]}>Select</Text>
+            <View style={styles.listRightContent}>
+                <Text style={[CommonStyle.boldtext, { color: appData?.color_theme, fontSize: 18 }]}>{item?.room_type_name}</Text>
+                {(item.highlights && item.highlights.length > 0) && (
+                    <>
+                        {(item?.highlights).map((item, key) => (
+                            <Text key={key} style={[CommonStyle.lightText, { fontSize: 12, color: Colors.grey }]}>{item} </Text>
+                        ))}
+                    </>
+                )}
+                <Text style={[CommonStyle.boldtext, { fontSize: 12, color: appData?.color_theme }]}>Price ₹ {item?.room_rent}/-</Text>
+                <TouchableOpacity onPress={() => onPress(item)} disabled={!onPress} activeOpacity={0.5} style={[styles.listbtn, { borderColor: appData?.color_theme }]}>
+                    <Text style={[CommonStyle.boldtext, { color: appData?.color_theme, fontSize: 12 }]}>SELECT</Text>
+                    <Image source={ImagePath.arrow_right} style={[styles.btnArrow, { tintColor: appData?.color_theme }]} />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => onDetails(item)} activeOpacity={0.5} style={styles.moreContainer}>
+                    <Image source={ImagePath.more} style={[styles.moreimage, { tintColor: appData?.color_theme }]} />
                 </TouchableOpacity>
             </View>
         </View>

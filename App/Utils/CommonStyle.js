@@ -28,7 +28,7 @@ export const CommonStyle = StyleSheet.create({
     errortxt: {
         color: 'red',
         fontFamily: Font_Family.NunitoSans_Italic,
-        paddingLeft: 4
+        paddingLeft: 10
     },
     btncontainer: {
         backgroundColor: Colors.them_color,

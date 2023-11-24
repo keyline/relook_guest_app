@@ -1,5 +1,6 @@
 export const ImagePath = {
     logo: require('../Assets/Images/logo.png'),
+    logo_white: require('../Assets/Images/logo_white.png'),
     app_logo: require('../Assets/Images/app_logo.png'),
     user: require('../Assets/Images/user.png'),
     logout: require('../Assets/Images/logout.png'),
@@ -44,5 +45,13 @@ export const ImagePath = {
     arrow_down: require('../Assets/Images/arrow_down.png'),
     search: require('../Assets/Images/search.png'),
     cart: require('../Assets/Images/cart.png'),
-    timer:require('../Assets/Images/timer.png')
+    timer: require('../Assets/Images/timer.png'),
+    phone: require('../Assets/Images/phone.png'),
+    arrow_right: require('../Assets/Images/arrow_right.png'),
+    no_image:require('../Assets/Images/no_image.png'),
+    more:require('../Assets/Images/more.png'),
+    resturant_logo:require('../Assets/Images/resturant_logo.png'),
+    resturant_banner:require('../Assets/Images/resturant_banner.jpg'),
+    veg:require('../Assets/Images/veg.png'),
+    non_veg:require('../Assets/Images/non_veg.png')
 }

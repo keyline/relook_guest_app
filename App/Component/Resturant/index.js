@@ -81,9 +81,9 @@ const Resturant = ({ navigation }) => {
                 search: search
             }
             const response = await Apis.resturant_list(datas)
-            if (__DEV__) {
+            // if (__DEV__) {
                 // console.log('ResturantList', JSON.stringify(response))
-            }
+            // }
             if (response.status) {
                 if (response.data && response?.data?.items.length > 0) {
                     let items = response?.data?.items.filter(obj => obj.food_items_count > 0)
@@ -130,7 +130,7 @@ const Resturant = ({ navigation }) => {
     )
 
     const ItemSeperatorNew = () => (
-        <View style={{ borderWidth: 0, borderColor: Colors.light_gery, marginVertical: '1.5%' }} />
+        <View style={{ borderWidth: 0, borderColor: Colors.light_gery, marginVertical: '1%' }} />
     )
 
     const onOrder = useCallback(async (item) => {
@@ -207,40 +207,28 @@ const Resturant = ({ navigation }) => {
     })
 
     return (
-        <SafeAreaView style={CommonStyle.container}>
+        <SafeAreaView style={[CommonStyle.container, { backgroundColor: appData?.color_theme }]}>
             <Header
                 leftIcon={ImagePath.back_new}
                 leftonPress={onLeftMenu}
                 rightIcon={ImagePath.bell}
             />
-            <>
-                <Text style={[CommonStyle.headingText, { marginVertical: '4%', textAlign: 'center', color: appData?.color_theme }]}>Relish Restaurant</Text>
-                {/* {(state.data) && (
-                        <View style={styles.bodyContent}>
-                            <FlatList
-                            data={state.data}
-                            keyExtractor={(item, index) => item.id}
-                            renderItem={({ item }) =>
-                                    <List item={item} onPress={onOrder} />
-                                }
-                                ItemSeparatorComponent={ItemSeperator}
-                                showsVerticalScrollIndicator={false}
-                                />
-                                </View>
-                            )} */}
-                <View style={styles.bodyContent}>
-                    <View style={styles.searchContainer}>
+            <View style={styles.mainContent}>
+                <View style={[styles.bodyContent, { backgroundColor: appData?.color_theme }]}>
+                    <Image source={ImagePath.resturant_banner} style={styles.bannerImage} />
+                    <Image source={ImagePath.resturant_logo} style={styles.icon} />
+                    <View style={[styles.searchContainer, { backgroundColor: appData?.color_theme }]}>
                         <TextInput
-                            style={{ paddingHorizontal: '4%', color: Colors.black, width: '80%' }}
-                            placeholder='Search items'
+                            style={{ paddingHorizontal: '4%', color: Colors.white, width: '80%' }}
+                            placeholder='Search items..'
                             value={state.search}
-                            placeholderTextColor={Colors.grey}
+                            placeholderTextColor={Colors.white}
                             onChangeText={e => onSearch(e)}
                         />
                         <Image source={ImagePath.search} style={styles.searchIcon} />
                     </View>
                     {/* {(state.loading) ? <LoaderNew loading={state.loading} /> : */}
-                    <View style={{ marginBottom: state.totalItem > 0 ? 120 : 10 }}>
+                    <View style={{ flex: 1, paddingHorizontal: '3%', marginTop: '1%', paddingBottom: state.totalItem > 0 ? 60 : 10 }}>
                         <FlatList
                             data={state.item}
                             keyExtractor={(item, index) => item.category_id}
@@ -254,13 +242,13 @@ const Resturant = ({ navigation }) => {
                     </View>
                     {/* } */}
                     {(state.totalItem > 0) && (
-                        <View style={[styles.btmContainer, { backgroundColor: appData?.color_theme }]}>
+                        <View style={[styles.btmContainer, { backgroundColor: Colors.white }]}>
                             <View>
-                                <Text style={[CommonStyle.boldtext, { color: Colors.white, fontSize: 16 }]}>{state.totalItem} {state.totalItem > 1 ? 'Items' : 'Item'} | Rs. {state.totalAmount}</Text>
-                                <Text style={[CommonStyle.boldtext, { color: Colors.white, fontSize: 16 }]}>Estimated Time {state.totalTime}</Text>
+                                <Text style={[CommonStyle.boldtext, { color: appData?.color_theme, fontSize: 16 }]}>{state.totalItem} {state.totalItem > 1 ? 'Items' : 'Item'} | ₹ {state.totalAmount}/-</Text>
+                                <Text style={[CommonStyle.lightText, { color: Colors.grey, fontSize: 12 }]}>Estimated Time {state.totalTime}</Text>
                             </View>
-                            <TouchableOpacity onPress={onCartList} activeOpacity={0.5} style={styles.cartbtn}>
-                                <Text style={[CommonStyle.boldtext, { color: appData?.color_theme, fontSize: 16 }]}>View Cart</Text>
+                            <TouchableOpacity onPress={onCartList} activeOpacity={0.5} style={[styles.cartbtn, { backgroundColor: appData?.color_theme }]}>
+                                <Text style={[CommonStyle.boldtext, { color: Colors.white, fontSize: 14 }]}>VIEW CART</Text>
                             </TouchableOpacity>
                         </View>
                     )}
@@ -268,7 +256,7 @@ const Resturant = ({ navigation }) => {
                 {(state.loading) && (
                     <LoaderNew loading={state.loading} />
                 )}
-            </>
+            </View>
         </SafeAreaView>
     )
 }

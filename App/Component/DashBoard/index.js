@@ -153,7 +153,7 @@ const DashBoard = ({ navigation }) => {
     })
 
     const ItemSeperator = () => (
-        <View style={{ borderWidth: 0.5, marginVertical: '3%', borderColor: appData?.color_theme }} />
+        <View style={{ borderWidth: 0, marginVertical: '2%', borderColor: appData?.color_theme }} />
     )
 
     const onBookNow = useCallback(async (item) => {
@@ -162,10 +162,10 @@ const DashBoard = ({ navigation }) => {
     })
 
     return (
-        <SafeAreaView style={CommonStyle.container}>
+        <SafeAreaView style={[CommonStyle.container, { backgroundColor: appData?.color_theme }]}>
             <Header
-                leftIcon={ImagePath.menu}
-                leftonPress={onLeftMenu}
+            // leftIcon={ImagePath.back_new}
+            // leftonPress={onLeftMenu}
             />
             {(state.loading) ? <Loader loading={state.loading} /> :
                 <View style={styles.bodyContent}>
@@ -181,8 +181,8 @@ const DashBoard = ({ navigation }) => {
                                 <FlatList
                                     data={state.data}
                                     keyExtractor={(item, index) => item.id}
-                                    renderItem={({ item }) =>
-                                        <List item={item} onPress={onBookNow} appdata={appData} />
+                                    renderItem={({ item, index }) =>
+                                        <List item={item} onPress={onBookNow} appdata={appData} index={index} />
                                     }
                                     ItemSeparatorComponent={ItemSeperator}
                                 />
