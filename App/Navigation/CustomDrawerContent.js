@@ -104,7 +104,7 @@ const CustomDrawerContent = (props) => {
     const SignOutAlert = useCallback(async () => {
         Alert.alert(
             'Sign Out',
-            'Are you Really Want to Sign Out?',
+            'Do you really want to Sign Out?',
             [
                 {
                     text: 'Yes',

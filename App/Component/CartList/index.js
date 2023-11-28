@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, Image, TouchableOpacity, FlatList, Alert, ScrollView } from 'react-native'
+import { View, Text, SafeAreaView, Image, TouchableOpacity, FlatList, Alert, ScrollView, RefreshControl } from 'react-native'
 import React, { useCallback, useContext, useState } from 'react'
 import { CommonStyle } from '../../Utils/CommonStyle'
 import Header from '../../Container/Header'
@@ -285,91 +285,94 @@ const CartList = ({ navigation, route }) => {
         }
     })
 
+    const onContinue = useCallback(async () => {
+        navigation.navigate('CheckIn')
+    })
+
     const RenderFooter = () => {
         return (
             <View style={styles.footerContainer}>
-                <View style={styles.border} />
+                <View style={[styles.border, { borderColor: appData?.color_theme }]} />
                 <View style={styles.flex}>
-                    <Text style={[CommonStyle.boldtext, { color: appData?.color_theme, fontSize: 16 }]}>Total Amount</Text>
+                    <Text style={[CommonStyle.boldtext, { color: appData?.color_theme, fontSize: 16 }]}>TOTAL AMOUNT</Text>
                     <Text style={[CommonStyle.boldtext, { color: appData?.color_theme, fontSize: 16 }]}>₹ {state.totalAmount}</Text>
                 </View>
-                <View style={[styles.border, { marginBottom: '4%' }]} />
+                <View style={[styles.border, { marginBottom: '4%', borderColor: appData?.color_theme }]} />
                 {(state.roomlist) && (
-                    <View style={styles.roomContainer}>
-                        <Text style={[CommonStyle.boldtext, { color: Colors.black, textAlign: 'center' }]}>Please Deliver Food at  </Text>
+                    <View style={[styles.roomContainer, { borderColor: appData?.color_theme }]}>
+                        <Text style={[CommonStyle.boldtext, { color: Colors.black, textAlign: 'center', marginBottom: '1%' }]}>Please deliver at  </Text>
                         <RadioGroup
                             radioButtons={state.roomlist}
                             onPress={setRoomid}
                             selectedId={roomid}
-                            containerStyle={{}}
+                            containerStyle={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                width: '100%',
+                                flexWrap: 'wrap',
+                                overflow: 'hidden'
+                            }}
                         />
                     </View>
                 )}
                 <TouchableOpacity onPress={onOrderAlert} activeOpacity={0.5} style={[styles.placeBtn, { backgroundColor: appData?.color_theme }]}>
                     <Text style={[CommonStyle.boldtext, { color: Colors.white }]}>CONFIRM</Text>
                 </TouchableOpacity>
-                <Text style={[CommonStyle.boldtext, { color: Colors.black, textAlign: 'center', marginVertical: '2%' }]}>Amount will be added with your Final Bill </Text>
+                <Text style={[CommonStyle.boldtext, { color: '#696969', textAlign: 'center', marginVertical: '2%' }]}>Amount will be added with your Final Bill </Text>
             </View >
         )
     }
 
     return (
-        <SafeAreaView style={CommonStyle.container}>
+        <SafeAreaView style={[CommonStyle.container, { backgroundColor: appData?.color_theme }]}>
             <Header
                 leftIcon={params ? ImagePath.back_new : ImagePath.menu}
                 leftonPress={onLeftMenu}
                 rightIcon={ImagePath.bell}
             />
-            <ScrollView>
-                {(state.data && state.data.length > 0) && (
-                    <View style={styles.bodyContent}>
-                        <Text style={[CommonStyle.headingText, { marginBottom: '8%', textAlign: 'center', color: appData?.color_theme }]}>Cart</Text>
-                        <View style={{ flex: 1, marginBottom: 10 }}>
-                            {(state.data.filter(obj => obj.cart_type == '2')).length > 0 && (
-                                <>
-                                    <View style={styles.headingContainer}>
-                                        <Text style={[CommonStyle.boldtext, { color: appData?.color_theme }]}>Housekeeping Item :</Text>
-                                    </View>
-                                    {/* // <View style={{ flex: 1 }}> */}
-                                    {state.data.filter(obj => obj.cart_type == '2').map((item, key) => (
-                                        <List item={item} key={key} onUpdateCart={onUpdateCart} />
-                                    ))}
-                                    {/* <FlatList
-                                    data={state.data.filter(obj => obj.cart_type == '2')}
-                                    keyExtractor={(item, index) => item.cart_id}
-                                    renderItem={({ item }) =>
-                                        <List item={item} onUpdateCart={onUpdateCart} />
-                                    }
-                                // ListFooterComponent={renderFooter}
-                                /> */}
-                                    {/* // </View> */}
-                                </>
-                            )}
-                        </View>
-                        {(state.data.filter(obj => obj.cart_type == '1')).length > 0 && (
-                            <View style={{ flex: 1, marginBottom: 0 }}>
-                                <View style={styles.headingContainer}>
-                                    <Text style={[CommonStyle.boldtext, { color: appData?.color_theme }]}>Resturant Item :</Text>
+            <View style={styles.mainContent}>
+                <ScrollView
+                    refreshControl={<RefreshControl refreshing={false} onRefresh={onGetData} />}
+                    showsVerticalScrollIndicator={false}>
+                    <View style={[styles.bodyContainer, { backgroundColor: appData?.color_theme }]}>
+                        {(state.data && state.data.length > 0) && (
+                            <View style={styles.bodyContent}>
+                                <Image source={ImagePath.cart_white} style={styles.icon} />
+                                <Text style={[CommonStyle.headingText, { marginBottom: '4%', fontSize: 16, textAlign: 'center', color: Colors.white }]}>MY CART</Text>
+                                <View style={styles.midContent}>
+                                    {(state.data.filter(obj => obj.cart_type == '2')).length > 0 && (
+                                        <View style={{ flex: 1, marginBottom: 10 }}>
+                                            <View style={[styles.headingContainer, { borderColor: appData?.color_theme }]}>
+                                                <Text style={[CommonStyle.boldtext, { color: appData?.color_theme }]}>HOUSE KEEPING</Text>
+                                            </View>
+                                            {state.data.filter(obj => obj.cart_type == '2').map((item, key) => (
+                                                <List item={item} key={key} onUpdateCart={onUpdateCart} />
+                                            ))}
+                                        </View>
+                                    )}
+                                    {(state.data.filter(obj => obj.cart_type == '1')).length > 0 && (
+                                        <View style={{ flex: 1, marginBottom: 0 }}>
+                                            <View style={[styles.headingContainer, { borderColor: appData?.color_theme }]}>
+                                                <Text style={[CommonStyle.boldtext, { color: appData?.color_theme }]}>RELISH RESTAURANT</Text>
+                                            </View>
+                                            {state.data.filter(obj => obj.cart_type == '1').map((item, key) => (
+                                                <List item={item} key={key} onUpdateCart={onUpdateCart} />
+                                            ))}
+                                        </View>
+                                    )}
+                                    <RenderFooter />
                                 </View>
-                                {/* <View style={{ flex: 1 }}> */}
-                                {state.data.filter(obj => obj.cart_type == '1').map((item, key) => (
-                                    <List item={item} key={key} onUpdateCart={onUpdateCart} />
-                                ))}
-                                {/* <FlatList
-                                    data={state.data.filter(obj => obj.cart_type == '1')}
-                                    keyExtractor={(item, index) => item.cart_id}
-                                    renderItem={({ item }) =>
-                                        <List item={item} onUpdateCart={onUpdateCart} />
-                                    }
-                                // ListFooterComponent={renderFooter}
-                                /> */}
-                                {/* </View> */}
                             </View>
                         )}
-                        <RenderFooter />
                     </View>
-                )}
-            </ScrollView>
+                </ScrollView>
+                <View style={styles.orderBtmContainer}>
+                    <TouchableOpacity onPress={onContinue} activeOpacity={0.5} style={[styles.orderBtm, { backgroundColor: appData?.color_theme }]}>
+                        <Text style={[CommonStyle.boldtext, { color: Colors.white }]}>CONTINUE ORDERING</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
             {(state.loading) && (
                 <LoaderNew loading={state.loading} />
             )}

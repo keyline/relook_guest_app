@@ -48,10 +48,14 @@ export const ImagePath = {
     timer: require('../Assets/Images/timer.png'),
     phone: require('../Assets/Images/phone.png'),
     arrow_right: require('../Assets/Images/arrow_right.png'),
-    no_image:require('../Assets/Images/no_image.png'),
-    more:require('../Assets/Images/more.png'),
-    resturant_logo:require('../Assets/Images/resturant_logo.png'),
-    resturant_banner:require('../Assets/Images/resturant_banner.jpg'),
-    veg:require('../Assets/Images/veg.png'),
-    non_veg:require('../Assets/Images/non_veg.png')
+    no_image: require('../Assets/Images/no_image.png'),
+    more: require('../Assets/Images/more.png'),
+    resturant_logo: require('../Assets/Images/resturant_logo.png'),
+    resturant_banner: require('../Assets/Images/resturant_banner.jpg'),
+    veg: require('../Assets/Images/veg.png'),
+    non_veg: require('../Assets/Images/non_veg.png'),
+    housekeeping_logo: require('../Assets/Images/housekeeping_logo.png'),
+    frontoffice_logo: require('../Assets/Images/frontoffice_logo.png'),
+    housekeeping_banner: require('../Assets/Images/housekeeping_banner.jpg'),
+    cart_white:require('../Assets/Images/cart_white.png')
 }

@@ -13,6 +13,6 @@ export const styles = StyleSheet.create({
     emptyText: {
         fontFamily: Font_Family.NunitoSans_Bold,
         fontSize: 16,
-        color: Colors.grey
+        color: Colors.white
     }
 })

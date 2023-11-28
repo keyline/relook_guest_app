@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, TouchableOpacity, FlatList } from 'react-native'
+import { View, Text, SafeAreaView, TouchableOpacity, FlatList, RefreshControl } from 'react-native'
 import React, { useCallback, useContext, useState } from 'react'
 import { styles } from './styles'
 import { CommonStyle } from '../../Utils/CommonStyle'
@@ -185,6 +185,7 @@ const DashBoard = ({ navigation }) => {
                                         <List item={item} onPress={onBookNow} appdata={appData} index={index} />
                                     }
                                     ItemSeparatorComponent={ItemSeperator}
+                                    refreshControl={<RefreshControl refreshing={false} onRefresh={onGetData} />}
                                 />
                             )}
                         </View>

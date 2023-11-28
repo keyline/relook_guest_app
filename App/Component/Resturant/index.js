@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, FlatList, TextInput, Image, TouchableOpacity } from 'react-native'
+import { View, Text, SafeAreaView, FlatList, TextInput, Image, TouchableOpacity, RefreshControl } from 'react-native'
 import React, { useState, useCallback, useContext } from 'react'
 import { styles } from './styles'
 import { CommonStyle } from '../../Utils/CommonStyle'
@@ -82,7 +82,7 @@ const Resturant = ({ navigation }) => {
             }
             const response = await Apis.resturant_list(datas)
             // if (__DEV__) {
-                // console.log('ResturantList', JSON.stringify(response))
+            // console.log('ResturantList', JSON.stringify(response))
             // }
             if (response.status) {
                 if (response.data && response?.data?.items.length > 0) {
@@ -211,7 +211,7 @@ const Resturant = ({ navigation }) => {
             <Header
                 leftIcon={ImagePath.back_new}
                 leftonPress={onLeftMenu}
-                rightIcon={ImagePath.bell}
+            // rightIcon={ImagePath.bell}
             />
             <View style={styles.mainContent}>
                 <View style={[styles.bodyContent, { backgroundColor: appData?.color_theme }]}>
@@ -236,6 +236,7 @@ const Resturant = ({ navigation }) => {
                                 <ListNew item={item} index={index} onUpdateCart={onUpdateCart} />
                             }
                             ItemSeparatorComponent={ItemSeperatorNew}
+                            refreshControl={<RefreshControl refreshing={false} onRefresh={onGetData} />}
                             showsVerticalScrollIndicator={false}
                         // style={{ paddingBottom: 80 }}
                         />

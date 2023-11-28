@@ -29,12 +29,23 @@ const List = ({ items, index }) => {
         }
     }
 
+    const getColor = (status) => {
+        if (status == 'Ordered') {
+            return '#696969'
+        } else if (status == 'Delivered') {
+            return '#007E05'
+        } else {
+            return '#FF8D08'
+        }
+    }
+
     const RenderItem = ({ item }) => (
         <View style={styles.itemContainer}>
-            <View>
+            <View style={{ width: '50%' }}>
                 <Text style={[CommonStyle.boldtext, { color: Colors.black }]}>{item?.name}</Text>
-                <Text style={[CommonStyle.lightText]}>Qty : {item?.count}</Text>
+                <Text style={[CommonStyle.lightText]}>{item?.details}</Text>
             </View>
+            <Text style={[CommonStyle.boldtext, { color: Colors.black }]}>Qty : {item?.count}</Text>
             <Text style={[CommonStyle.boldtext, { color: Colors.black }]}>₹{item?.amount}</Text>
         </View>
     )
@@ -49,31 +60,34 @@ const List = ({ items, index }) => {
 
     const Footer = () => (
         <View style={styles.footer}>
-            <Image source={ImagePath.timer} style={styles.timer} />
-            <Text style={[CommonStyle.lightText, { fontSize: 12 }]}>  Ordered : {items?.order_on} | {items?.status == 'Delivered' ? 'Delivered' : 'Expected Delivery'}: {items?.delivery}</Text>
+            <Image source={ImagePath.timer} style={[styles.timer, { tintColor: getColor(items?.status) }]} />
+            <Text style={[CommonStyle.lightText, { fontSize: 12, width: '98%' }]}>  Ordered : {items?.order_on} | {items?.status == 'Delivered' ? 'Delivered' : 'Expected Delivery'}: {items?.delivery}</Text>
         </View>
     )
 
     return (
-        <View style={items.status == 'Delivered' ? styles.delistContainer : items.status == 'Ordered' ? styles.orlistContainer : styles.prlistContainer}>
-            <TouchableOpacity onPress={onShowChange} activeOpacity={0.5} style={items.status == 'Delivered' ? styles.deliverHeader : items.status == 'Ordered' ? styles.orderHeader : styles.processHeader}>
-                <Text style={[CommonStyle.boldtext, { color: items?.status == 'Ordered' ? Colors.black : Colors.white, fontWeight: 'bold' }]}>Order ID: {index + 1}</Text>
+        <View style={styles.listContainer}>
+            <TouchableOpacity onPress={onShowChange} activeOpacity={0.5} style={styles.listHeader}>
+                <Text style={[CommonStyle.boldtext, { color: appData?.color_theme, fontWeight: 'bold' }]}>ORDER ID: {index + 1}</Text>
                 <View style={styles.flex}>
-                    <Text style={[CommonStyle.boldtext, { color: items?.status == 'Ordered' ? Colors.black : Colors.white, fontWeight: 'bold', marginRight: 10 }]}>{items?.status}</Text>
+                    <Text style={[CommonStyle.boldtext, { color: getColor(items.status), fontWeight: 'bold', marginRight: 10 }]}>{items?.status}</Text>
                     <Image source={show ? ImagePath.arrow_up : ImagePath.arrow_down} style={styles.arrow} />
                 </View>
             </TouchableOpacity>
             {(show) && (
-                <FlatList
-                    data={items.items}
-                    keyExtractor={(item, index) => index}
-                    renderItem={({ item }) =>
-                        <RenderItem item={item} />
-                    }
-                    // ItemSeparatorComponent={ItemSeperatorNew}
-                    style={{ paddingVertical: '1%' }}
-                    ListFooterComponent={Footer}
-                />
+                <>
+                    <View style={[styles.border, { borderColor: appData?.color_theme }]} />
+                    <FlatList
+                        data={items.items}
+                        keyExtractor={(item, index) => index}
+                        renderItem={({ item }) =>
+                            <RenderItem item={item} />
+                        }
+                        // ItemSeparatorComponent={ItemSeperatorNew}
+                        style={{ paddingVertical: '1%' }}
+                        ListFooterComponent={Footer}
+                    />
+                </>
             )}
         </View>
     )

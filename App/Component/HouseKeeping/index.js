@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, FlatList, TextInput, Image, TouchableOpacity } from 'react-native'
+import { View, Text, SafeAreaView, FlatList, TextInput, Image, TouchableOpacity, RefreshControl } from 'react-native'
 import React, { useCallback, useState, useContext } from 'react'
 import { Colors } from '../../Utils/Colors';
 import Header from '../../Container/Header';
@@ -24,7 +24,7 @@ const itemList = [
 const HouseKeeping = ({ navigation }) => {
 
     const context = useContext(AuthContext);
-    const { appData, accesstoken, isLogin,bookingDetail } = context.allData
+    const { appData, accesstoken, isLogin, bookingDetail } = context.allData
 
     const [state, setState] = useState({
         loading: false,
@@ -153,7 +153,7 @@ const HouseKeeping = ({ navigation }) => {
                     ...prev,
                     loading: false
                 }))
-                ToastMessage(res?.message,'short');
+                ToastMessage(res?.message, 'short');
             }
         } catch (error) {
             setState(prev => ({
@@ -168,45 +168,52 @@ const HouseKeeping = ({ navigation }) => {
     })
 
     return (
-        <SafeAreaView style={CommonStyle.container}>
+        <SafeAreaView style={[CommonStyle.container, { backgroundColor: appData?.color_theme }]}>
             <Header
                 leftIcon={ImagePath.back_new}
                 leftonPress={onLeftMenu}
-                rightIcon={ImagePath.bell}
+            // rightIcon={ImagePath.bell}
             />
-            <>
-                <Text style={[CommonStyle.headingText, { marginVertical: '4%', textAlign: 'center', color: appData?.color_theme }]}>House Keeping</Text>
-                <View style={styles.searchContainer}>
-                    <TextInput
-                        style={{ paddingHorizontal: '4%', color: Colors.black, width: '80%' }}
-                        placeholder='Search items'
-                        value={state.search}
-                        placeholderTextColor={Colors.grey}
-                        onChangeText={e => onSearch(e)}
-                    />
-                    <Image source={ImagePath.search} style={styles.searchIcon} />
-                </View>
-                <View style={styles.bodyContent}>
-                    <FlatList
-                        data={state.data}
-                        keyExtractor={(item, index) => item.id}
-                        renderItem={({ item }) =>
-                            <List item={item} onPress={onRequest} onUpdateCart={onUpdateCart} />
-                        }
-                        ItemSeparatorComponent={ItemSeperator}
-                        showsVerticalScrollIndicator={false}
-                    />
-                </View>
-                <View style={[styles.btmContainer, { backgroundColor: appData?.color_theme }]}>
-                    <View>
-                        <Text style={[CommonStyle.boldtext, { color: Colors.white, fontSize: 16 }]}>{state.totalItem} {state.totalItem > 1 ? 'Items' : 'Item'}</Text>
-                        <Text style={[CommonStyle.boldtext, { color: Colors.white, fontSize: 16 }]}>Estimated Time {state.totalTime}</Text>
+            <View style={styles.mainContent}>
+                <View style={[styles.bodyContainer, { backgroundColor: appData?.color_theme }]}>
+                    <Image source={ImagePath.housekeeping_banner} style={styles.bannerImage} />
+                    <Image source={ImagePath.housekeeping_logo} style={styles.icon} />
+                    <Text style={[CommonStyle.headingText, { marginBottom: '2%', textAlign: 'center', color: Colors.white }]}>House Keeping</Text>
+                    <View style={[styles.searchContainer, { backgroundColor: appData?.color_theme }]}>
+                        <TextInput
+                            style={{ paddingHorizontal: '4%', color: Colors.white, width: '80%' }}
+                            placeholder='Search items..'
+                            value={state.search}
+                            placeholderTextColor={Colors.white}
+                            onChangeText={e => onSearch(e)}
+                        />
+                        <Image source={ImagePath.search} style={styles.searchIcon} />
                     </View>
-                    <TouchableOpacity onPress={onCartList} activeOpacity={0.5} style={styles.cartbtn}>
-                        <Text style={[CommonStyle.boldtext, { color: appData?.color_theme, fontSize: 16 }]}>View List</Text>
-                    </TouchableOpacity>
+                    <View style={[styles.bodyContent, { paddingBottom: state.totalItem > 0 ? 65 : 0 }]}>
+                        <FlatList
+                            data={state.data}
+                            keyExtractor={(item, index) => item.id}
+                            renderItem={({ item }) =>
+                                <List item={item} onPress={onRequest} onUpdateCart={onUpdateCart} />
+                            }
+                            ItemSeparatorComponent={ItemSeperator}
+                            refreshControl={<RefreshControl refreshing={false} onRefresh={onGetData} />}
+                            showsVerticalScrollIndicator={false}
+                        />
+                    </View>
                 </View>
-            </>
+                {(state.totalItem > 0) && (
+                    <View style={[styles.btmContainer, { backgroundColor: Colors.white }]}>
+                        <View>
+                            <Text style={[CommonStyle.boldtext, { color: appData.color_theme, fontSize: 18 }]}>{state.totalItem} {state.totalItem > 1 ? 'Items' : 'Item'}</Text>
+                            <Text style={[CommonStyle.boldtext, { color: Colors.grey, fontSize: 10 }]}>Estimated Time {state.totalTime}</Text>
+                        </View>
+                        <TouchableOpacity onPress={onCartList} activeOpacity={0.5} style={[styles.cartbtn, { backgroundColor: appData?.color_theme }]}>
+                            <Text style={[CommonStyle.boldtext, { color: Colors.white, fontSize: 14 }]}>VIEW CART</Text>
+                        </TouchableOpacity>
+                    </View>
+                )}
+            </View>
             {(state.loading) && (
                 <LoaderNew loading={state.loading} />
             )}

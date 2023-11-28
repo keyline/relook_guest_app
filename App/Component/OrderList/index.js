@@ -13,6 +13,7 @@ import Apis from '../../Services/Apis'
 import { ToastError, ToastMessage } from '../../Services/CommonFunction'
 import LoaderNew from '../../Container/LoaderNew'
 import EmptyContent from '../../Container/EmptyContent'
+import { RefreshControl } from 'react-native'
 
 const listitem = [
     {
@@ -120,15 +121,26 @@ const OrderList = ({ navigation, route }) => {
         <View style={{ borderWidth: 0, borderColor: Colors.grey, marginVertical: '2%' }} />
     )
 
+    const getColor = (status) => {
+        if (status == 'Ordered') {
+            return '#FF8D08'
+        } else if (status == 'Delivered') {
+            return '#007E05'
+        } else {
+            return '#696969'
+        }
+    }
+
     return (
-        <SafeAreaView style={CommonStyle.container}>
+        <SafeAreaView style={[CommonStyle.container,{backgroundColor:appData?.color_theme}]}>
             <Header
-                leftIcon={params ? ImagePath.back_new : ImagePath.menu}
-                leftonPress={onLeftMenu}
-                rightIcon={ImagePath.bell}
+                // leftIcon={params ? ImagePath.back_new : ImagePath.menu}
+                // leftonPress={onLeftMenu}
+                // rightIcon={ImagePath.bell}
             />
-            <View style={styles.bodyContent}>
-                <Text style={[CommonStyle.headingText, { marginBottom: '6%', textAlign: 'center', color: appData?.color_theme }]}>My Orders</Text>
+            <View style={styles.mainContent}>
+            <View style={[styles.bodyContent,{backgroundColor:appData?.color_theme}]}>
+                <Text style={[CommonStyle.headingText, { marginBottom: '6%', textAlign: 'center', color: Colors.white }]}>My Orders</Text>
                 <View style={{ flex: 1 }}>
                     <FlatList
                         data={state.data}
@@ -138,9 +150,11 @@ const OrderList = ({ navigation, route }) => {
                         }
                         showsVerticalScrollIndicator={false}
                         ItemSeparatorComponent={ItemSeperatorNew}
+                        refreshControl={<RefreshControl refreshing={false} onRefresh={onGetData} />}
                         ListEmptyComponent={<EmptyContent word={'No Order Found'} />}
                     />
                 </View>
+            </View>
             </View>
             {(state.loading) && (
                 <LoaderNew loading={state.loading} />

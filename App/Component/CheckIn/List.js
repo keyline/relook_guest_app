@@ -3,6 +3,7 @@ import React, { memo, useContext } from 'react'
 import { styles } from './styles'
 import { ImagePath } from '../../Utils/ImagePath'
 import AuthContext from '../../Services/Context'
+import { Colors } from '../../Utils/Colors'
 
 const List = ({ item, onPress }) => {
 
@@ -10,12 +11,10 @@ const List = ({ item, onPress }) => {
     const { appData, accesstoken, isLogin } = context.allData
 
     return (
-        <TouchableOpacity onPress={() => onPress(item)} disabled={!onPress} activeOpacity={0.5} style={[styles.listContainer, { backgroundColor: appData?.color_panel_bg }]}>
-            <View>
-                <Text style={[styles.labelText, { color: appData?.color_panel_text }]}>{item.label}</Text>
-                <Text style={[styles.descText, { color: appData?.color_panel_text }]}>{item.desc}</Text>
-            </View>
-            <Image source={ImagePath.right_arrow} style={[styles.arrow, { tintColor: appData?.color_panel_text }]} />
+        <TouchableOpacity onPress={() => onPress(item)} disabled={!onPress} activeOpacity={0.5} style={styles.listContainer}>
+            <Image source={item.icon} style={[styles.icon, { tintColor: appData?.color_theme }]} />
+            <Text style={[styles.labelText, { color: Colors.black }]}>{item.label}</Text>
+            <Text style={[styles.descText, { color: appData?.color_theme }]}>{item.desc}</Text>
         </TouchableOpacity>
     )
 }

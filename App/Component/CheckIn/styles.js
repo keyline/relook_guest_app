@@ -4,34 +4,56 @@ import { Colors } from '../../Utils/Colors'
 
 
 export const styles = StyleSheet.create({
+    mainContent: {
+        flex: 1,
+        backgroundColor: Colors.white,
+        paddingHorizontal: '3%',
+        marginTop: '2%',
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        // paddingBottom: '2%',
+        paddingTop: '6%',
+        // width: '100%'
+    },
     bodyContent: {
+        flex: 1,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        overflow: 'hidden',
         paddingHorizontal: '4%',
-        marginVertical: '4%',
-        flex:1
+        paddingVertical: '6%',
+        // flex:1
     },
     listContainer: {
-        backgroundColor: Colors.them_color,
-        paddingHorizontal: '5%',
+        backgroundColor: Colors.white,
+        paddingHorizontal: '2%',
         paddingVertical: '6%',
         borderRadius: 10,
-        flexDirection: 'row',
+        height: '30%',
+        // flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
-        elevation:6
+        marginBottom:'5%',
+        // justifyContent: 'space-between',
+        width: '47%',
+        elevation: 6
     },
     labelText: {
         fontFamily: Font_Family.NunitoSans_ExtraBold,
         color: Colors.highlight,
-        fontSize: 18
+        fontSize: 16,
+        marginTop: '4%',
+        textAlign: 'center'
     },
     descText: {
         fontFamily: Font_Family.NunitoSans_Regular,
         color: Colors.highlight,
-        fontSize: 12
+        fontSize: 12,
+        textAlign: 'center'
     },
-    arrow: {
-        width: 20,
-        height: 20,
+    icon: {
+        width: '70%',
+        height: '45%',
+        resizeMode: 'contain',
         tintColor: Colors.highlight
     },
     checkinContainer: {
@@ -43,9 +65,9 @@ export const styles = StyleSheet.create({
         // borderWidth:1
     },
     checkinText: {
-        fontFamily: Font_Family.NunitoSans_Bold,
-        color: Colors.highlight,
+        fontFamily: Font_Family.NunitoSans_SemiBold,
+        color: Colors.white,
         textAlign: 'center',
-        fontSize: 16
+        fontSize: 18
     },
 })

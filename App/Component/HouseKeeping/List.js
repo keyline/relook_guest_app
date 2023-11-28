@@ -17,12 +17,14 @@ const List = ({ item, onPress, onUpdateCart }) => {
                 <Image source={{ uri: item.image }} style={styles.img} />
             </View>
             <View style={styles.detailscontent}>
-                <Text style={[styles.nametext, { color: Colors.black }]}>{item.name}</Text>
-                <Text style={styles.desctext}>{item.details}</Text>
+                <View style={{ width: '65%', marginRight: '2%' }}>
+                    <Text style={[styles.nametext, { color: Colors.black }]}>{item.name}</Text>
+                    <Text style={styles.desctext}>{item.details}</Text>
+                </View>
                 {(item?.order_qty > 0) ?
-                    <View style={styles.modifyBtn}>
+                    <View style={[styles.modifyBtn, { borderColor: appData?.color_theme }]}>
                         <Text onPress={() => onUpdateCart(item, 'remove')} style={[styles.plusBtn, { color: appData?.color_theme }]}>-  </Text>
-                        <Text style={[styles.plusBtn, { color: appData?.color_theme, fontSize: 18 }]}>{item?.order_qty}</Text>
+                        <Text style={[styles.plusBtn, { color: Colors.black, fontSize: 16 }]}>{item?.order_qty}</Text>
                         {(item?.order_limit > item?.order_qty) ?
                             <Text onPress={() => onUpdateCart(item, 'add')} style={[styles.plusBtn, { color: appData?.color_theme }]}>  +</Text>
                             :
@@ -30,11 +32,11 @@ const List = ({ item, onPress, onUpdateCart }) => {
                         }
                     </View>
                     :
-                    <TouchableOpacity onPress={() => onUpdateCart(item, 'add')} disabled={!onUpdateCart} activeOpacity={0.5} style={styles.addBtn}>
+                    <TouchableOpacity onPress={() => onUpdateCart(item, 'add')} disabled={!onUpdateCart} activeOpacity={0.5} style={[styles.addBtn, { borderColor: appData?.color_theme }]}>
                         <Text style={[CommonStyle.boldtext, { color: appData?.color_theme, fontSize: 16 }]}>ADD</Text>
-                        <View style={{ position: 'absolute', top: -2, right: 5 }}>
+                        {/* <View style={{ position: 'absolute', top: -2, right: 5 }}>
                             <Text style={{ color: appData?.color_theme }}>+</Text>
-                        </View>
+                        </View> */}
                     </TouchableOpacity>
                 }
             </View>

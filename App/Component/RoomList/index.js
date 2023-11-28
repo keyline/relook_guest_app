@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, ScrollView, Image, TouchableOpacity, FlatList } from 'react-native'
+import { View, Text, SafeAreaView, ScrollView, Image, TouchableOpacity, FlatList, RefreshControl } from 'react-native'
 import React, { useContext, useCallback, useState } from 'react'
 import { CommonStyle } from '../../Utils/CommonStyle'
 import Header from '../../Container/Header'
@@ -115,26 +115,28 @@ const RoomList = ({ navigation, route }) => {
             />
             {(state.loading) ? <Loader loading={state.loading} /> :
                 <View style={styles.mainContent}>
-                    <ScrollView showsVerticalScrollIndicator={false}>
-                    <View style={[styles.bodyContent, { backgroundColor: appData?.color_theme }]}>
-                        <Image source={{ uri: state.data?.cover_image }} style={styles.imgBanner} />
-                        <View style={{ paddingHorizontal: '3%' }}>
-                            <View style={styles.locationContainer}>
-                                <Image source={ImagePath.location} style={[styles.location, { tintColor: Colors.white }]} />
-                                <View style={styles.locationContent}>
-                                    <Text style={[CommonStyle.headingText, { color: Colors.white, fontSize: 18 }]}>{state.data?.name}</Text>
-                                    <Text style={[CommonStyle.lightText, { color: Colors.white }]}> {state.data?.location}</Text>
+                    <ScrollView
+                        refreshControl={<RefreshControl refreshing={false} onRefresh={onGetData} />}
+                        showsVerticalScrollIndicator={false}>
+                        <View style={[styles.bodyContent, { backgroundColor: appData?.color_theme }]}>
+                            <Image source={{ uri: state.data?.cover_image }} style={styles.imgBanner} />
+                            <View style={{ paddingHorizontal: '3%' }}>
+                                <View style={styles.locationContainer}>
+                                    <Image source={ImagePath.location} style={[styles.location, { tintColor: Colors.white }]} />
+                                    <View style={styles.locationContent}>
+                                        <Text style={[CommonStyle.headingText, { color: Colors.white, fontSize: 18 }]}>{state.data?.name}</Text>
+                                        <Text style={[CommonStyle.lightText, { color: Colors.white }]}> {state.data?.location}</Text>
+                                    </View>
                                 </View>
-                            </View>
-                            <View style={[styles.border, { borderColor: Colors.white }]} />
-                            <View style={{ flex: 1, }}>
-                                <Text style={[CommonStyle.headingText, { textAlign: 'center', color: Colors.white, fontSize: 18 }]}>Room Type</Text>
-                                {(state.data?.room_type_list && state.data?.room_type_list.length > 0) && (
-                                    <View style={{ flex: 1, marginTop: '4%' }}>
-                                        {(state.data?.room_type_list).map((item, key) => (
-                                            <List key={key} item={item} onPress={onNext} onDetails={onShowModal} />
-                                        ))}
-                                        {/* <FlatList
+                                <View style={[styles.border, { borderColor: Colors.white }]} />
+                                <View style={{ flex: 1, }}>
+                                    <Text style={[CommonStyle.headingText, { textAlign: 'center', color: Colors.white, fontSize: 18 }]}>Room Type</Text>
+                                    {(state.data?.room_type_list && state.data?.room_type_list.length > 0) && (
+                                        <View style={{ flex: 1, marginTop: '4%' }}>
+                                            {(state.data?.room_type_list).map((item, key) => (
+                                                <List key={key} item={item} onPress={onNext} onDetails={onShowModal} />
+                                            ))}
+                                            {/* <FlatList
                                                 data={state.data?.room_type_list}
                                                 keyExtractor={(item, index) => item.room_id}
                                                 renderItem={({ item }) =>
@@ -143,11 +145,11 @@ const RoomList = ({ navigation, route }) => {
                                                 }
                                                 showsVerticalScrollIndicator={false}
                                             /> */}
-                                    </View>
-                                )}
+                                        </View>
+                                    )}
+                                </View>
                             </View>
                         </View>
-                    </View>
                     </ScrollView>
                 </View>
             }

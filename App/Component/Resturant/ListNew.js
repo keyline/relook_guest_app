@@ -64,7 +64,7 @@ const ListNew = ({ item, index, onUpdateCart }) => {
         <View style={{ backgroundColor: Colors.white, borderRadius: 10, paddingVertical: '2.5%', paddingHorizontal: '3%' }}>
             <TouchableOpacity onPress={onArrowPress} style={[styles.flex, { paddingVertical: '1%' }]} activeOpacity={0.5}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={ImagePath.veg} style={{ width: 20, height: 20 }} />
+                    {/* <Image source={ImagePath.veg} style={{ width: 20, height: 20 }} /> */}
                     <Text style={[CommonStyle.boldtext, { color: appData?.color_theme, fontSize: 16, width: '85%' }]}>  {item?.category_name}</Text>
                 </View>
                 <Image source={state.show ? ImagePath.arrow_up : ImagePath.arrow_down} style={[styles.arrow, { tintColor: appData?.color_theme }]} />

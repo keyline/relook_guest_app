@@ -4,39 +4,84 @@ import { Colors } from '../../Utils/Colors';
 
 
 export const styles = StyleSheet.create({
+    mainContent: {
+        flex: 1,
+        backgroundColor: Colors.white,
+        paddingHorizontal: '3%',
+        marginTop: '2%',
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        paddingBottom: '2%',
+        paddingTop: '6%',
+        // width: '100%'
+    },
+    bodyContainer: {
+        flex: 1,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        overflow: 'hidden',
+        // paddingBottom:100
+        // paddingVertical:'2%'
+        // paddingHorizontal: '2%',
+        // marginVertical: '1%'
+    },
+    bannerImage: {
+        width: '100%',
+        height: 120,
+        resizeMode: 'cover',
+        // alignSelf: 'center',
+        //    borderRadius:5 
+    },
+    icon: {
+        width: '50%',
+        height: 50,
+        alignSelf: 'center',
+        resizeMode: 'contain',
+        marginVertical: '2%'
+    },
     bodyContent: {
         flex: 1,
-        paddingHorizontal: '4%',
-        marginTop: '2%',
-        marginBottom: 65,
+        marginHorizontal: '2%',
+        paddingHorizontal: '2%',
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+        marginTop: '0%',
+        paddingBottom: 65,
+        backgroundColor: Colors.white
     },
     listContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingVertical: '2%',
-        // width:'100%'
+        paddingVertical: '3%',
+        // width:'100%',
+        overflow: 'hidden'
+
     },
     imgcontainer: {
-        width: '30%'
+        width: '20%'
     },
     img: {
         width: '100%',
-        height: 100,
-        resizeMode: 'stretch'
+        height: 50,
+        resizeMode: 'contain'
     },
     detailscontent: {
-        marginLeft: '4%',
-        width: '60%'
+        marginLeft: '1%',
+        width: '75%',
+        flexDirection:'row',
+        alignItems:'center',
+        justifyContent:'space-between'
+        // backgroundColor: 'blue'
     },
     nametext: {
         fontFamily: Font_Family.NunitoSans_ExtraBold,
         color: Colors.them_color,
-        fontSize: 16
+        fontSize: 14
     },
     desctext: {
         fontFamily: Font_Family.NunitoSans_Regular,
         fontSize: 12,
-        color: Colors.black
+        color: Colors.grey
     },
     pricetext: {
         fontFamily: Font_Family.NunitoSans_ExtraBold,
@@ -84,12 +129,15 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginBottom: '4%'
+        marginBottom: '4%',
+        borderWidth: 1.5,
+        borderColor: Colors.white
+        // marginTop: '2%'
     },
     searchIcon: {
         width: 20,
         height: 20,
-        tintColor: 'black'
+        tintColor: Colors.white
     },
     btmContainer: {
         backgroundColor: 'red',
@@ -97,50 +145,49 @@ export const styles = StyleSheet.create({
         bottom: 0,
         right: 0,
         left: 0,
-        paddingVertical: '2%',
+        paddingVertical: '3%',
         paddingHorizontal: '4%',
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        borderTopWidth:1,
+        borderColor:Colors.light_gery,
+        // elevation:20
     },
     cartbtn: {
         backgroundColor: Colors.white,
-        paddingHorizontal: '3%',
-        paddingVertical: '2%',
-        borderRadius: 5,
+        paddingHorizontal: '4%',
+        paddingVertical: '2.5%',
+        borderRadius: 30,
         borderWidth: 1,
         borderColor: Colors.light_gery,
         elevation: 2
     },
     addBtn: {
-        borderWidth: 1,
+        borderWidth: 1.2,
         // paddingHorizontal: '6%',
         width: 90,
-        paddingVertical: '4%',
+        paddingVertical: '2%',
         alignItems: 'center',
         justifyContent: 'center',
         // height:40,
-        borderRadius: 5,
+        borderRadius: 20,
         borderColor: Colors.grey,
-        backgroundColor: Colors.light_gery,
-        flexDirection: 'row',
-        alignSelf:'flex-end',
-        marginTop:'4%'
+        backgroundColor: Colors.white,
+        flexDirection: 'row'
     },
     modifyBtn: {
-        borderWidth: 1,
-        paddingHorizontal: '2%',
+        borderWidth: 1.2,
+        paddingHorizontal: '6%',
         width: 90,
-        paddingVertical: '1.5%',
+        paddingVertical: '0.4%',
         // height:40,
-        borderRadius: 5,
+        borderRadius: 20,
         borderColor: Colors.grey,
-        backgroundColor: Colors.light_gery,
+        backgroundColor: Colors.white,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center',
-        alignSelf:'flex-end',
-        marginTop:'4%'
+        alignItems: 'center'
     },
     plusBtn: {
         fontFamily: Font_Family.NunitoSans_ExtraBold,
