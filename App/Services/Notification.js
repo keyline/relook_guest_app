@@ -20,6 +20,7 @@ export const Notification = async (title, body, data) => {
         await notifee.displayNotification({
             title: title,
             body: body,
+            id:'relook_guest',
             data: data ? data : {},
             android: {
                 channelId,

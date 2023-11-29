@@ -6,7 +6,7 @@ import { CommonStyle } from '../../Utils/CommonStyle'
 import { Colors } from '../../Utils/Colors'
 import AuthContext from '../../Services/Context'
 
-const InputField = ({ name, headingColor, width, value, borderColor, keyboardType, secureTextEntry, multiline, onChangeText, editable, leftIcon, rightIcon, rightonPress, placeholder, error }) => {
+const InputField = ({ name, headingColor, maxLength, width, value, borderColor, keyboardType, secureTextEntry, multiline, onChangeText, editable, leftIcon, rightIcon, rightonPress, placeholder, error }) => {
 
     const context = useContext(AuthContext);
     const appData = context.allData.appData
@@ -29,6 +29,7 @@ const InputField = ({ name, headingColor, width, value, borderColor, keyboardTyp
                     secureTextEntry={secureTextEntry ? secureTextEntry : false}
                     keyboardType={keyboardType ? keyboardType : 'default'}
                     style={styles.input}
+                    maxLength={maxLength ? maxLength : undefined}
                     placeholderTextColor={'grey'}
                 />
                 {(rightIcon) && (

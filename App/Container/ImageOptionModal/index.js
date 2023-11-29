@@ -15,7 +15,7 @@ const ImageOptionModal = ({ isVisible, onModalHide, onMenuPress }) => {
     const menuList = [
         { id: 1, name: 'Camera', icon: ImagePath.camera },
         { id: 2, name: 'Gallery', icon: ImagePath.gallery },
-        { id: 3, name: 'Cancle', icon: ImagePath.close },
+        { id: 3, name: 'Cancel', icon: ImagePath.close },
     ]
 
     // const onPress = useCallback(async (item) => {

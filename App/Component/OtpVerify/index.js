@@ -61,7 +61,7 @@ const OtpVerify = ({ navigation, route }) => {
             }
         }, 1000) //each count lasts for a second
         return () => clearInterval(interval)
-    }, []);
+    }, [timer]);
 
     const onBack = useCallback(async () => {
         navigation.goBack();
@@ -97,6 +97,9 @@ const OtpVerify = ({ navigation, route }) => {
             const response = await Apis.sign_up(datas)
             if (__DEV__) {
                 console.log('ResendOTPResponse', JSON.stringify(response))
+            }
+            if (response.status) {
+                setTimer(60)
             }
             setState(prev => ({
                 ...prev,

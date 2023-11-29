@@ -34,6 +34,16 @@ export const dateConvertYear = (value) => {
     }
 }
 
+export const convertDateFormat = (inputDate) => {
+    // Split the date into day, month, and year
+    const dateComponents = inputDate.split('-');
+
+    // Rearrange the components in 'yyyy-mm-dd' format
+    const outputDate = `${dateComponents[2]}-${dateComponents[1]}-${dateComponents[0]}`;
+
+    return outputDate;
+}
+
 export const ToastMessage = (message, type) => {
     Toast.show(message, type == 'short' ? Toast.SHORT : Toast.LONG);
 }

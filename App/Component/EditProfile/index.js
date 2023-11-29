@@ -4,7 +4,7 @@ import { CommonStyle } from '../../Utils/CommonStyle'
 import { ImagePath } from '../../Utils/ImagePath'
 import Header from '../../Container/Header'
 import { useFocusEffect } from '@react-navigation/native'
-import { ToastError, ToastMessage, onLunchCamera, onLunchLibary } from '../../Services/CommonFunction'
+import { ToastError, ToastMessage, convertDateFormat, dateConvertNew, dateConvertYear, onLunchCamera, onLunchLibary } from '../../Services/CommonFunction'
 import { KEY, SOURCE } from '../../Services/Constant'
 import Apis from '../../Services/Apis'
 import { styles } from './styles'
@@ -13,6 +13,8 @@ import InputField from '../../Container/InputField'
 import SingleBottom from '../../Container/SingleBottom'
 import LoaderNew from '../../Container/LoaderNew'
 import ImageOptionModal from '../../Container/ImageOptionModal'
+import DateTimePickers from '../../Container/DateTimePickers'
+import { isValidEmail } from '../../Services/Valid'
 
 const EditProfile = ({ navigation }) => {
 
@@ -31,6 +33,9 @@ const EditProfile = ({ navigation }) => {
         emailErr: '',
         phnno: '',
         phnnoErr: '',
+        dob: '',
+        dobErr: '',
+        datePicker: false,
         image: '',
         modalVisible: false
     })
@@ -43,6 +48,7 @@ const EditProfile = ({ navigation }) => {
     )
 
     const onGetData = useCallback(async () => {
+        // console.log('dateConvert', convertDateFormat('22-11-2023'))
         if (userProfile) {
             let value = userProfile
             setState(prev => ({
@@ -51,6 +57,7 @@ const EditProfile = ({ navigation }) => {
                 lname: value?.last_name,
                 email: value?.email,
                 phnno: value?.phone,
+                dob: value.dob ? value.dob : '',
                 data: value,
                 loading: false
             }))
@@ -76,6 +83,7 @@ const EditProfile = ({ navigation }) => {
                         lname: value?.last_name,
                         email: value?.email,
                         phnno: value?.phone,
+                        dob: value?.dob,
                         data: value,
                         loading: false
                     }))
@@ -117,6 +125,14 @@ const EditProfile = ({ navigation }) => {
         }))
     }, [state.lname])
 
+    const onChangeEmail = useCallback(async (val) => {
+        setState(prev => ({
+            ...prev,
+            email: val,
+            emailErr: ''
+        }))
+    }, [state.email])
+
     const onChangePhnno = useCallback(async (val) => {
         setState(prev => ({
             ...prev,
@@ -135,11 +151,19 @@ const EditProfile = ({ navigation }) => {
                 ...prev,
                 fnameErr: 'Enter First Name'
             }))
-        } else if (state.lname.trim() == '') {
+        }
+        // else if (state.lname.trim() == '') {
+        //     setState(prev => ({
+        //         ...prev,
+        //         lnameErr: 'Enter Last Name'
+        //     }))
+        // } 
+        else if (state.email && !isValidEmail(state.email)) {
             setState(prev => ({
                 ...prev,
-                lnameErr: 'Enter Last Name'
+                emailErr: 'Enter Valid Email'
             }))
+            return;
         } else if (state.phnno.trim() == '') {
             setState(prev => ({
                 ...prev,
@@ -156,7 +180,9 @@ const EditProfile = ({ navigation }) => {
                     source: SOURCE,
                     first_name: state.fname,
                     last_name: state.lname,
-                    phone: state.phnno
+                    phone: state.phnno,
+                    email: state.email ? state.email : '',
+                    dob: state.dob ? state.dob : ''
                 }
                 const res = await Apis.profile_update(datas)
                 if (__DEV__) {
@@ -266,6 +292,30 @@ const EditProfile = ({ navigation }) => {
         }
     })
 
+    const onOpenDatePicker = useCallback(async () => {
+        setState(prev => ({
+            ...prev,
+            datePicker: true
+        }))
+    }, [state.datePicker])
+
+    const onDateChng = useCallback(async (value) => {
+        let time = value?.nativeEvent?.timestamp;
+        if (value.type == 'set') {
+            setState(prev => ({
+                ...prev,
+                dob: dateConvertNew(time),
+                dobErr: '',
+                datePicker: false
+            }))
+        } else {
+            setState(prev => ({
+                ...prev,
+                datePicker: false
+            }))
+        }
+    })
+
     return (
         <SafeAreaView style={CommonStyle.container}>
             <Header
@@ -273,7 +323,7 @@ const EditProfile = ({ navigation }) => {
                 leftonPress={onLeftMenu}
             />
             {(state.data) && (
-                <ScrollView>
+                <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={styles.bodyContent}>
                         <Text style={[CommonStyle.headingText, { marginBottom: '2%', textAlign: 'center', color: appData.color_theme }]}>Edit Profile</Text>
                         <View style={styles.headingContent}>
@@ -303,12 +353,11 @@ const EditProfile = ({ navigation }) => {
                             />
                             <InputField
                                 name={'Email'}
-                                // value={state.email}
+                                value={state.email}
                                 placeholder={state.email}
-                                // onChangeText={onChangeEmail}
+                                onChangeText={onChangeEmail}
                                 leftIcon={ImagePath.email}
                                 error={state.emailErr}
-                                editable={false}
                             />
                             <InputField
                                 name={'Phone No'}
@@ -316,7 +365,17 @@ const EditProfile = ({ navigation }) => {
                                 onChangeText={onChangePhnno}
                                 leftIcon={ImagePath.call}
                                 keyboardType={'phone-pad'}
+                                editable={false}
                                 error={state.phnnoErr}
+                            />
+                            <InputField
+                                name={'Date of Birth'}
+                                value={state.dob}
+                                leftIcon={ImagePath.calendar}
+                                rightIcon={ImagePath.calendar}
+                                editable={false}
+                                rightonPress={onOpenDatePicker}
+                                error={state.dobErr}
                             />
                         </View>
                         <View>
@@ -337,6 +396,15 @@ const EditProfile = ({ navigation }) => {
                 onModalHide={onModalHide}
                 onMenuPress={onModalItemPress}
             />
+            {(state.datePicker) && (
+                <DateTimePickers
+                    value={state?.dob ? new Date(convertDateFormat(state.dob)) : new Date()}
+                    // value={new Date()}
+                    mode={'date'}
+                    maximumDate={new Date()}
+                    onConfirm={onDateChng}
+                />
+            )}
         </SafeAreaView>
     )
 }

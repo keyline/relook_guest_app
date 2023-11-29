@@ -2,7 +2,7 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-const DateTimePickers = ({ value, mode, onConfirm, minimumDate, disabled }) => {
+const DateTimePickers = ({ value, mode, onConfirm, minimumDate, maximumDate, disabled }) => {
     return (
         <View>
             <DateTimePicker
@@ -10,6 +10,7 @@ const DateTimePickers = ({ value, mode, onConfirm, minimumDate, disabled }) => {
                 onChange={(date) => onConfirm(date)}
                 // disabled={true}
                 minimumDate={minimumDate ? minimumDate : null}
+                maximumDate={maximumDate ? maximumDate : null}
                 mode={mode}
             />
         </View>

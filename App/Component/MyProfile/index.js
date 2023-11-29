@@ -87,7 +87,7 @@ const MyProfile = ({ navigation }) => {
     const menuList = [
         { id: 1, name: 'Edit Profile', screen: 'EditProfile', logo: ImagePath.edit_profile },
         // { id: 2, name: 'My Booking', screen: 'MyBooking', logo: ImagePath.booking },
-        { id: 3, name: 'Change Password', screen: 'ChangePassword', logo: ImagePath.lock },
+        // { id: 3, name: 'Change Password', screen: 'ChangePassword', logo: ImagePath.lock },
         { id: 4, name: 'Sign Out', screen: 'SignOut', logo: ImagePath.logout },
     ]
 
@@ -173,8 +173,8 @@ const MyProfile = ({ navigation }) => {
     return (
         <SafeAreaView style={CommonStyle.container}>
             <Header
-                leftIcon={ImagePath.menu}
-                leftonPress={onLeftMenu}
+            // leftIcon={ImagePath.menu}
+            // leftonPress={onLeftMenu}
             />
             {/* {(state.loading) ? <Loader loading={true} /> : */}
             {(state.data) && (

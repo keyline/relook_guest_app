@@ -112,6 +112,7 @@ const LoginWithOTP = ({ navigation }) => {
                             onChangeText={onChangePhnno}
                             leftIcon={ImagePath.phone}
                             error={state.phnnoErr}
+                            maxLength={10}
                             keyboardType={'phone-pad'}
                         />
                         <View style={styles.btnContainer}>
