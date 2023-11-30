@@ -43,7 +43,7 @@ const Booking = ({ navigation, route }) => {
         roomErr: '',
         adults: '',
         adultsErr: '',
-        child: '',
+        child: 0,
         childErr: '',
         roomtype: '',
         roomtypeErr: '',
@@ -95,20 +95,23 @@ const Booking = ({ navigation, route }) => {
     )
 
     useEffect(() => {
-        startOtpListener(message => {
-            // extract the otp using regex e.g. the below regex extracts 4 digit otp from message
-            if (message) {
-                const otp = /(\d{4})/g.exec(message)[1];
-                setState(prev => ({
-                    ...prev,
-                    otp: otp
-                }))
-                onSubmitOTP(otp, state.phnno);
-            }
-        });
+        startOtpListener(handelOtp);
 
         return () => removeListener();
-    }, [navigation, state]);
+    }, []);
+
+    const handelOtp = useCallback((message) => {
+        if (message) {
+            let otps = /(\d{4})/g.exec(message)[1];
+            if (otps) {
+                setState(prev => ({
+                    ...prev,
+                    otp: otps
+                }))
+                // onSubmitOTP(otps);
+            }
+        }
+    })
 
     // useEffect(() => {
     //     const interval = setInterval(() => {
@@ -251,7 +254,7 @@ const Booking = ({ navigation, route }) => {
             phnno: val,
             phnnoErr: ''
         }))
-    }, [state.phnno])
+    })
 
     const onChangeFname = useCallback(async (val) => {
         setState(prev => ({
@@ -347,13 +350,15 @@ const Booking = ({ navigation, route }) => {
                 fnameErr: 'Enter First Name'
             }))
             return
-        } else if (state.lname.trim() == '') {
-            setState(prev => ({
-                ...prev,
-                lnameErr: 'Enter Last Name'
-            }))
-            return
-        } else if (state.phnno.trim() == '') {
+        }
+        // else if (state.lname.trim() == '') {
+        //     setState(prev => ({
+        //         ...prev,
+        //         lnameErr: 'Enter Last Name'
+        //     }))
+        //     return
+        // } 
+        else if (state.phnno.trim() == '') {
             setState(prev => ({
                 ...prev,
                 phnnoErr: 'Enter Phone No'
@@ -375,7 +380,7 @@ const Booking = ({ navigation, route }) => {
                     console.log('SendOtp', JSON.stringify(res))
                 }
                 if (res.status) {
-                    if(type == 'send'){
+                    if (type == 'send') {
                         setTimer(60)
                     }
                     setState(prev => ({
@@ -383,7 +388,7 @@ const Booking = ({ navigation, route }) => {
                         otpView: true,
                         loading: false
                     }))
-                    if(type == 'send'){
+                    if (type == 'send') {
                         resendTimer();
                     }
                 } else {
@@ -404,6 +409,9 @@ const Booking = ({ navigation, route }) => {
     })
 
     const onSubmitOTP = useCallback(async (otp = state.otp) => {
+        // console.log('otp', otp)
+        // console.log('phone', state.phnno)
+        // return
         if (otp == '') {
             ToastMessage('Enter OTP');
             return
@@ -485,8 +493,13 @@ const Booking = ({ navigation, route }) => {
                     ...prev,
                     loadingNew: false
                 }))
+            } else {
+                setState(prev => ({
+                    ...prev,
+                    loadingNew: false
+                }))
+                ToastMessage(res?.message);
             }
-            ToastMessage(res?.message);
         } catch (error) {
             ToastError();
             setState(prev => ({
@@ -653,7 +666,7 @@ const Booking = ({ navigation, route }) => {
                                     codeInputFieldStyle={[styles.underlineStyleBase, { color: appData?.color_theme }]}
                                     codeInputHighlightStyle={[styles.underlineStyleHighLighted, { borderColor: appData?.color_theme }]}
                                     placeholderTextColor={Colors.black}
-                                // onCodeFilled={(code) => onSubmitOtp(code)}
+                                    onCodeFilled={(code) => onSubmitOTP(code)}
                                 />
 
                             </View>

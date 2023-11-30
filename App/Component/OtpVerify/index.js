@@ -40,16 +40,17 @@ const OtpVerify = ({ navigation, route }) => {
 
         startOtpListener(message => {
             // extract the otp using regex e.g. the below regex extracts 4 digit otp from message
-            const otp = /(\d{4})/g.exec(message)[1];
-            setState(prev => ({
-                ...prev,
-                otp: otp
-            }))
-            onSubmit(otp);
+            if (message) {
+                const otp = /(\d{4})/g.exec(message)[1];
+                setState(prev => ({
+                    ...prev,
+                    otp: otp
+                }))
+                onSubmit(otp);
+            }
         });
-
         return () => removeListener();
-    }, []);
+    }, [navigation]);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -264,8 +265,8 @@ const OtpVerify = ({ navigation, route }) => {
                     <View style={styles.logoContainer}>
                         <Image source={{ uri: appData?.site_logo }} style={styles.logo} />
                     </View>
-                    <Text style={[CommonStyle.headingText, { marginBottom: '1%', textAlign: 'center', color: Colors.white }]}>OTP</Text>
-                    <Text style={styles.subtext}>Check Your Mobile/Email for OTP</Text>
+                    <Text style={[CommonStyle.headingText, { marginBottom: '10%', textAlign: 'center', color: Colors.white }]}>OTP</Text>
+                    {/* <Text style={styles.subtext}>Check Your Mobile/Email for OTP</Text> */}
                     <View style={styles.mainContent}>
                         <View style={{ flex: 1 }}>
                             <Text style={[CommonStyle.boldtext, { marginBottom: '8%', color: Colors.black, textAlign: 'center' }]}>Enter OTP</Text>
