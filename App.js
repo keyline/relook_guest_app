@@ -27,6 +27,46 @@ const App = () => {
     bookingDetail: null
   })
 
+  const onBookingCheck = useCallback(async () => {
+    try {
+      let datas = {
+        key: KEY,
+        source: SOURCE
+      }
+      const response = await Apis.booking_check(datas)
+      if (__DEV__) {
+        console.log('bookingCheckAppjs', JSON.stringify(response))
+      }
+      if (response.status) {
+        if (response?.data?.booking_exist) {
+          setState(prev => ({
+            ...prev,
+            bookingDetail: response?.data
+          }))
+          // await onClearStoreData();
+        } else {
+          setState(prev => ({
+            ...prev,
+            bookingDetail: null
+          }))
+        }
+      } else {
+        setState(prev => ({
+          ...prev,
+          bookingDetail: null
+        }))
+      }
+    } catch (error) {
+      if (__DEV__) {
+        console.log(error)
+      }
+      setState(prev => ({
+        ...prev,
+        bookingDetail: null
+      }))
+    }
+  })
+
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       if (__DEV__) {

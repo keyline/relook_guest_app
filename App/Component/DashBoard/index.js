@@ -81,6 +81,10 @@ const DashBoard = ({ navigation }) => {
                     }))
 
                 } else {
+                    await context.setData(prev => ({
+                        ...prev,
+                        bookingDetail: null
+                    }))
                     onGetData();
                 }
             } else {
@@ -185,7 +189,7 @@ const DashBoard = ({ navigation }) => {
                                         <List item={item} onPress={onBookNow} appdata={appData} index={index} />
                                     }
                                     ItemSeparatorComponent={ItemSeperator}
-                                    refreshControl={<RefreshControl refreshing={false} onRefresh={onGetData} />}
+                                    refreshControl={<RefreshControl refreshing={false} onRefresh={onLoad} />}
                                 />
                             )}
                         </View>

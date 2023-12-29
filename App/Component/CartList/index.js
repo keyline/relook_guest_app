@@ -81,6 +81,9 @@ const CartList = ({ navigation, route }) => {
                     ...prev,
                     loading: false
                 }))
+                if (response.message && response.message == 'Booking not found.Please login again.') {
+                    navigation.replace('DashBoard')
+                }
                 ToastMessage(response?.message);
             }
         } catch (error) {
@@ -267,6 +270,10 @@ const CartList = ({ navigation, route }) => {
             }
             if (res.status) {
                 navigation.replace('OrderList')
+            } else {
+                if (res.message && res.message == 'Booking not found.Please login again.') {
+                    navigation.replace('DashBoard')
+                }
             }
             setState(prev => ({
                 ...prev,
@@ -367,11 +374,13 @@ const CartList = ({ navigation, route }) => {
                         )}
                     </View>
                 </ScrollView>
-                <View style={styles.orderBtmContainer}>
-                    <TouchableOpacity onPress={onContinue} activeOpacity={0.5} style={[styles.orderBtm, { backgroundColor: appData?.color_theme }]}>
-                        <Text style={[CommonStyle.boldtext, { color: Colors.white }]}>CONTINUE ORDERING</Text>
-                    </TouchableOpacity>
-                </View>
+                {/* {(state.data && state.data.length > 0) && ( */}
+                    <View style={styles.orderBtmContainer}>
+                        <TouchableOpacity onPress={onContinue} activeOpacity={0.5} style={[styles.orderBtm, { backgroundColor: appData?.color_theme }]}>
+                            <Text style={[CommonStyle.boldtext, { color: Colors.white }]}>CONTINUE ORDERING</Text>
+                        </TouchableOpacity>
+                    </View>
+                {/* )} */}
             </View>
             {(state.loading) && (
                 <LoaderNew loading={state.loading} />

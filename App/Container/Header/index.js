@@ -11,7 +11,7 @@ const Header = ({ leftIcon, leftonPress, rightIcon, rightonPress }) => {
     const navigation = useNavigation();
 
     const context = useContext(AuthContext);
-    const { appData, isLogin } = context.allData
+    const { appData, isLogin, userProfile, bookingDetail } = context.allData
 
     const onPressLogo = useCallback(async () => {
         navigation.navigate('DashBoard');
@@ -42,6 +42,14 @@ const Header = ({ leftIcon, leftonPress, rightIcon, rightonPress }) => {
                 </TouchableOpacity>
             </View>
             <View style={styles.flex}>
+                {(isLogin && userProfile) && (
+                    <View style={styles.detailsContainer}>
+                        <Text style={styles.nametext}>Hi, {userProfile?.first_name}</Text>
+                        {(bookingDetail) && (
+                            <Text style={styles.desctext}>Room : {bookingDetail?.room_no}</Text>
+                        )}
+                    </View>
+                )}
                 <TouchableOpacity onPress={onRightPress} activeOpacity={0.5} style={{ marginRight: 20 }}>
                     <Image source={ImagePath.user} style={[styles.righticon, { tintColor: Colors.white }]} />
                 </TouchableOpacity>

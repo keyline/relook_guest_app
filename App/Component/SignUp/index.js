@@ -137,13 +137,15 @@ const SignUp = ({ navigation, route }) => {
         fnameErr: 'Enter First Name'
       }))
       return;
-    } else if (state.lname.trim() == '') {
-      setState(prev => ({
-        ...prev,
-        lnameErr: 'Enter Last Name'
-      }))
-      return;
-    } else if (state.email && !isValidEmail(state.email)) {
+    } 
+    // else if (state.lname.trim() == '') {
+    //   setState(prev => ({
+    //     ...prev,
+    //     lnameErr: 'Enter Last Name'
+    //   }))
+    //   return;
+    // } 
+    else if (state.email && !isValidEmail(state.email)) {
       setState(prev => ({
         ...prev,
         emailErr: 'Enter Valid Email'
