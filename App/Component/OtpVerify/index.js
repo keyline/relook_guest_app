@@ -28,7 +28,7 @@ const OtpVerify = ({ navigation, route }) => {
         otp: '',
         otpErr: 'err'
     })
-    const [timer, setTimer] = useState(60)
+    const [timer, setTimer] = useState(30)
 
     const params = route?.params?.data
 
@@ -100,7 +100,7 @@ const OtpVerify = ({ navigation, route }) => {
                 console.log('ResendOTPResponse', JSON.stringify(response))
             }
             if (response.status) {
-                setTimer(60)
+                setTimer(30)
             }
             setState(prev => ({
                 ...prev,
