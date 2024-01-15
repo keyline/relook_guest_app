@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { Colors } from "../Utils/Colors";
+import { Font_Family } from "../Utils/Fonts";
 
 export const styles = StyleSheet.create({
     drawerTopContent: {
@@ -46,5 +47,13 @@ export const styles = StyleSheet.create({
     contactlogo: {
         width: 25,
         height: 25
+    },
+    versionContainer: {
+        alignSelf: 'center',
+        paddingVertical: '4%'
+    },
+    versionText: {
+        fontFamily: Font_Family.NunitoSans_Regular,
+        fontSize: 12
     }
 })

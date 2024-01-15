@@ -26,7 +26,8 @@ const App = () => {
     accesstoken: null,
     appData: null,
     userProfile: null,
-    bookingDetail: null
+    bookingDetail: null,
+    appVersion: '1.0'
   })
   const appState = useRef(AppState.currentState);
 
@@ -51,6 +52,12 @@ const App = () => {
       .then(async res => {
         if (__DEV__) {
           console.log('UpdateChecker', JSON.stringify(res))
+        }
+        if (res?.currentVersion) {
+          setState(prev => ({
+            ...prev,
+            appVersion: res?.currentVersion
+          }))
         }
         if (res?.isNeeded && res?.storeUrl) {
           Alert.alert(

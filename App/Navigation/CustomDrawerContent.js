@@ -16,7 +16,7 @@ import { getStoreFcmToken } from '../Services/AsyncStorage';
 const CustomDrawerContent = (props) => {
 
     const context = useContext(AuthContext);
-    const { appData, accesstoken, isLogin, userProfile } = context.allData
+    const { appData, accesstoken, isLogin, userProfile, appVersion } = context.allData
 
     const [state, setState] = useState({
         loading: false,
@@ -84,7 +84,7 @@ const CustomDrawerContent = (props) => {
         { id: 2, name: 'My Profile', screen: 'MyProfile', icon: ImagePath.user, logiReq: true },
         // { id: 3, name: 'Cart', screen: 'CartList', icon: ImagePath.cart, logiReq: true },
         { id: 4, name: 'My Order', screen: 'OrderList', icon: ImagePath.cart, logiReq: true },
-       
+
         // { id: 1, name: 'Home', screen: 'DashBoard', icon: ImagePath.home, logiReq: false },
     ]
 
@@ -95,7 +95,7 @@ const CustomDrawerContent = (props) => {
             navigationRef.navigate('MyProfile')
         } else if (item.screen == 'CartList') {
             navigationRef.navigate('CartList')
-        }else if (item.screen == 'OrderList') {
+        } else if (item.screen == 'OrderList') {
             navigationRef.navigate('OrderList')
         }
 
@@ -200,6 +200,11 @@ const CustomDrawerContent = (props) => {
                     style={{ marginVertical: 0 }}
                 />
             </DrawerContentScrollView>
+            {(appVersion) && (
+                <View style={styles.versionContainer}>
+                    <Text style={[styles.versionText, { color: appData?.color_theme }]}>Version {appVersion}</Text>
+                </View>
+            )}
             {(state.loading) && (
                 <LoaderNew loading={state.loading} />
             )}
