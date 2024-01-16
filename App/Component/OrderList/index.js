@@ -59,7 +59,7 @@ const OrderList = ({ navigation, route }) => {
 
     const [state, setState] = useState({
         loading: false,
-        data: null
+        data: []
     })
 
     useFocusEffect(
@@ -135,29 +135,29 @@ const OrderList = ({ navigation, route }) => {
     }
 
     return (
-        <SafeAreaView style={[CommonStyle.container,{backgroundColor:appData?.color_theme}]}>
+        <SafeAreaView style={[CommonStyle.container, { backgroundColor: appData?.color_theme }]}>
             <Header
-                // leftIcon={params ? ImagePath.back_new : ImagePath.menu}
-                // leftonPress={onLeftMenu}
-                // rightIcon={ImagePath.bell}
+            // leftIcon={params ? ImagePath.back_new : ImagePath.menu}
+            // leftonPress={onLeftMenu}
+            // rightIcon={ImagePath.bell}
             />
             <View style={styles.mainContent}>
-            <View style={[styles.bodyContent,{backgroundColor:appData?.color_theme}]}>
-                <Text style={[CommonStyle.headingText, { marginBottom: '6%', textAlign: 'center', color: Colors.white }]}>My Orders</Text>
-                <View style={{ flex: 1 }}>
-                    <FlatList
-                        data={state.data}
-                        keyExtractor={(item, index) => item.id}
-                        renderItem={({ item, index }) =>
-                            <List items={item} index={index} />
-                        }
-                        showsVerticalScrollIndicator={false}
-                        ItemSeparatorComponent={ItemSeperatorNew}
-                        refreshControl={<RefreshControl refreshing={false} onRefresh={onGetData} />}
-                        ListEmptyComponent={<EmptyContent word={'No Order Found'} />}
-                    />
+                <View style={[styles.bodyContent, { backgroundColor: appData?.color_theme }]}>
+                    <Text style={[CommonStyle.headingText, { marginBottom: '6%', textAlign: 'center', color: Colors.white }]}>My Orders</Text>
+                    <View style={{ flex: 1 }}>
+                        <FlatList
+                            data={state.data}
+                            keyExtractor={(item, index) => item.id}
+                            renderItem={({ item, index }) =>
+                                <List items={item} length={state.data.length} index={index} />
+                            }
+                            showsVerticalScrollIndicator={false}
+                            ItemSeparatorComponent={ItemSeperatorNew}
+                            refreshControl={<RefreshControl refreshing={false} onRefresh={onGetData} />}
+                            ListEmptyComponent={<EmptyContent word={'No Order Found'} />}
+                        />
+                    </View>
                 </View>
-            </View>
             </View>
             {(state.loading) && (
                 <LoaderNew loading={state.loading} />

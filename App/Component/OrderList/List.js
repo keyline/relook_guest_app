@@ -6,7 +6,7 @@ import { CommonStyle } from '../../Utils/CommonStyle';
 import { Colors } from '../../Utils/Colors';
 import { ImagePath } from '../../Utils/ImagePath';
 
-const List = ({ items, index }) => {
+const List = ({ items, length, index }) => {
 
     const context = useContext(AuthContext);
     const { appData, accesstoken, isLogin } = context.allData
@@ -68,7 +68,7 @@ const List = ({ items, index }) => {
     return (
         <View style={styles.listContainer}>
             <TouchableOpacity onPress={onShowChange} activeOpacity={0.5} style={styles.listHeader}>
-                <Text style={[CommonStyle.boldtext, { color: appData?.color_theme, fontWeight: 'bold' }]}>ORDER ID: {index + 1}</Text>
+                <Text style={[CommonStyle.boldtext, { color: appData?.color_theme, fontWeight: 'bold' }]}>ORDER ID: {length - index}</Text>
                 <View style={styles.flex}>
                     <Text style={[CommonStyle.boldtext, { color: getColor(items.status), fontWeight: 'bold', marginRight: 10 }]}>{items?.status}</Text>
                     <Image source={show ? ImagePath.arrow_up : ImagePath.arrow_down} style={styles.arrow} />
