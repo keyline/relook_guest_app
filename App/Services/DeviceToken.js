@@ -38,7 +38,9 @@ export const getFcmPermission = async () => {
 
 export const getFcmToken = async () => {
     try {
-        await messaging().registerDeviceForRemoteMessages();
+        if (Platform.OS == 'android') {
+            await messaging().registerDeviceForRemoteMessages();
+        }
         const fcmToken = await messaging().getToken();
         await setFcmToken(fcmToken);
         // await AsyncStorage.setItem('fcmToken', fcmToken);

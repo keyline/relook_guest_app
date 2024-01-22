@@ -1,7 +1,8 @@
 import { StyleSheet, Dimensions } from "react-native";
 import { Colors } from "../../Utils/Colors";
-const screenHeight = Dimensions.get('window').height;
 
+const screenHeight = Dimensions.get('window').height;
+const {width,height} = Dimensions.get('window')
 
 export const styles = StyleSheet.create({
     mainContent: {
@@ -27,6 +28,7 @@ export const styles = StyleSheet.create({
     imgBanner: {
         width: '100%',
         height: 140,
+        // height:height*0.2,
         resizeMode: 'stretch',
         // alignSelf: 'center',
         //    borderRadius:5 
@@ -34,7 +36,9 @@ export const styles = StyleSheet.create({
     img: {
         width: '100%',
         height: '100%',
-        resizeMode: 'cover',
+        // width:width*0.3,
+        // height:width*0.3,
+        // resizeMode: 'cover',
         // alignSelf: 'center',
         //    borderRadius:5 
     },
@@ -148,9 +152,10 @@ export const styles = StyleSheet.create({
         // elevation: 0.5
     },
     listLeftContent: {
-        width: '35%',
+        // width: '35%',
+        width:width*0.3,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     listRightContent: {
         width: '60%',
@@ -161,7 +166,11 @@ export const styles = StyleSheet.create({
         width: 100,
         height: 100,
         borderRadius: 50,
-        overflow: 'hidden'
+        // width:width*0.14,
+        // height:width*0.14,
+        // borderRadius:width*0.07,
+        overflow: 'hidden',
+
     },
     noimage: {
         width: '100%',

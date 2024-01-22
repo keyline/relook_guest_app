@@ -1,7 +1,8 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import { Font_Family } from "../../Utils/Fonts";
 import { Colors } from "../../Utils/Colors";
 
+const { width, height } = Dimensions.get('window')
 
 export const styles = StyleSheet.create({
     bannerimg: {
@@ -26,7 +27,8 @@ export const styles = StyleSheet.create({
         // borderWidth: 1,
         borderRadius: 10,
         width: '100%',
-        height: 180,
+        // height: 180,
+        height: height * 0.2,
         alignSelf: 'center',
         overflow: 'hidden'
         // borderRadius: 10,
@@ -56,8 +58,10 @@ export const styles = StyleSheet.create({
         // borderRadius: 10
     },
     listRightContent: {
-        width: '50%',
+        // width: '50%',
         height: '100%',
+        width: '50%',
+        // height:height*0.07,
         padding: '8%',
         overflow: 'hidden'
     },
@@ -67,10 +71,10 @@ export const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: Colors.white,
         paddingVertical: '4%',
-        paddingHorizontal:'10%',
-        justifyContent:'space-between',
+        paddingHorizontal: '10%',
+        justifyContent: 'space-between',
         marginTop: '20%',
-        borderRadius:30
+        borderRadius: 30
     },
     btnArrow: {
         width: 20,

@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet,Platform } from 'react-native'
 import { Font_Family } from '../../Utils/Fonts'
 import { Colors } from '../../Utils/Colors'
 
@@ -18,7 +18,12 @@ export const styles = StyleSheet.create({
         borderColor: Colors.them_color,
         borderRadius: 30,
         marginTop: '2%',
-        backgroundColor: Colors.white
+        backgroundColor: Colors.white,
+        ...Platform.select({
+            ios:{
+                paddingVertical:'4%'
+            }
+        })
     },
     leftlogo: {
         width: 20,

@@ -539,6 +539,7 @@ const Booking = ({ navigation, route }) => {
                                         // placeholder={'Select Check In Date'}
                                         editable={false}
                                     />
+                                    <View style={{zIndex:99}}>
                                     <CustomDropDown
                                         name={'No of Room'}
                                         headingColor={appData?.color_theme}
@@ -550,6 +551,7 @@ const Booking = ({ navigation, route }) => {
                                         onChangeValue={onChangeRoom}
                                         error={state.roomErr}
                                     />
+                                    </View>
                                     <InputField
                                         name={'Check In'}
                                         headingColor={appData?.color_theme}

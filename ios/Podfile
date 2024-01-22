@@ -28,6 +28,7 @@ end
 target 'relook_guest' do
   config = use_native_modules!
 
+  # use_frameworks!
   use_frameworks! :linkage => :static
   $RNFirebaseAsStaticFramework = true
 

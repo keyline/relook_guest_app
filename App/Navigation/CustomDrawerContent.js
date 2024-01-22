@@ -1,4 +1,4 @@
-import { View, Text, Image, Alert } from 'react-native'
+import { View, Text, Image, Alert, SafeAreaView } from 'react-native'
 import React, { useContext, useCallback, useState } from 'react'
 import AuthContext from '../Services/Context';
 import { useFocusEffect } from '@react-navigation/native';
@@ -165,7 +165,7 @@ const CustomDrawerContent = (props) => {
     )
 
     return (
-        <View style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1 }}>
             {(isLogin) && (
                 <View style={styles.drawerTopContent}>
                     <Image source={state.data?.profile_image ? { uri: state?.data?.profile_image } : ImagePath.user} style={styles.drawerLogo} />
@@ -208,7 +208,7 @@ const CustomDrawerContent = (props) => {
             {(state.loading) && (
                 <LoaderNew loading={state.loading} />
             )}
-        </View>
+        </SafeAreaView>
     )
 }
 

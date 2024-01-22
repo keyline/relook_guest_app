@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, TouchableOpacity, Image, ScrollView } from 'react-native'
+import { View, Text, SafeAreaView, TouchableOpacity, Image, ScrollView, Platform } from 'react-native'
 import React, { useCallback, useState, useEffect, useContext } from 'react'
 import { styles } from './styles'
 import { CommonStyle } from '../../Utils/CommonStyle'
@@ -33,23 +33,24 @@ const OtpVerify = ({ navigation, route }) => {
     const params = route?.params?.data
 
     useEffect(() => {
-        // getHash().then(hash => {
-        //     // use this hash in the message.
-        //     console.log('hash', hash)
-        // }).catch(console.log);
-
-        startOtpListener(message => {
-            // extract the otp using regex e.g. the below regex extracts 4 digit otp from message
-            if (message) {
-                const otp = /(\d{4})/g.exec(message)[1];
-                setState(prev => ({
-                    ...prev,
-                    otp: otp
-                }))
-                onSubmit(otp);
-            }
-        });
-        return () => removeListener();
+        if (Platform.OS == 'android') {
+            // getHash().then(hash => {
+            //     // use this hash in the message.
+            //     console.log('hash', hash)
+            // }).catch(console.log);
+            startOtpListener(message => {
+                // extract the otp using regex e.g. the below regex extracts 4 digit otp from message
+                if (message) {
+                    const otp = /(\d{4})/g.exec(message)[1];
+                    setState(prev => ({
+                        ...prev,
+                        otp: otp
+                    }))
+                    onSubmit(otp);
+                }
+            });
+            return () => removeListener();
+        }
     }, [navigation]);
 
     useEffect(() => {
@@ -177,14 +178,16 @@ const OtpVerify = ({ navigation, route }) => {
             }))
             let deviceId = DeviceInfo.getDeviceId();
             let permission = await getFcmPermission();
-            let fcmToken = await getFcmToken();
+            // if (Platform.OS == 'android') {
+                var fcmToken = await getFcmToken();
+            // }
             let datas = {
                 key: KEY,
                 source: SOURCE,
                 number: params?.mobile,
                 otp: otp,
                 device_token: deviceId,
-                fcm_token: fcmToken
+                fcm_token: fcmToken ? fcmToken : ''
             }
             const res = await Apis.otp_validate_new(datas);
             if (__DEV__) {
@@ -273,7 +276,7 @@ const OtpVerify = ({ navigation, route }) => {
                             <OTPInputView
                                 pinCount={4}
                                 code={state.otp}
-                                autoFocusOnLoad={false}
+                                autoFocusOnLoad={true}
                                 onCodeChanged={code => onChangeOtp(code)}
                                 style={styles.otp}
                                 codeInputFieldStyle={[styles.underlineStyleBase, { borderColor: Colors.light_gery, color: appData?.color_theme }]}

@@ -17,6 +17,7 @@ import Toast from 'react-native-simple-toast';
 import { ToastError, ToastMessage } from './App/Services/CommonFunction';
 import VersionCheck from 'react-native-version-check';
 import { fetch as fetchPolyfill } from 'whatwg-fetch'
+import { Colors } from './App/Utils/Colors';
 
 const App = () => {
   const [state, setState] = useState({
@@ -155,6 +156,8 @@ const App = () => {
 
   const onGetData = useCallback(async () => {
     try {
+      // var fcmToken = await getFcmToken();
+      // console.log('fcmtoken',fcmToken)
       setState(prevState => ({
         ...prevState,
         loading: true
