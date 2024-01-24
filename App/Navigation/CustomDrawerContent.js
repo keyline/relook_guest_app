@@ -156,6 +156,61 @@ const CustomDrawerContent = (props) => {
         }
     })
 
+    const DeleteAcntAlert = useCallback(async () => {
+        Alert.alert(
+            'Delete Account',
+            'Do you really want to Delete Your Account?',
+            [
+                {
+                    text: 'Yes',
+                    onPress: () => onDelete()
+                },
+                {
+                    text: 'No',
+                    onPress: () => null
+                }
+            ],
+            { cancelable: true }
+        )
+    })
+
+    const onDelete = useCallback(async () => {
+        try {
+            setState(prev => ({
+                ...prev,
+                loading: true
+            }))
+            // let fcmtoken = await getStoreFcmToken();
+            let datas = {
+                key: KEY,
+                source: SOURCE,
+                // fcm_token: fcmtoken ? fcmtoken : ""
+            }
+            const deleteacnt = await Apis.delete_accnt(datas);
+            if (__DEV__) {
+                console.log('DeleteAcntResponse', JSON.stringify(deleteacnt))
+            }
+            if (deleteacnt.status) {
+                await context.onClearStoreData();
+                navigationRef.navigate('DashBoard')
+            }
+            setState(prev => ({
+                ...prev,
+                loading: false
+            }))
+            ToastMessage(deleteacnt?.message)
+        } catch (error) {
+            setState(prev => ({
+                ...prev,
+                loading: false
+            }))
+            if (__DEV__) {
+                console.log(error)
+            }
+            ToastError();
+        }
+    })
+
     const onLogin = useCallback(async () => {
         navigationRef.navigate('LoginWithOTP');
     })
@@ -199,6 +254,18 @@ const CustomDrawerContent = (props) => {
                     pressColor={appData?.color_theme}
                     style={{ marginVertical: 0 }}
                 />
+                {(isLogin) && (
+                    <DrawerItem
+                        label={'Delete Account'}
+                        onPress={DeleteAcntAlert}
+                        labelStyle={styles.menuText}
+                        icon={(props) => (<Icon source={ImagePath.delete_account} props={props} />)}
+                        activeTintColor={appData?.color_theme}
+                        inactiveTintColor={Colors.grey}
+                        pressColor={appData?.color_theme}
+                        style={{ marginVertical: 0 }}
+                    />
+                )}
             </DrawerContentScrollView>
             {(appVersion) && (
                 <View style={styles.versionContainer}>

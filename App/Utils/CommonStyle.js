@@ -5,7 +5,8 @@ import { Font_Family } from "./Fonts";
 export const CommonStyle = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Colors.highlight
+        backgroundColor: Colors.highlight,
+        paddingBottom: 0
     },
     boldtext: {
         fontFamily: Font_Family.NunitoSans_Bold,
