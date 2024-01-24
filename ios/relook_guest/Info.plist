@@ -38,13 +38,13 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>Relook wants to access your Camera</string>
+	<string>We need access to your camera to update your profile picture and enhance your booking</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>We need access to your SMS to automatically capture OTPs.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Relook want to acces your Photo Libary</string>
+	<string>We need to access your Photo Libary to update your profile picture and enhance your booking</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>NunitoSans-Black.ttf</string>
