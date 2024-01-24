@@ -575,7 +575,7 @@
 				CODE_SIGN_ENTITLEMENTS = relook_guest/relook_guest.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 22HXSW32S3;
 				ENABLE_BITCODE = NO;
@@ -617,7 +617,7 @@
 				CODE_SIGN_ENTITLEMENTS = relook_guest/relook_guest.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 22HXSW32S3;
 				ENABLE_MODULE_VERIFIER = YES;
