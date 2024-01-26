@@ -27,15 +27,19 @@ const Booking = ({ navigation, route }) => {
     const context = useContext(AuthContext);
     const { appData, accesstoken, isLogin } = context.allData
 
+    const currentDate = new Date();
+    const nextDay = new Date(currentDate);
+    nextDay.setDate(currentDate.getDate() + 1);
+
     const [state, setState] = useState({
         loading: false,
         loadingNew: false,
         data: route?.params?.data,
         item: route?.params?.item,
-        checkinDate: new Date(),
+        checkinDate: currentDate,
         checkinDateErr: '',
         checkinDatePicker: false,
-        checkoutDate: new Date(),
+        checkoutDate: nextDay,
         checkoutDateErr: '',
         checkoutDatePicker: false,
         roomCategory: route?.params?.item?.room_type_name,
@@ -174,13 +178,17 @@ const Booking = ({ navigation, route }) => {
         // console.log(new Date(dateConvertYear('15-09-2023')))
         let time = value?.nativeEvent?.timestamp;
         if (value.type == 'set') {
+            let outday = new Date(time)
+            outday.setDate(outday.getDate() + 1)
             setState(prev => ({
                 ...prev,
                 checkinDate: time,
+                checkoutDate: outday,
                 checkinDateErr: '',
                 checkinDatePicker: false
             }))
-            await onLoad(state.room, time, state.checkoutDate);
+            // await onLoad(state.room, time, state.checkoutDate);
+            await onLoad(state.room, time, outday);
         } else {
             setState(prev => ({
                 ...prev,
@@ -244,6 +252,7 @@ const Booking = ({ navigation, route }) => {
     const onModalHide = useCallback(async () => {
         setState(prev => ({
             ...prev,
+            otp: '',
             modalVisible: false
         }))
     })
@@ -287,9 +296,9 @@ const Booking = ({ navigation, route }) => {
             let diff = Math.abs(odate - ndate)
             let day_diff = Math.ceil(diff / (1000 * 60 * 60 * 24));
             if (diff == 0) {
-                return 1
+                return 0
             } else if (ndate < odate) {
-                return (day_diff + 1)
+                return (day_diff)
             } else {
                 return 0
             }
@@ -306,7 +315,7 @@ const Booking = ({ navigation, route }) => {
         let odate = new Date(state.checkinDate);
         let diff = Math.abs(odate - ndate)
         if (diff == 0) {
-            return true;
+            return false;
         } else if (state.checkinDate < state.checkoutDate) {
             return true
         } else if (state.checkinDate > state.checkoutDate) {
@@ -439,12 +448,14 @@ const Booking = ({ navigation, route }) => {
                         ...prev,
                         modalVisible: false,
                         otpView: false,
+                        otp: '',
                         loading: false
                     }))
                     onSubmit(2);
                 } else {
                     setState(prev => ({
                         ...prev,
+                        otp: '',
                         loading: false
                     }))
                 }
@@ -509,6 +520,13 @@ const Booking = ({ navigation, route }) => {
         }
     })
 
+    function getNextDate(currentDate = state.checkinDate) {
+        const nextDate = new Date(currentDate);
+        nextDate.setDate(nextDate.getDate() + 1);
+        console.log('nextday', nextDate)
+        return nextDate;
+    }
+
     return (
         <SafeAreaView style={[CommonStyle.container, { backgroundColor: appData?.color_theme }]}>
             <Header
@@ -539,18 +557,18 @@ const Booking = ({ navigation, route }) => {
                                         // placeholder={'Select Check In Date'}
                                         editable={false}
                                     />
-                                    <View style={{zIndex:99}}>
-                                    <CustomDropDown
-                                        name={'No of Room'}
-                                        headingColor={appData?.color_theme}
-                                        value={state.room}
-                                        items={roomList}
-                                        setItems={setroomList}
-                                        open={roomPicker}
-                                        setOpen={setroomPicker}
-                                        onChangeValue={onChangeRoom}
-                                        error={state.roomErr}
-                                    />
+                                    <View style={{ zIndex: 99 }}>
+                                        <CustomDropDown
+                                            name={'No of Room'}
+                                            headingColor={appData?.color_theme}
+                                            value={state.room}
+                                            items={roomList}
+                                            setItems={setroomList}
+                                            open={roomPicker}
+                                            setOpen={setroomPicker}
+                                            onChangeValue={onChangeRoom}
+                                            error={state.roomErr}
+                                        />
                                     </View>
                                     <InputField
                                         name={'Check In'}
@@ -642,7 +660,8 @@ const Booking = ({ navigation, route }) => {
                     value={state.checkoutDate ? new Date(state.checkoutDate) : new Date()}
                     mode={'date'}
                     onConfirm={onChangeCheckoutDate}
-                    minimumDate={new Date()}
+                    // minimumDate={new Date()}
+                    minimumDate={getNextDate()}
                 />
             )}
             <Modal

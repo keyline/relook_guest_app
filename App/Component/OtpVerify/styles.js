@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Colors } from '../../Utils/Colors';
 import { Font_Family } from '../../Utils/Fonts';
+import { HEIGHT, WIDTH } from '../../Services/Constant';
 
 
 export const styles = StyleSheet.create({
@@ -89,5 +90,16 @@ export const styles = StyleSheet.create({
         fontFamily: Font_Family.NunitoSans_Bold,
         color: Colors.black,
         textDecorationLine: 'underline'
+    },
+    numberContent: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        alignSelf: 'center',
+        marginBottom: HEIGHT * 0.02
+    },
+    editIcon: {
+        width: WIDTH * 0.035,
+        height: WIDTH * 0.035,
+        tintColor: 'blue'
     }
 })

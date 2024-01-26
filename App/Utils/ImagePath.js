@@ -57,5 +57,7 @@ export const ImagePath = {
     housekeeping_logo: require('../Assets/Images/housekeeping_logo.png'),
     frontoffice_logo: require('../Assets/Images/frontoffice_logo.png'),
     housekeeping_banner: require('../Assets/Images/housekeeping_banner.jpg'),
-    cart_white:require('../Assets/Images/cart_white.png')
+    cart_white:require('../Assets/Images/cart_white.png'),
+    edit:require('../Assets/Images/edit.png')
+
 }

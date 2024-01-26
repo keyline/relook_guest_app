@@ -15,6 +15,7 @@ import LoaderNew from '../../Container/LoaderNew'
 import ImageOptionModal from '../../Container/ImageOptionModal'
 import DateTimePickers from '../../Container/DateTimePickers'
 import { isValidEmail } from '../../Services/Valid'
+import DatePickerModal from '../../Container/DatePickerModal'
 
 const EditProfile = ({ navigation }) => {
 
@@ -299,12 +300,18 @@ const EditProfile = ({ navigation }) => {
         }))
     }, [state.datePicker])
 
+    const onCloseDatePicker = useCallback(async () => {
+        setState(prev => ({
+            ...prev,
+            datePicker: false
+        }))
+    }, [state.datePicker])
+
     const onDateChng = useCallback(async (value) => {
-        let time = value?.nativeEvent?.timestamp;
-        if (value.type == 'set') {
+        if (value) {
             setState(prev => ({
                 ...prev,
-                dob: dateConvertNew(time),
+                dob: dateConvertNew(value),
                 dobErr: '',
                 datePicker: false
             }))
@@ -314,6 +321,20 @@ const EditProfile = ({ navigation }) => {
                 datePicker: false
             }))
         }
+        // let time = value?.nativeEvent?.timestamp;
+        // if (value.type == 'set') {
+        //     setState(prev => ({
+        //         ...prev,
+        //         dob: dateConvertNew(time),
+        //         dobErr: '',
+        //         datePicker: false
+        //     }))
+        // } else {
+        //     setState(prev => ({
+        //         ...prev,
+        //         datePicker: false
+        //     }))
+        // }
     })
 
     return (
@@ -397,12 +418,19 @@ const EditProfile = ({ navigation }) => {
                 onMenuPress={onModalItemPress}
             />
             {(state.datePicker) && (
-                <DateTimePickers
-                    value={state?.dob ? new Date(convertDateFormat(state.dob)) : new Date()}
-                    // value={new Date()}
-                    mode={'date'}
-                    maximumDate={new Date()}
+                // <DateTimePickers
+                //     value={state?.dob ? new Date(convertDateFormat(state.dob)) : new Date()}
+                //     // value={new Date()}
+                //     mode={'date'}
+                //     maximumDate={new Date()}
+                //     onConfirm={onDateChng}
+                // />
+                <DatePickerModal
+                    isVisible={state.datePicker}
+                    value={state.dob ? new Date(convertDateFormat(state.dob)) : new Date()}
                     onConfirm={onDateChng}
+                    maximumDate={new Date()}
+                    onClose={onCloseDatePicker}
                 />
             )}
         </SafeAreaView>

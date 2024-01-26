@@ -179,7 +179,7 @@ const OtpVerify = ({ navigation, route }) => {
             let deviceId = DeviceInfo.getDeviceId();
             let permission = await getFcmPermission();
             // if (Platform.OS == 'android') {
-                var fcmToken = await getFcmToken();
+            var fcmToken = await getFcmToken();
             // }
             let datas = {
                 key: KEY,
@@ -258,6 +258,10 @@ const OtpVerify = ({ navigation, route }) => {
         }
     })
 
+    const onNumberEdit = useCallback(async () => {
+        navigation.goBack();
+    })
+
     return (
         <SafeAreaView style={[CommonStyle.container, { backgroundColor: appData?.color_theme }]}>
             <TouchableOpacity style={styles.backContainer} onPress={onBack} activeOpacity={0.5}>
@@ -272,7 +276,13 @@ const OtpVerify = ({ navigation, route }) => {
                     {/* <Text style={styles.subtext}>Check Your Mobile/Email for OTP</Text> */}
                     <View style={styles.mainContent}>
                         <View style={{ flex: 1 }}>
-                            <Text style={[CommonStyle.boldtext, { marginBottom: '8%', color: Colors.black, textAlign: 'center' }]}>Enter OTP</Text>
+                            <View style={styles.numberContent}>
+                                <Text style={[CommonStyle.boldtext, { color: appData?.color_theme, fontSize: 16 }]}>{params?.mobile}  </Text>
+                                <TouchableOpacity onPress={onNumberEdit} activeOpacity={0.5}>
+                                    <Image source={ImagePath.edit} style={styles.editIcon} />
+                                </TouchableOpacity>
+                            </View>
+                            <Text style={[CommonStyle.boldtext, { marginBottom: '4%', color: Colors.black, textAlign: 'center' }]}>Enter OTP</Text>
                             <OTPInputView
                                 pinCount={4}
                                 code={state.otp}
