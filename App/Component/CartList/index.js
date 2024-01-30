@@ -326,7 +326,8 @@ const CartList = ({ navigation, route }) => {
                 <TouchableOpacity onPress={onOrderAlert} activeOpacity={0.5} style={[styles.placeBtn, { backgroundColor: appData?.color_theme }]}>
                     <Text style={[CommonStyle.boldtext, { color: Colors.white }]}>CONFIRM</Text>
                 </TouchableOpacity>
-                <Text style={[CommonStyle.boldtext, { color: '#696969', textAlign: 'center', marginVertical: '2%' }]}>Amount will be added with your Final Bill </Text>
+                <Text style={[CommonStyle.boldtext, { color: '#696969', textAlign: 'center', marginTop: '2%' }]}>Amount will be added with your Final Bill </Text>
+                <Text style={[CommonStyle.boldtext, { color: '#696969', textAlign: 'center',fontSize:12}]}>*GST 5% will be charged extra</Text>
             </View >
         )
     }

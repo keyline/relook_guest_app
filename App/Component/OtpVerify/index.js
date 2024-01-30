@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, TouchableOpacity, Image, ScrollView, Platform } from 'react-native'
+import { View, Text, SafeAreaView, TouchableOpacity, Image, ScrollView, Platform, Keyboard } from 'react-native'
 import React, { useCallback, useState, useEffect, useContext } from 'react'
 import { styles } from './styles'
 import { CommonStyle } from '../../Utils/CommonStyle'
@@ -286,7 +286,7 @@ const OtpVerify = ({ navigation, route }) => {
                             <OTPInputView
                                 pinCount={4}
                                 code={state.otp}
-                                autoFocusOnLoad={true}
+                                autoFocusOnLoad={Platform.OS != 'android'}
                                 onCodeChanged={code => onChangeOtp(code)}
                                 style={styles.otp}
                                 codeInputFieldStyle={[styles.underlineStyleBase, { borderColor: Colors.light_gery, color: appData?.color_theme }]}
